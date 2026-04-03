@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:project_temp/core/core.dart';
 import 'package:project_temp/features/auth/application/auth_session_controller.dart';
 import 'package:project_temp/features/auth/presentation/auth_session_scope.dart';
@@ -13,6 +14,7 @@ class App extends StatefulWidget {
 
 class _AppState extends State<App> {
   late final AuthSessionController _auth = AuthSessionController(sl());
+  late final AppLocaleController _locale = AppLocaleController();
   bool _ready = false;
 
   @override
@@ -24,21 +26,42 @@ class _AppState extends State<App> {
   }
 
   @override
+  void dispose() {
+    _locale.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Приложение',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.indigo),
-        useMaterial3: true,
-      ),
-      home: _ready
-          ? AuthSessionScope(
-              notifier: _auth,
-              child: const HomePage(),
-            )
-          : const Scaffold(
-              body: Center(child: CircularProgressIndicator()),
-            ),
+    return ListenableBuilder(
+      listenable: Listenable.merge([_auth, _locale]),
+      builder: (context, _) {
+        return MaterialApp(
+          title: 'Voice from the Archive',
+          locale: _locale.locale,
+          localizationsDelegates: const [
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          supportedLocales: AppLocaleController.supportedLocales,
+          theme: ThemeData(
+            colorScheme: ColorScheme.fromSeed(seedColor: Colors.indigo),
+            useMaterial3: true,
+          ),
+          home: _ready
+              ? AuthSessionScope(
+                  notifier: _auth,
+                  child: AppLocaleScope(
+                    notifier: _locale,
+                    child: const HomePage(),
+                  ),
+                )
+              : const Scaffold(
+                  body: Center(child: CircularProgressIndicator()),
+                ),
+        );
+      },
     );
   }
 }

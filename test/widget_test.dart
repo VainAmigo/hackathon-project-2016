@@ -13,7 +13,7 @@ void main() {
   testWidgets('При старте открывается главная (вход не обязателен)', (tester) async {
     await tester.pumpWidget(const App());
     await tester.pumpAndSettle();
-    expect(find.text('Главная'), findsOneWidget);
+    expect(find.text('Voice from the Archive'), findsOneWidget);
     expect(find.text('Вы не авторизованы'), findsOneWidget);
   });
 }
