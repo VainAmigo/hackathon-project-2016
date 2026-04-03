@@ -99,4 +99,61 @@ class AppLocalizationsKy extends AppLocalizations {
 
   @override
   String get actionLogout => 'ЧЫГУУ';
+
+  @override
+  String get authLoginTitle => 'Кирүү';
+
+  @override
+  String get authRegisterTitle => 'Катталуу';
+
+  @override
+  String get authEmailLabel => 'Электрондук почта';
+
+  @override
+  String get authPasswordLabel => 'Сырсөз';
+
+  @override
+  String get authConfirmPasswordLabel => 'Сырсөздү кайталоо';
+
+  @override
+  String get authFirstNameLabel => 'Аты (милдеттүү эмес)';
+
+  @override
+  String get authLastNameLabel => 'Фамилиясы (милдеттүү эмес)';
+
+  @override
+  String get authSignIn => 'Кирүү';
+
+  @override
+  String get authSignUp => 'Катталуу';
+
+  @override
+  String get authNoAccount => 'Аккаунт жокпу?';
+
+  @override
+  String get authHaveAccount => 'Аккаунт барбы?';
+
+  @override
+  String get authGoRegister => 'Аккаунт түзүү';
+
+  @override
+  String get authGoLogin => 'Кирүү';
+
+  @override
+  String get authPanelSubtitle => 'Күбөлүктөрдү жана эстеликтерди сактайбыз.';
+
+  @override
+  String get authEmailRequired => 'Почтаны киргизиңиз';
+
+  @override
+  String get authEmailInvalid => 'Email форматы туура эмес';
+
+  @override
+  String get authPasswordRequired => 'Сырсөздү киргизиңиз';
+
+  @override
+  String get authPasswordTooShort => 'Эң аз 8 символ';
+
+  @override
+  String get authConfirmMismatch => 'Сырсөздөр дал келбейт';
 }

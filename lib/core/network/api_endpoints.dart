@@ -9,5 +9,6 @@ abstract final class ApiConfig {
 
 abstract final class ApiEndpoints {
   static const login = 'api/v1/auth/login';
+  static const register = 'api/v1/auth/register';
   static const userProfile = 'api/v1/user/profile';
 }

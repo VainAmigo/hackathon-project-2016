@@ -23,6 +23,10 @@ class CustomTextFormField extends StatelessWidget {
     this.inputFormatters,
     this.prefix,
     this.obscureText,
+    this.textInputAction,
+    this.onFieldSubmitted,
+    this.autofillHints,
+    this.focusNode,
     super.key,
   });
 
@@ -45,22 +49,31 @@ class CustomTextFormField extends StatelessWidget {
   final String? prefixText;
   final List<TextInputFormatter>? inputFormatters;
   final bool? obscureText;
+  final TextInputAction? textInputAction;
+  final void Function(String)? onFieldSubmitted;
+  final Iterable<String>? autofillHints;
+  final FocusNode? focusNode;
 
   @override
   Widget build(BuildContext context) {
+    final isObscured = obscureText ?? false;
     return Padding(
       padding: EdgeInsets.only(top: label != null ? 16 : 0),
       child: TextFormField(
+        focusNode: focusNode,
         validator: validator,
         onTap: onTap,
         onChanged: onChanged,
         controller: controller,
-        maxLines: maxLines,
+        maxLines: isObscured ? 1 : maxLines,
         readOnly: readOnly,
         keyboardType: keyboardType,
         autofocus: autofocus,
         inputFormatters: inputFormatters,
-        obscureText: obscureText ?? false,
+        obscureText: isObscured,
+        textInputAction: textInputAction,
+        onFieldSubmitted: onFieldSubmitted,
+        autofillHints: autofillHints,
         decoration: InputDecoration(
           fillColor: AppThemes.surfaceColor,
           filled: true,

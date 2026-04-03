@@ -15,15 +15,56 @@ class AuthRepositoryImpl implements AuthRepository {
 
   @override
   Future<Either<Failure, LoginResult>> login({
-    required String phoneNumber,
+    required String email,
     required String password,
   }) async {
     try {
       final response = await _dio.publicDio.post<Map<String, dynamic>>(
         ApiEndpoints.login,
         data: {
-          'phoneNumber': phoneNumber,
+          'email': email.trim(),
           'password': password,
+        },
+      );
+      final data = response.data;
+      if (data == null) {
+        return const Left(ServerFailure('Пустой ответ сервера'));
+      }
+      final result = LoginResult.fromJson(data);
+      if (result.accessToken.isEmpty) {
+        return const Left(ValidationFailure('Сервер не вернул токен'));
+      }
+      await _preferences.saveAccessToken(result.accessToken);
+      await _preferences.saveRefreshToken(
+        result.refreshToken.isEmpty ? null : result.refreshToken,
+      );
+      return Right(result);
+    } on DioException catch (e) {
+      return Left(_mapDio(e));
+    } on FormatException catch (e) {
+      return Left(ValidationFailure(e.message));
+    } on Object catch (e) {
+      return Left(ExceptionToFailure.map(e));
+    }
+  }
+
+  @override
+  Future<Either<Failure, LoginResult>> register({
+    required String email,
+    required String password,
+    String? firstName,
+    String? lastName,
+  }) async {
+    try {
+      final response = await _dio.publicDio.post<Map<String, dynamic>>(
+        ApiEndpoints.register,
+        data: <String, dynamic>{
+          'email': email.trim(),
+          'password': password,
+          if (firstName != null && firstName.trim().isNotEmpty)
+            'firstName': firstName.trim(),
+          if (lastName != null && lastName.trim().isNotEmpty)
+            'lastName': lastName.trim(),
         },
       );
       final data = response.data;

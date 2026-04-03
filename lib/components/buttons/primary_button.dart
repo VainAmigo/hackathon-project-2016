@@ -19,20 +19,25 @@ class PrimaryButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
-      style: ElevatedButton.styleFrom(
-        fixedSize: Size(MediaQuery.of(context).size.width, 50),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
-        foregroundColor: foregroundColor ?? AppThemes.surfaceColor,
-        textStyle: const TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
-        backgroundColor: backgroundColor ?? AppThemes.textColorPrimary,
-        disabledBackgroundColor: AppThemes.textColorPrimary.withValues(
-          alpha: 0.3,
+    return SizedBox(
+      width: double.infinity,
+      height: 50,
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          minimumSize: Size.zero,
+          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
+          foregroundColor: foregroundColor ?? AppThemes.surfaceColor,
+          textStyle: const TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+          backgroundColor: backgroundColor ?? AppThemes.textColorPrimary,
+          disabledBackgroundColor: AppThemes.textColorPrimary.withValues(
+            alpha: 0.3,
+          ),
+          disabledForegroundColor: Colors.white,
         ),
-        disabledForegroundColor: Colors.white,
+        onPressed: onPressed,
+        child: child ?? Text(text),
       ),
-      onPressed: onPressed,
-      child: child ?? Text(text),
     );
   }
 }

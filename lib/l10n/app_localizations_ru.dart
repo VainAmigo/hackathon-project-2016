@@ -99,4 +99,61 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get actionLogout => 'ВЫЙТИ';
+
+  @override
+  String get authLoginTitle => 'Вход';
+
+  @override
+  String get authRegisterTitle => 'Регистрация';
+
+  @override
+  String get authEmailLabel => 'Электронная почта';
+
+  @override
+  String get authPasswordLabel => 'Пароль';
+
+  @override
+  String get authConfirmPasswordLabel => 'Повторите пароль';
+
+  @override
+  String get authFirstNameLabel => 'Имя (необязательно)';
+
+  @override
+  String get authLastNameLabel => 'Фамилия (необязательно)';
+
+  @override
+  String get authSignIn => 'Войти';
+
+  @override
+  String get authSignUp => 'Зарегистрироваться';
+
+  @override
+  String get authNoAccount => 'Нет аккаунта?';
+
+  @override
+  String get authHaveAccount => 'Уже есть аккаунт?';
+
+  @override
+  String get authGoRegister => 'Создать аккаунт';
+
+  @override
+  String get authGoLogin => 'Войти';
+
+  @override
+  String get authPanelSubtitle => 'Сохраняем свидетельства и память.';
+
+  @override
+  String get authEmailRequired => 'Введите почту';
+
+  @override
+  String get authEmailInvalid => 'Некорректный формат email';
+
+  @override
+  String get authPasswordRequired => 'Введите пароль';
+
+  @override
+  String get authPasswordTooShort => 'Не менее 8 символов';
+
+  @override
+  String get authConfirmMismatch => 'Пароли не совпадают';
 }

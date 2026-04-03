@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:project_temp/features/auth/presentation/auth_session_scope.dart';
-import 'package:project_temp/features/auth/presentation/login_page.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:project_temp/features/auth/cubit/auth_session_cubit.dart';
+import 'package:project_temp/features/auth/presentation/pages/login_page.dart';
 import 'package:project_temp/source/source.dart';
 
 /// Переход на экран, доступный только после входа. Иначе — диалог и экран входа.
@@ -8,7 +9,7 @@ Future<void> pushIfAuthenticated(
   BuildContext context, {
   required WidgetBuilder pageBuilder,
 }) async {
-  final session = AuthSessionScope.read(context);
+  final authed = context.read<AuthSessionCubit>().state.isAuthenticated;
 
   Future<void> pushProtected() async {
     if (!context.mounted) return;
@@ -17,7 +18,7 @@ Future<void> pushIfAuthenticated(
     );
   }
 
-  if (session.isAuthenticated) {
+  if (authed) {
     await pushProtected();
     return;
   }
@@ -54,6 +55,6 @@ Future<void> pushIfAuthenticated(
   );
 
   if (user == null || !context.mounted) return;
-  AuthSessionScope.read(context).setSession(user);
+  context.read<AuthSessionCubit>().setSession(user);
   await pushProtected();
 }

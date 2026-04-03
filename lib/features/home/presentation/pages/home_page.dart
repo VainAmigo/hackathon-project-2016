@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:project_temp/core/core.dart';
 import 'package:project_temp/features/auth/auth.dart';
@@ -37,7 +38,7 @@ class _HomePageState extends State<HomePage> {
       ScaffoldMessenger.of(
         context,
       ).showSnackBar(SnackBar(content: Text(f.message)));
-    }, (_) => AuthSessionScope.read(context).clearSession());
+    }, (_) => context.read<AuthSessionCubit>().clearSession());
   }
 
   Future<void> _openLogin() async {
@@ -48,7 +49,7 @@ class _HomePageState extends State<HomePage> {
       ),
     );
     if (user != null && mounted) {
-      AuthSessionScope.read(context).setSession(user);
+      context.read<AuthSessionCubit>().setSession(user);
     }
   }
 
@@ -56,8 +57,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     final adaptive = context.adaptive;
     final dense = _denseNav(adaptive);
-    final session = AuthSessionScope.of(context);
-    final authed = session.isAuthenticated;
+    final authed = context.watch<AuthSessionCubit>().state.isAuthenticated;
 
     final mainContent = AnimatedSwitcher(
       duration: const Duration(milliseconds: 320),

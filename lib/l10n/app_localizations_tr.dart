@@ -99,4 +99,61 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get actionLogout => 'ÇIKIŞ';
+
+  @override
+  String get authLoginTitle => 'Giriş';
+
+  @override
+  String get authRegisterTitle => 'Hesap oluştur';
+
+  @override
+  String get authEmailLabel => 'E-posta';
+
+  @override
+  String get authPasswordLabel => 'Şifre';
+
+  @override
+  String get authConfirmPasswordLabel => 'Şifreyi onayla';
+
+  @override
+  String get authFirstNameLabel => 'Ad (isteğe bağlı)';
+
+  @override
+  String get authLastNameLabel => 'Soyad (isteğe bağlı)';
+
+  @override
+  String get authSignIn => 'Giriş yap';
+
+  @override
+  String get authSignUp => 'Kayıt ol';
+
+  @override
+  String get authNoAccount => 'Hesabınız yok mu?';
+
+  @override
+  String get authHaveAccount => 'Zaten hesabınız var mı?';
+
+  @override
+  String get authGoRegister => 'Hesap oluştur';
+
+  @override
+  String get authGoLogin => 'Giriş yap';
+
+  @override
+  String get authPanelSubtitle => 'Tanıklıkları ve hafızayı koruyoruz.';
+
+  @override
+  String get authEmailRequired => 'E-postanızı girin';
+
+  @override
+  String get authEmailInvalid => 'Geçersiz e-posta biçimi';
+
+  @override
+  String get authPasswordRequired => 'Şifrenizi girin';
+
+  @override
+  String get authPasswordTooShort => 'En az 8 karakter';
+
+  @override
+  String get authConfirmMismatch => 'Şifreler eşleşmiyor';
 }

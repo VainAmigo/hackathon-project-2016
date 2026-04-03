@@ -99,4 +99,61 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get actionLogout => 'LOG OUT';
+
+  @override
+  String get authLoginTitle => 'Sign in';
+
+  @override
+  String get authRegisterTitle => 'Create account';
+
+  @override
+  String get authEmailLabel => 'Email';
+
+  @override
+  String get authPasswordLabel => 'Password';
+
+  @override
+  String get authConfirmPasswordLabel => 'Confirm password';
+
+  @override
+  String get authFirstNameLabel => 'First name (optional)';
+
+  @override
+  String get authLastNameLabel => 'Last name (optional)';
+
+  @override
+  String get authSignIn => 'Sign in';
+
+  @override
+  String get authSignUp => 'Register';
+
+  @override
+  String get authNoAccount => 'No account yet?';
+
+  @override
+  String get authHaveAccount => 'Already have an account?';
+
+  @override
+  String get authGoRegister => 'Create account';
+
+  @override
+  String get authGoLogin => 'Sign in';
+
+  @override
+  String get authPanelSubtitle => 'Preserve testimonies and memory.';
+
+  @override
+  String get authEmailRequired => 'Enter your email';
+
+  @override
+  String get authEmailInvalid => 'Invalid email format';
+
+  @override
+  String get authPasswordRequired => 'Enter your password';
+
+  @override
+  String get authPasswordTooShort => 'At least 8 characters';
+
+  @override
+  String get authConfirmMismatch => 'Passwords do not match';
 }
