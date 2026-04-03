@@ -84,7 +84,7 @@ class _HomePageState extends State<HomePage> {
 
     return Scaffold(
       key: _scaffoldKey,
-      backgroundColor: dense ? null : kVoiceArchiveCream,
+      backgroundColor: dense ? null : AppThemes.backgroundColor,
       drawer: dense
           ? VoiceArchiveDrawer(
               selectedTab: _tabIndex,

@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:project_temp/components/components.dart';
 import 'package:project_temp/core/core.dart';
 
 /// Фон шапки по макету.
 const Color kVoiceArchiveCream = Color(0xFFFDFCE6);
 
 /// Индексы вкладок: 0 — Archive, 1 — AI Assistant, 2 — Add Entry.
-class VoiceArchiveAppBar extends StatelessWidget implements PreferredSizeWidget {
+class VoiceArchiveAppBar extends StatelessWidget
+    implements PreferredSizeWidget {
   const VoiceArchiveAppBar({
     super.key,
     required this.scaffoldKey,
@@ -47,7 +49,7 @@ class VoiceArchiveAppBar extends StatelessWidget implements PreferredSizeWidget 
     final locale = AppLocaleScope.of(context);
 
     return Material(
-      color: kVoiceArchiveCream,
+      color: AppThemes.backgroundColor,
       child: SafeArea(
         bottom: false,
         child: SizedBox(
@@ -95,6 +97,11 @@ class _DesktopTopBar extends StatelessWidget {
     required this.locale,
   });
 
+  /// Левая зона (бренд + вкладки) забирает большую долю свободной ширины;
+  /// поиск сжимается первым и остаётся узким дольше, чем скрывается левый контент.
+  static const int _leftFlex = 14;
+  static const int _searchFlex = 2;
+
   final int selectedTab;
   final ValueChanged<int> onTabSelected;
   final TextEditingController searchController;
@@ -112,27 +119,39 @@ class _DesktopTopBar extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          const _BrandTitle(compact: false),
-          const SizedBox(width: 16),
-          Flexible(
-            fit: FlexFit.loose,
-            child: SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: _NavTabs(
-                labels: tabLabels,
-                selected: selectedTab,
-                onSelected: onTabSelected,
-                compact: false,
+          Expanded(
+            flex: _leftFlex,
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const _BrandTitle(compact: false),
+                    const SizedBox(width: 16),
+                    _NavTabs(
+                      labels: tabLabels,
+                      selected: selectedTab,
+                      onSelected: onTabSelected,
+                      compact: false,
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
           const SizedBox(width: 12),
           Expanded(
+            flex: _searchFlex,
             child: Align(
               alignment: Alignment.centerRight,
               child: ConstrainedBox(
-                constraints: const BoxConstraints(maxWidth: 360, minWidth: 96),
-                child: _SearchField(controller: searchController),
+                constraints: const BoxConstraints(maxWidth: 360),
+                child: CustomTextFormField(
+                  controller: searchController,
+                  hintText: 'Search',
+                ),
               ),
             ),
           ),
@@ -188,11 +207,7 @@ class _MobileTopBar extends StatelessWidget {
             onPressed: () => scaffoldKey.currentState?.openDrawer(),
             tooltip: 'Меню',
           ),
-          const Expanded(
-            child: Center(
-              child: _BrandTitle(compact: true),
-            ),
-          ),
+          const Expanded(child: Center(child: _BrandTitle(compact: true))),
           IconButton(
             icon: const Icon(Icons.search, color: Colors.black87),
             tooltip: 'Поиск',
@@ -224,9 +239,10 @@ class _MobileTopBar extends StatelessWidget {
             top: 8,
             bottom: MediaQuery.paddingOf(ctx).bottom + 20,
           ),
-          child: _SearchField(
+          child: CustomTextFormField(
             controller: searchController,
             autofocus: true,
+            hintText: 'Search',
           ),
         );
       },
@@ -278,8 +294,9 @@ class VoiceArchiveDrawer extends StatelessWidget {
                 title: Text(
                   _tabLabels[i],
                   style: TextStyle(
-                    fontWeight:
-                        selectedTab == i ? FontWeight.w700 : FontWeight.w500,
+                    fontWeight: selectedTab == i
+                        ? FontWeight.w700
+                        : FontWeight.w500,
                     color: selectedTab == i ? Colors.black : Colors.black54,
                   ),
                 ),
@@ -290,7 +307,10 @@ class VoiceArchiveDrawer extends StatelessWidget {
                 },
               ),
             const Divider(height: 32),
-            _SearchField(controller: searchController),
+            CustomTextFormField(
+              controller: searchController,
+              hintText: 'Search',
+            ),
             const SizedBox(height: 20),
             ListTile(
               leading: const Icon(Icons.language_outlined),
@@ -342,10 +362,7 @@ class _BrandTitle extends StatelessWidget {
         style: style,
       );
     }
-    return Text(
-      'Voice from the Archive',
-      style: style,
-    );
+    return Text('Voice from the Archive', style: style);
   }
 }
 
@@ -433,55 +450,8 @@ class _NavTab extends StatelessWidget {
   }
 }
 
-class _SearchField extends StatelessWidget {
-  const _SearchField({
-    required this.controller,
-    this.autofocus = false,
-  });
-
-  final TextEditingController controller;
-  final bool autofocus;
-
-  @override
-  Widget build(BuildContext context) {
-    return TextField(
-      controller: controller,
-      autofocus: autofocus,
-      style: const TextStyle(fontSize: 14, color: Colors.black87),
-      decoration: InputDecoration(
-        isDense: true,
-        hintText: 'Search dossier',
-        hintStyle: TextStyle(
-          fontSize: 14,
-          color: Colors.black38,
-          fontStyle: FontStyle.italic,
-        ),
-        prefixIcon: const Icon(Icons.search, size: 20, color: Colors.black45),
-        contentPadding: const EdgeInsets.symmetric(vertical: 12),
-        filled: true,
-        fillColor: Colors.white,
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(2),
-          borderSide: const BorderSide(color: Color(0xFFE0E0E0)),
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(2),
-          borderSide: const BorderSide(color: Color(0xFFD0D0D0)),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(2),
-          borderSide: const BorderSide(color: Colors.black54),
-        ),
-      ),
-    );
-  }
-}
-
 class _LangToggle extends StatelessWidget {
-  const _LangToggle({
-    required this.controller,
-    this.dense = false,
-  });
+  const _LangToggle({required this.controller, this.dense = false});
 
   final AppLocaleController controller;
   final bool dense;
@@ -491,7 +461,7 @@ class _LangToggle extends StatelessWidget {
     return ListenableBuilder(
       listenable: controller,
       builder: (context, _) {
-        final side = dense ? 40.0 : 44.0;
+        final side = dense ? 50.0 : 50.0;
         return Material(
           color: Colors.black,
           borderRadius: BorderRadius.circular(2),
@@ -505,7 +475,7 @@ class _LangToggle extends StatelessWidget {
                 child: Text(
                   controller.code.uiLabel,
                   style: TextStyle(
-                    color: Colors.white,
+                    color: AppThemes.backgroundColor,
                     fontWeight: FontWeight.w600,
                     fontSize: dense ? 11 : 12,
                     letterSpacing: 0.5,
@@ -541,8 +511,8 @@ class _AuthChip extends StatelessWidget {
   Widget build(BuildContext context) {
     if (loggingOut) {
       return SizedBox(
-        width: compact ? 40 : 48,
-        height: compact ? 40 : 44,
+        width: 50,
+        height: 50,
         child: const Center(
           child: SizedBox(
             width: 22,
@@ -567,20 +537,9 @@ class _AuthChip extends StatelessWidget {
       );
     }
 
-    final child = FilledButton(
-      onPressed: onPressed,
-      style: FilledButton.styleFrom(
-        backgroundColor: Colors.black,
-        foregroundColor: Colors.white,
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
-        textStyle: const TextStyle(
-          fontWeight: FontWeight.w600,
-          letterSpacing: 0.8,
-          fontSize: 12,
-        ),
-      ),
-      child: Text(label),
+    final child = SizedBox(
+      width: 120,
+      child: PrimaryButton(text: label, onPressed: onPressed),
     );
 
     if (fullWidth) {
