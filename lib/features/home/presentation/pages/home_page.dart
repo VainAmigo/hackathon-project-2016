@@ -59,7 +59,31 @@ class _HomePageState extends State<HomePage> {
     final session = AuthSessionScope.of(context);
     final authed = session.isAuthenticated;
 
-    final mainContent = _tabBody(context, tabIndex: _tabIndex);
+    final mainContent = AnimatedSwitcher(
+      duration: const Duration(milliseconds: 320),
+      switchInCurve: Curves.easeOutCubic,
+      switchOutCurve: Curves.easeInCubic,
+      transitionBuilder: (child, animation) {
+        final curved = CurvedAnimation(
+          parent: animation,
+          curve: Curves.easeOutCubic,
+        );
+        return FadeTransition(
+          opacity: curved,
+          child: SlideTransition(
+            position: Tween<Offset>(
+              begin: const Offset(0.03, 0),
+              end: Offset.zero,
+            ).animate(curved),
+            child: child,
+          ),
+        );
+      },
+      child: KeyedSubtree(
+        key: ValueKey<int>(_tabIndex),
+        child: _tabBody(context, tabIndex: _tabIndex),
+      ),
+    );
 
     final Widget paddedBody;
     if (adaptive.isWeb && _tabIndex != 0) {

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'package:project_temp/features/home/presentation/animation/fade_slide_in.dart';
 import 'package:project_temp/features/home/presentation/widgets/ask_assistant_fake_search_bar.dart';
 import 'package:project_temp/features/home/presentation/widgets/home_hero_backdrop.dart';
 import 'package:project_temp/features/home/presentation/widgets/home_hero_headline.dart';
@@ -73,15 +74,29 @@ class HomeHeroSegment extends StatelessWidget {
                                 mainAxisSize: MainAxisSize.min,
                                 crossAxisAlignment: CrossAxisAlignment.stretch,
                                 children: [
-                                  HomeHeroHeadline(
-                                    titleSize: titleSize,
-                                    textAlign: textAlign,
-                                    compact: compact,
+                                  FadeSlideIn(
+                                    duration: const Duration(
+                                      milliseconds: 560,
+                                    ),
+                                    slideBegin: const Offset(0, 0.05),
+                                    child: HomeHeroHeadline(
+                                      titleSize: titleSize,
+                                      textAlign: textAlign,
+                                      compact: compact,
+                                    ),
                                   ),
                                   SizedBox(height: compact ? 20 : 24),
-                                  AskAssistantFakeSearchBar(
-                                    onPressed: onOpenAiAssistant,
-                                    variant: AskAssistantSearchBarVariant.onHero,
+                                  FadeSlideIn(
+                                    delay: const Duration(milliseconds: 140),
+                                    duration: const Duration(
+                                      milliseconds: 520,
+                                    ),
+                                    slideBegin: const Offset(0, 0.07),
+                                    child: AskAssistantFakeSearchBar(
+                                      onPressed: onOpenAiAssistant,
+                                      variant:
+                                          AskAssistantSearchBarVariant.onHero,
+                                    ),
                                   ),
                                 ],
                               ),

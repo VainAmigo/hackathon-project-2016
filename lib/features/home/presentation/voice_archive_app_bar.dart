@@ -417,18 +417,21 @@ class _NavTab extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text(
-              label,
+            AnimatedDefaultTextStyle(
+              duration: const Duration(milliseconds: 220),
+              curve: Curves.easeOutCubic,
               style: TextStyle(
                 fontSize: compact ? 11 : 12,
                 letterSpacing: 0.6,
                 fontWeight: selected ? FontWeight.w700 : FontWeight.w500,
                 color: selected ? Colors.black : Colors.black45,
               ),
+              child: Text(label),
             ),
             const SizedBox(height: 6),
             AnimatedContainer(
-              duration: const Duration(milliseconds: 180),
+              duration: const Duration(milliseconds: 220),
+              curve: Curves.easeOutCubic,
               height: 3,
               width: compact ? 48 : 64,
               decoration: BoxDecoration(

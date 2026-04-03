@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:project_temp/core/core.dart';
+import 'package:project_temp/features/home/presentation/animation/fade_slide_in.dart';
 import 'package:project_temp/features/home/presentation/constants/home_assets.dart';
 
 /// Полноэкранный фон первого сегмента (изображение + затемнение для читаемости).
@@ -13,14 +14,17 @@ class HomeHeroBackdrop extends StatelessWidget {
       child: Stack(
         fit: StackFit.expand,
         children: [
-          Transform.scale(
-            scale: 1.02,
-            child: Image.asset(
-              HomeAssets.heroBackground,
-              fit: BoxFit.cover,
-              alignment: Alignment.bottomCenter,
-              errorBuilder: (context, error, stackTrace) =>
-                  const SizedBox.shrink(),
+          FadeIn(
+            duration: const Duration(milliseconds: 900),
+            child: Transform.scale(
+              scale: 1.02,
+              child: Image.asset(
+                HomeAssets.heroBackground,
+                fit: BoxFit.cover,
+                alignment: Alignment.bottomCenter,
+                errorBuilder: (context, error, stackTrace) =>
+                    const SizedBox.shrink(),
+              ),
             ),
           ),
         ],

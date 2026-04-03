@@ -57,9 +57,10 @@ class HomeLandingBody extends StatelessWidget {
                 textAlign: textAlign,
                 onOpenAiAssistant: onOpenAiAssistant,
               ),
-              for (final id in kHomePlaceholderSectionOrder)
+              for (var i = 0; i < kHomePlaceholderSectionOrder.length; i++)
                 HomePlaceholderSection(
-                  sectionId: id,
+                  sectionIndex: i,
+                  sectionId: kHomePlaceholderSectionOrder[i],
                   maxContentWidth: maxW,
                   compact: compact,
                 ),
