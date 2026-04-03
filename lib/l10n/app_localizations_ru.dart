@@ -68,10 +68,10 @@ class AppLocalizationsRu extends AppLocalizations {
   String get tabAiAssistantSubtitle => 'Здесь будет помощник.';
 
   @override
-  String get tabAddEntryTitle => 'Add Entry';
+  String get tabAddEntryTitle => 'Новая запись';
 
   @override
-  String get tabAddEntrySubtitle => 'Здесь будет форма добавления записи.';
+  String get tabAddEntrySubtitle => 'Форма добавления записи в архив.';
 
   @override
   String get navArchive => 'АРХИВ';
@@ -156,4 +156,124 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get authConfirmMismatch => 'Пароли не совпадают';
+
+  @override
+  String get addEntryEyebrow => 'ФОРМА ЗАПИСИ';
+
+  @override
+  String get addEntryTitle => 'Добавление новой записи';
+
+  @override
+  String get addEntryWhyTitle => 'Почему ваша запись важна';
+
+  @override
+  String get addEntryWhyBody =>
+      'Каждая тщательно оформленная карточка возвращает в оборот памяти имена, даты и обстоятельства, которые пытались стереть. Проверяемые факты помогают родственникам, исследователям и широкой аудитории опираться на общую базу.';
+
+  @override
+  String get addEntryHowTitle => 'Как пользоваться формой';
+
+  @override
+  String get addEntryHowIntro =>
+      'Можно загрузить сканы и фото для автоматического разбора (когда сервис подключён) или заполнить всё вручную — оба способа можно сочетать.';
+
+  @override
+  String get addEntryHowStep1 =>
+      'Вкладка «Из файлов»: прикрепите один PDF — текст и поля будут предложены после включения импорта.';
+
+  @override
+  String get addEntryHowStep2 =>
+      'Вкладка «Вручную»: введите биографию и ключевые сведения сами и добавьте портретные или документальные фото.';
+
+  @override
+  String get addEntryHowStep3 =>
+      'Проверьте черновик, отправьте запись на модерацию и будьте готовы уточнить источники, если с вами свяжутся.';
+
+  @override
+  String get addEntryTabAuto => 'ИЗ ФАЙЛОВ';
+
+  @override
+  String get addEntryTabManual => 'ВРУЧНУЮ';
+
+  @override
+  String get addEntryDocumentsTitle => 'PDF-документ';
+
+  @override
+  String get addEntryDocumentsHint =>
+      'Только PDF. Перетащите сюда или выберите файл.';
+
+  @override
+  String get addEntryPhotosTitle => 'Фотография';
+
+  @override
+  String get addEntryPhotosHint =>
+      'Только JPEG или PNG. Перетащите сюда или выберите файл.';
+
+  @override
+  String get addEntryBrowseFiles => 'Выбрать файл';
+
+  @override
+  String get addEntryFileChange => 'Заменить';
+
+  @override
+  String get addEntryFileRemove => 'Убрать файл';
+
+  @override
+  String get addEntryInvalidFilePdf => 'Допускается только файл в формате PDF.';
+
+  @override
+  String get addEntryInvalidFileImage =>
+      'Допускаются только изображения JPEG или PNG.';
+
+  @override
+  String get addEntrySendData => 'ОТПРАВИТЬ МАТЕРИАЛЫ';
+
+  @override
+  String get addEntryPublish => 'ОПУБЛИКОВАТЬ ЗАПИСЬ';
+
+  @override
+  String get addEntryCancel => 'ОТМЕНА';
+
+  @override
+  String get addEntryFieldFullName => 'Имя и фамилия';
+
+  @override
+  String get addEntryFieldFullNameHint => 'например: Иван Иванов';
+
+  @override
+  String get addEntryFieldAccusation => 'Обвинение / статья';
+
+  @override
+  String get addEntryFieldLifeYears => 'Годы жизни';
+
+  @override
+  String get addEntryYearFrom => 'от';
+
+  @override
+  String get addEntryYearTo => 'до';
+
+  @override
+  String get addEntryFieldPunishment => 'Наказание';
+
+  @override
+  String get addEntryFieldRegion => 'Регион проживания';
+
+  @override
+  String get addEntryFieldRegionHint => 'например: Чуйская область';
+
+  @override
+  String get addEntryFieldPunishmentDate => 'Дата исполнения наказания';
+
+  @override
+  String get addEntryFieldOccupation => 'Род деятельности';
+
+  @override
+  String get addEntryFieldRehabDate => 'Дата реабилитации';
+
+  @override
+  String get addEntryFieldBiography => 'Биография';
+
+  @override
+  String get addEntrySubmitPlaceholder =>
+      'Отправка на сервер пока не подключена — черновик остаётся на этом устройстве.';
 }

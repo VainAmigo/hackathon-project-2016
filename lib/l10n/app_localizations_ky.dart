@@ -71,7 +71,7 @@ class AppLocalizationsKy extends AppLocalizations {
   String get tabAddEntryTitle => 'Кошуу';
 
   @override
-  String get tabAddEntrySubtitle => 'Форма бул жерде болот.';
+  String get tabAddEntrySubtitle => 'Архивге жазуу кошуу формасы.';
 
   @override
   String get navArchive => 'АРХИВ';
@@ -156,4 +156,124 @@ class AppLocalizationsKy extends AppLocalizations {
 
   @override
   String get authConfirmMismatch => 'Сырсөздөр дал келбейт';
+
+  @override
+  String get addEntryEyebrow => 'ЖАЗУУ ФОРМАСЫ';
+
+  @override
+  String get addEntryTitle => 'Жаңы жазуу кошуу';
+
+  @override
+  String get addEntryWhyTitle => 'Сиздин салымыңыз эмне үчүн маанилүү';
+
+  @override
+  String get addEntryWhyBody =>
+      'Ар бир текшерилген жазуу аттарды, даталарды жана контекстти калыбына келтирет. Бул үй-бүлөлөр, изилдөөчүлөр жана коомчулук үчүн орток эстелик базасын бекемдейт.';
+
+  @override
+  String get addEntryHowTitle => 'Форманы кантип колдонуу керек';
+
+  @override
+  String get addEntryHowIntro =>
+      'Сканерлөө жана сүрөттөрдү жүктөп автоматтык толтурууга (кызмат иштешкенде) же бардыгын кол менен киргизүүгө болот — экөөнү бириктирүүгө да болот.';
+
+  @override
+  String get addEntryHowStep1 =>
+      '«Файлдардан» өткөндө: бир PDF тиркеңиз — импорт иштегенде текст жана талаалар сунушталат.';
+
+  @override
+  String get addEntryHowStep2 =>
+      '«Кол менен» өткөндө: биографиялык маалыматтарды өзүңүз киргизип, портрет же далил сүрөттөрүн кошуңуз.';
+
+  @override
+  String get addEntryHowStep3 =>
+      'Карап чыгыңыз, модерацияга жөнөтүңүз; булактарды тактоо керек болсо сиз менен байланышабыз.';
+
+  @override
+  String get addEntryTabAuto => 'ФАЙЛДАН';
+
+  @override
+  String get addEntryTabManual => 'КОЛ МЕНЕН';
+
+  @override
+  String get addEntryDocumentsTitle => 'PDF документ';
+
+  @override
+  String get addEntryDocumentsHint =>
+      'Гана PDF. Сүйрөп алып келиңиз же файл тандаңыз.';
+
+  @override
+  String get addEntryPhotosTitle => 'Сүрөт';
+
+  @override
+  String get addEntryPhotosHint =>
+      'Гана JPEG же PNG. Сүйрөп алып келиңиз же файл тандаңыз.';
+
+  @override
+  String get addEntryBrowseFiles => 'Файл тандоо';
+
+  @override
+  String get addEntryFileChange => 'Алмаштыруу';
+
+  @override
+  String get addEntryFileRemove => 'Файлды алып салуу';
+
+  @override
+  String get addEntryInvalidFilePdf => 'Гана PDF файл кабыл алынат.';
+
+  @override
+  String get addEntryInvalidFileImage =>
+      'Гана JPEG же PNG сүрөттөр кабыл алынат.';
+
+  @override
+  String get addEntrySendData => 'МАТЕРИАЛДАРДЫ ЖӨНӨТҮҮ';
+
+  @override
+  String get addEntryPublish => 'ЖАЗУУНУ ЖАРЫЯЛОО';
+
+  @override
+  String get addEntryCancel => 'ЖОККО ЧЫГАРУУ';
+
+  @override
+  String get addEntryFieldFullName => 'Аты-жөнү';
+
+  @override
+  String get addEntryFieldFullNameHint => 'мисалы: Айбек Айбеков';
+
+  @override
+  String get addEntryFieldAccusation => 'Айыптоо / берене';
+
+  @override
+  String get addEntryFieldLifeYears => 'Өмүр жылдары';
+
+  @override
+  String get addEntryYearFrom => 'баштап';
+
+  @override
+  String get addEntryYearTo => 'чейин';
+
+  @override
+  String get addEntryFieldPunishment => 'Жаза';
+
+  @override
+  String get addEntryFieldRegion => 'Турмуш аймагы';
+
+  @override
+  String get addEntryFieldRegionHint => 'мисалы: Чүй';
+
+  @override
+  String get addEntryFieldPunishmentDate => 'Жаза аткарылган күн';
+
+  @override
+  String get addEntryFieldOccupation => 'Кесиби же кызматы';
+
+  @override
+  String get addEntryFieldRehabDate => 'Реабилитация күнү';
+
+  @override
+  String get addEntryFieldBiography => 'Биография';
+
+  @override
+  String get addEntrySubmitPlaceholder =>
+      'Серверге жөнөтүү азыр иштебейт — черновик бул түзмөктө калат.';
 }

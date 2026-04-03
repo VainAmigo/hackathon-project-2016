@@ -71,7 +71,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get tabAddEntryTitle => 'Add Entry';
 
   @override
-  String get tabAddEntrySubtitle => 'The add-entry form will be here.';
+  String get tabAddEntrySubtitle => 'Form to add a record to the archive.';
 
   @override
   String get navArchive => 'ARCHIVE';
@@ -156,4 +156,124 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get authConfirmMismatch => 'Passwords do not match';
+
+  @override
+  String get addEntryEyebrow => 'ENTRY FORM';
+
+  @override
+  String get addEntryTitle => 'Add a new record';
+
+  @override
+  String get addEntryWhyTitle => 'Why your contribution matters';
+
+  @override
+  String get addEntryWhyBody =>
+      'Each documented life restores names, dates, and context that repression tried to erase. Careful, source-based entries strengthen collective memory for families, researchers, and the public.';
+
+  @override
+  String get addEntryHowTitle => 'How to use this form';
+
+  @override
+  String get addEntryHowIntro =>
+      'Upload scans and photos for automatic extraction where available, or type everything yourself — you can combine both approaches.';
+
+  @override
+  String get addEntryHowStep1 =>
+      '«From files»: upload one PDF; text and fields will be suggested when the import service is enabled.';
+
+  @override
+  String get addEntryHowStep2 =>
+      'Manual: fill biographical fields and attach portrait or evidence photos yourself.';
+
+  @override
+  String get addEntryHowStep3 =>
+      'Review the draft, submit it for moderation, and be ready to clarify sources if we contact you.';
+
+  @override
+  String get addEntryTabAuto => 'FROM FILES';
+
+  @override
+  String get addEntryTabManual => 'MANUAL';
+
+  @override
+  String get addEntryDocumentsTitle => 'PDF document';
+
+  @override
+  String get addEntryDocumentsHint =>
+      'Only PDF. Drag and drop here or choose a file.';
+
+  @override
+  String get addEntryPhotosTitle => 'Photo';
+
+  @override
+  String get addEntryPhotosHint =>
+      'Only JPEG or PNG. Drag and drop here or choose a file.';
+
+  @override
+  String get addEntryBrowseFiles => 'Choose file';
+
+  @override
+  String get addEntryFileChange => 'Replace';
+
+  @override
+  String get addEntryFileRemove => 'Remove file';
+
+  @override
+  String get addEntryInvalidFilePdf => 'Only PDF files are accepted.';
+
+  @override
+  String get addEntryInvalidFileImage =>
+      'Only JPEG or PNG images are accepted.';
+
+  @override
+  String get addEntrySendData => 'SEND MATERIALS';
+
+  @override
+  String get addEntryPublish => 'PUBLISH RECORD';
+
+  @override
+  String get addEntryCancel => 'CANCEL';
+
+  @override
+  String get addEntryFieldFullName => 'Full name';
+
+  @override
+  String get addEntryFieldFullNameHint => 'e.g. Ivan Ivanov';
+
+  @override
+  String get addEntryFieldAccusation => 'Charge / statutory article';
+
+  @override
+  String get addEntryFieldLifeYears => 'Years of life';
+
+  @override
+  String get addEntryYearFrom => 'from';
+
+  @override
+  String get addEntryYearTo => 'to';
+
+  @override
+  String get addEntryFieldPunishment => 'Punishment';
+
+  @override
+  String get addEntryFieldRegion => 'Region of residence';
+
+  @override
+  String get addEntryFieldRegionHint => 'e.g. Chüy';
+
+  @override
+  String get addEntryFieldPunishmentDate => 'Punishment carried out (date)';
+
+  @override
+  String get addEntryFieldOccupation => 'Occupation or public role';
+
+  @override
+  String get addEntryFieldRehabDate => 'Rehabilitation date';
+
+  @override
+  String get addEntryFieldBiography => 'Biography';
+
+  @override
+  String get addEntrySubmitPlaceholder =>
+      'Sending to the server is not enabled yet — your draft stays on this device.';
 }

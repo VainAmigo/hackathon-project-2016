@@ -219,7 +219,7 @@ abstract class AppLocalizations {
   /// No description provided for @tabAddEntrySubtitle.
   ///
   /// In en, this message translates to:
-  /// **'The add-entry form will be here.'**
+  /// **'Form to add a record to the archive.'**
   String get tabAddEntrySubtitle;
 
   /// No description provided for @navArchive.
@@ -389,6 +389,228 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Passwords do not match'**
   String get authConfirmMismatch;
+
+  /// No description provided for @addEntryEyebrow.
+  ///
+  /// In en, this message translates to:
+  /// **'ENTRY FORM'**
+  String get addEntryEyebrow;
+
+  /// No description provided for @addEntryTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Add a new record'**
+  String get addEntryTitle;
+
+  /// No description provided for @addEntryWhyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Why your contribution matters'**
+  String get addEntryWhyTitle;
+
+  /// No description provided for @addEntryWhyBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Each documented life restores names, dates, and context that repression tried to erase. Careful, source-based entries strengthen collective memory for families, researchers, and the public.'**
+  String get addEntryWhyBody;
+
+  /// No description provided for @addEntryHowTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'How to use this form'**
+  String get addEntryHowTitle;
+
+  /// No description provided for @addEntryHowIntro.
+  ///
+  /// In en, this message translates to:
+  /// **'Upload scans and photos for automatic extraction where available, or type everything yourself — you can combine both approaches.'**
+  String get addEntryHowIntro;
+
+  /// No description provided for @addEntryHowStep1.
+  ///
+  /// In en, this message translates to:
+  /// **'«From files»: upload one PDF; text and fields will be suggested when the import service is enabled.'**
+  String get addEntryHowStep1;
+
+  /// No description provided for @addEntryHowStep2.
+  ///
+  /// In en, this message translates to:
+  /// **'Manual: fill biographical fields and attach portrait or evidence photos yourself.'**
+  String get addEntryHowStep2;
+
+  /// No description provided for @addEntryHowStep3.
+  ///
+  /// In en, this message translates to:
+  /// **'Review the draft, submit it for moderation, and be ready to clarify sources if we contact you.'**
+  String get addEntryHowStep3;
+
+  /// No description provided for @addEntryTabAuto.
+  ///
+  /// In en, this message translates to:
+  /// **'FROM FILES'**
+  String get addEntryTabAuto;
+
+  /// No description provided for @addEntryTabManual.
+  ///
+  /// In en, this message translates to:
+  /// **'MANUAL'**
+  String get addEntryTabManual;
+
+  /// No description provided for @addEntryDocumentsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'PDF document'**
+  String get addEntryDocumentsTitle;
+
+  /// No description provided for @addEntryDocumentsHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Only PDF. Drag and drop here or choose a file.'**
+  String get addEntryDocumentsHint;
+
+  /// No description provided for @addEntryPhotosTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Photo'**
+  String get addEntryPhotosTitle;
+
+  /// No description provided for @addEntryPhotosHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Only JPEG or PNG. Drag and drop here or choose a file.'**
+  String get addEntryPhotosHint;
+
+  /// No description provided for @addEntryBrowseFiles.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose file'**
+  String get addEntryBrowseFiles;
+
+  /// No description provided for @addEntryFileChange.
+  ///
+  /// In en, this message translates to:
+  /// **'Replace'**
+  String get addEntryFileChange;
+
+  /// No description provided for @addEntryFileRemove.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove file'**
+  String get addEntryFileRemove;
+
+  /// No description provided for @addEntryInvalidFilePdf.
+  ///
+  /// In en, this message translates to:
+  /// **'Only PDF files are accepted.'**
+  String get addEntryInvalidFilePdf;
+
+  /// No description provided for @addEntryInvalidFileImage.
+  ///
+  /// In en, this message translates to:
+  /// **'Only JPEG or PNG images are accepted.'**
+  String get addEntryInvalidFileImage;
+
+  /// No description provided for @addEntrySendData.
+  ///
+  /// In en, this message translates to:
+  /// **'SEND MATERIALS'**
+  String get addEntrySendData;
+
+  /// No description provided for @addEntryPublish.
+  ///
+  /// In en, this message translates to:
+  /// **'PUBLISH RECORD'**
+  String get addEntryPublish;
+
+  /// No description provided for @addEntryCancel.
+  ///
+  /// In en, this message translates to:
+  /// **'CANCEL'**
+  String get addEntryCancel;
+
+  /// No description provided for @addEntryFieldFullName.
+  ///
+  /// In en, this message translates to:
+  /// **'Full name'**
+  String get addEntryFieldFullName;
+
+  /// No description provided for @addEntryFieldFullNameHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. Ivan Ivanov'**
+  String get addEntryFieldFullNameHint;
+
+  /// No description provided for @addEntryFieldAccusation.
+  ///
+  /// In en, this message translates to:
+  /// **'Charge / statutory article'**
+  String get addEntryFieldAccusation;
+
+  /// No description provided for @addEntryFieldLifeYears.
+  ///
+  /// In en, this message translates to:
+  /// **'Years of life'**
+  String get addEntryFieldLifeYears;
+
+  /// No description provided for @addEntryYearFrom.
+  ///
+  /// In en, this message translates to:
+  /// **'from'**
+  String get addEntryYearFrom;
+
+  /// No description provided for @addEntryYearTo.
+  ///
+  /// In en, this message translates to:
+  /// **'to'**
+  String get addEntryYearTo;
+
+  /// No description provided for @addEntryFieldPunishment.
+  ///
+  /// In en, this message translates to:
+  /// **'Punishment'**
+  String get addEntryFieldPunishment;
+
+  /// No description provided for @addEntryFieldRegion.
+  ///
+  /// In en, this message translates to:
+  /// **'Region of residence'**
+  String get addEntryFieldRegion;
+
+  /// No description provided for @addEntryFieldRegionHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. Chüy'**
+  String get addEntryFieldRegionHint;
+
+  /// No description provided for @addEntryFieldPunishmentDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Punishment carried out (date)'**
+  String get addEntryFieldPunishmentDate;
+
+  /// No description provided for @addEntryFieldOccupation.
+  ///
+  /// In en, this message translates to:
+  /// **'Occupation or public role'**
+  String get addEntryFieldOccupation;
+
+  /// No description provided for @addEntryFieldRehabDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Rehabilitation date'**
+  String get addEntryFieldRehabDate;
+
+  /// No description provided for @addEntryFieldBiography.
+  ///
+  /// In en, this message translates to:
+  /// **'Biography'**
+  String get addEntryFieldBiography;
+
+  /// No description provided for @addEntrySubmitPlaceholder.
+  ///
+  /// In en, this message translates to:
+  /// **'Sending to the server is not enabled yet — your draft stays on this device.'**
+  String get addEntrySubmitPlaceholder;
 }
 
 class _AppLocalizationsDelegate

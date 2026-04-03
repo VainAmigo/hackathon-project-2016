@@ -36,7 +36,7 @@ class PrimaryButton extends StatelessWidget {
           disabledForegroundColor: Colors.white,
         ),
         onPressed: onPressed,
-        child: child ?? Text(text),
+        child: child ?? Text(text, textAlign: TextAlign.center,),
       ),
     );
   }

@@ -71,7 +71,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get tabAddEntryTitle => 'Kayıt ekle';
 
   @override
-  String get tabAddEntrySubtitle => 'Ekleme formu burada olacak.';
+  String get tabAddEntrySubtitle => 'Arşive kayıt ekleme formu.';
 
   @override
   String get navArchive => 'ARŞİV';
@@ -156,4 +156,124 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get authConfirmMismatch => 'Şifreler eşleşmiyor';
+
+  @override
+  String get addEntryEyebrow => 'KAYIT FORMU';
+
+  @override
+  String get addEntryTitle => 'Yeni kayıt ekle';
+
+  @override
+  String get addEntryWhyTitle => 'Katkınız neden önemli';
+
+  @override
+  String get addEntryWhyBody =>
+      'Her doğrulanmış kayıt, baskının silmeye çalıştığı isimleri, tarihleri ve bağlamı geri getirir. Aileler, araştırmacılar ve kamu için ortak, güvenilir bir hafıza oluşturur.';
+
+  @override
+  String get addEntryHowTitle => 'Formu nasıl kullanırsınız';
+
+  @override
+  String get addEntryHowIntro =>
+      'Taramaları ve fotoğrafları içe aktarma hizmeti açıldığında otomatik doldurma için yükleyebilir veya her şeyi elle girebilirsiniz — ikisini birleştirmek de mümkün.';
+
+  @override
+  String get addEntryHowStep1 =>
+      '«Dosyalardan» sekmesi: bir PDF yükleyin; içe aktarma etkinleşince metin ve alanlar önerilecek.';
+
+  @override
+  String get addEntryHowStep2 =>
+      '«Elle» sekmesi: biyografik bilgileri kendiniz girin; portre veya kanıt fotoğrafları ekleyin.';
+
+  @override
+  String get addEntryHowStep3 =>
+      'Taslağı gözden geçirin, moderasyona gönderin; kaynakları netleştirmemiz gerekirse size ulaşırız.';
+
+  @override
+  String get addEntryTabAuto => 'DOSYALARDAN';
+
+  @override
+  String get addEntryTabManual => 'ELLE';
+
+  @override
+  String get addEntryDocumentsTitle => 'PDF belgesi';
+
+  @override
+  String get addEntryDocumentsHint =>
+      'Yalnızca PDF. Sürükleyip bırakın veya dosya seçin.';
+
+  @override
+  String get addEntryPhotosTitle => 'Fotoğraf';
+
+  @override
+  String get addEntryPhotosHint =>
+      'Yalnızca JPEG veya PNG. Sürükleyip bırakın veya dosya seçin.';
+
+  @override
+  String get addEntryBrowseFiles => 'Dosya seç';
+
+  @override
+  String get addEntryFileChange => 'Değiştir';
+
+  @override
+  String get addEntryFileRemove => 'Dosyayı kaldır';
+
+  @override
+  String get addEntryInvalidFilePdf => 'Yalnızca PDF dosyaları kabul edilir.';
+
+  @override
+  String get addEntryInvalidFileImage =>
+      'Yalnızca JPEG veya PNG görselleri kabul edilir.';
+
+  @override
+  String get addEntrySendData => 'MATERYALLERİ GÖNDER';
+
+  @override
+  String get addEntryPublish => 'KAYDI YAYINLA';
+
+  @override
+  String get addEntryCancel => 'İPTAL';
+
+  @override
+  String get addEntryFieldFullName => 'Ad soyad';
+
+  @override
+  String get addEntryFieldFullNameHint => 'ör. Ahmet Yılmaz';
+
+  @override
+  String get addEntryFieldAccusation => 'Suçlama / madde';
+
+  @override
+  String get addEntryFieldLifeYears => 'Yaşam yılları';
+
+  @override
+  String get addEntryYearFrom => 'başlangıç';
+
+  @override
+  String get addEntryYearTo => 'bitiş';
+
+  @override
+  String get addEntryFieldPunishment => 'Ceza';
+
+  @override
+  String get addEntryFieldRegion => 'İkamet bölgesi';
+
+  @override
+  String get addEntryFieldRegionHint => 'ör. Çüy';
+
+  @override
+  String get addEntryFieldPunishmentDate => 'Ceza infaz tarihi';
+
+  @override
+  String get addEntryFieldOccupation => 'Meslek veya kamusal rol';
+
+  @override
+  String get addEntryFieldRehabDate => 'Rehabilitasyon tarihi';
+
+  @override
+  String get addEntryFieldBiography => 'Biyografi';
+
+  @override
+  String get addEntrySubmitPlaceholder =>
+      'Sunucuya gönderim henüz yok — taslak bu cihazda kalır.';
 }

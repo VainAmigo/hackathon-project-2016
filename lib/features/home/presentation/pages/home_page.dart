@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:project_temp/core/core.dart';
 import 'package:project_temp/features/auth/auth.dart';
+import 'package:project_temp/features/add_entry/add_entry.dart';
 import 'package:project_temp/features/home/home.dart';
 import 'package:project_temp/source/source.dart';
 
@@ -102,7 +103,7 @@ class _HomePageState extends State<HomePage> {
 
     return Scaffold(
       key: _scaffoldKey,
-      backgroundColor: dense ? null : AppThemes.backgroundColor,
+      backgroundColor: AppThemes.backgroundColor,
       drawer: dense
           ? VoiceArchiveDrawer(
               selectedTab: _tabIndex,
@@ -136,10 +137,7 @@ class _HomePageState extends State<HomePage> {
           subtitle: context.l10n.tabAiAssistantSubtitle,
         );
       case 2:
-        return HomeTabPlaceholderPage(
-          title: context.l10n.tabAddEntryTitle,
-          subtitle: context.l10n.tabAddEntrySubtitle,
-        );
+        return const AddEntryPage();
       case 0:
       default:
         return HomeLandingBody(
