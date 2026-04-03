@@ -1,5 +1,6 @@
 export 'adaptive/adaptive.dart';
 export 'locale/app_locale.dart';
+export 'package:project_temp/l10n/app_localizations.dart';
 export 'di/injection_container.dart';
 export 'logging/app_logger.dart';
 export 'network/api_endpoints.dart';

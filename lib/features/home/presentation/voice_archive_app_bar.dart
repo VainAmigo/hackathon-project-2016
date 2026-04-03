@@ -29,12 +29,6 @@ class VoiceArchiveAppBar extends StatelessWidget
   final VoidCallback? onLogin;
   final VoidCallback? onLogout;
 
-  static const List<String> _tabLabels = [
-    'ARCHIVE',
-    'AI ASSISTANT',
-    'ADD ENTRY',
-  ];
-
   bool _dense(AdaptiveData a) => a.isCompactLayout || a.width < 800;
 
   @override
@@ -47,6 +41,8 @@ class VoiceArchiveAppBar extends StatelessWidget
     final adaptive = context.adaptive;
     final dense = _dense(adaptive);
     final locale = AppLocaleScope.of(context);
+    final l10n = context.l10n;
+    final tabLabels = [l10n.navArchive, l10n.navAiAssistant, l10n.navAddEntry];
 
     return Material(
       color: AppThemes.backgroundColor,
@@ -64,7 +60,7 @@ class VoiceArchiveAppBar extends StatelessWidget
                   loggingOut: loggingOut,
                   onLogin: onLogin,
                   onLogout: onLogout,
-                  tabLabels: _tabLabels,
+                  tabLabels: tabLabels,
                   locale: locale,
                 )
               : _DesktopTopBar(
@@ -75,7 +71,7 @@ class VoiceArchiveAppBar extends StatelessWidget
                   loggingOut: loggingOut,
                   onLogin: onLogin,
                   onLogout: onLogout,
-                  tabLabels: _tabLabels,
+                  tabLabels: tabLabels,
                   locale: locale,
                 ),
         ),
@@ -128,7 +124,7 @@ class _DesktopTopBar extends StatelessWidget {
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    const _BrandTitle(compact: false),
+                    _BrandTitle(compact: false),
                     const SizedBox(width: 16),
                     _NavTabs(
                       labels: tabLabels,
@@ -150,7 +146,7 @@ class _DesktopTopBar extends StatelessWidget {
                 constraints: const BoxConstraints(maxWidth: 360),
                 child: CustomTextFormField(
                   controller: searchController,
-                  hintText: 'Search',
+                  hintText: context.l10n.searchHint,
                 ),
               ),
             ),
@@ -205,12 +201,12 @@ class _MobileTopBar extends StatelessWidget {
           IconButton(
             icon: const Icon(Icons.menu, color: Colors.black87),
             onPressed: () => scaffoldKey.currentState?.openDrawer(),
-            tooltip: 'Меню',
+            tooltip: context.l10n.tooltipMenu,
           ),
-          const Expanded(child: Center(child: _BrandTitle(compact: true))),
+          Expanded(child: Center(child: _BrandTitle(compact: true))),
           IconButton(
             icon: const Icon(Icons.search, color: Colors.black87),
-            tooltip: 'Поиск',
+            tooltip: context.l10n.tooltipSearch,
             onPressed: () => _openSearchSheet(context),
           ),
           _LangToggle(controller: locale, dense: true),
@@ -242,7 +238,7 @@ class _MobileTopBar extends StatelessWidget {
           child: CustomTextFormField(
             controller: searchController,
             autofocus: true,
-            hintText: 'Search',
+            hintText: ctx.l10n.searchHint,
           ),
         );
       },
@@ -271,15 +267,11 @@ class VoiceArchiveDrawer extends StatelessWidget {
   final VoidCallback? onLogin;
   final VoidCallback? onLogout;
 
-  static const List<String> _tabLabels = [
-    'ARCHIVE',
-    'AI ASSISTANT',
-    'ADD ENTRY',
-  ];
-
   @override
   Widget build(BuildContext context) {
     final locale = AppLocaleScope.of(context);
+    final l10n = context.l10n;
+    final tabLabels = [l10n.navArchive, l10n.navAiAssistant, l10n.navAddEntry];
 
     return Drawer(
       backgroundColor: kVoiceArchiveCream,
@@ -287,12 +279,12 @@ class VoiceArchiveDrawer extends StatelessWidget {
         child: ListView(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
           children: [
-            const _BrandTitle(compact: false),
+            _BrandTitle(compact: false),
             const SizedBox(height: 24),
-            for (var i = 0; i < _tabLabels.length; i++)
+            for (var i = 0; i < tabLabels.length; i++)
               ListTile(
                 title: Text(
-                  _tabLabels[i],
+                  tabLabels[i],
                   style: TextStyle(
                     fontWeight: selectedTab == i
                         ? FontWeight.w700
@@ -309,12 +301,12 @@ class VoiceArchiveDrawer extends StatelessWidget {
             const Divider(height: 32),
             CustomTextFormField(
               controller: searchController,
-              hintText: 'Search',
+              hintText: l10n.searchHint,
             ),
             const SizedBox(height: 20),
             ListTile(
               leading: const Icon(Icons.language_outlined),
-              title: const Text('Язык'),
+              title: Text(l10n.drawerLanguage),
               trailing: Text(
                 locale.code.uiLabel,
                 style: const TextStyle(fontWeight: FontWeight.w700),
@@ -346,6 +338,7 @@ class _BrandTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final title = 'Voice from the Archive';
     final style = TextStyle(
       fontFamily: 'serif',
       fontWeight: FontWeight.w700,
@@ -355,14 +348,14 @@ class _BrandTitle extends StatelessWidget {
     );
     if (compact) {
       return Text(
-        'Voice from the Archive',
+        title,
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
         textAlign: TextAlign.center,
         style: style,
       );
     }
-    return Text('Voice from the Archive', style: style);
+    return Text(title, style: style);
   }
 }
 
@@ -523,7 +516,9 @@ class _AuthChip extends StatelessWidget {
       );
     }
 
-    final label = isAuthenticated ? 'ВЫЙТИ' : 'ВОЙТИ';
+    final label = isAuthenticated
+        ? context.l10n.actionLogout
+        : context.l10n.actionLogin;
     final onPressed = isAuthenticated ? onLogout : onLogin;
 
     if (compact) {

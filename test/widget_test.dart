@@ -14,6 +14,6 @@ void main() {
     await tester.pumpWidget(const App());
     await tester.pumpAndSettle();
     expect(find.text('Voice from the Archive'), findsOneWidget);
-    expect(find.text('Вы не авторизованы'), findsOneWidget);
+    expect(find.text('THE LIVING DOSSIER'), findsOneWidget);
   });
 }

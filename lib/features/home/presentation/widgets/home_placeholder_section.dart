@@ -1,24 +1,26 @@
 import 'package:flutter/material.dart';
 
 import 'package:project_temp/core/core.dart';
-import 'package:project_temp/features/home/home.dart';
+import 'package:project_temp/features/home/domain/home_placeholder_catalog.dart';
+import 'package:project_temp/features/home/presentation/l10n/home_placeholder_section_l10n.dart';
 
 /// Светлый блок-плейсхолдер под hero.
 class HomePlaceholderSection extends StatelessWidget {
   const HomePlaceholderSection({
     super.key,
-    required this.data,
+    required this.sectionId,
     required this.maxContentWidth,
     required this.compact,
   });
 
-  final HomePlaceholderSectionData data;
+  final HomePlaceholderSectionId sectionId;
   final double maxContentWidth;
   final bool compact;
 
   @override
   Widget build(BuildContext context) {
-    final bg = data.alternateBackground
+    final l10n = context.l10n;
+    final bg = sectionId.alternateBackground
         ? AppThemes.surfaceColor
         : AppThemes.backgroundColor;
     final horizontal = compact ? 24.0 : 40.0;
@@ -38,7 +40,7 @@ class HomePlaceholderSection extends StatelessWidget {
                   : CrossAxisAlignment.center,
               children: [
                 Text(
-                  data.title,
+                  sectionId.title(l10n),
                   textAlign: compact ? TextAlign.left : TextAlign.center,
                   style: Theme.of(context).textTheme.titleLarge?.copyWith(
                         color: AppThemes.textColorPrimary,
@@ -47,7 +49,7 @@ class HomePlaceholderSection extends StatelessWidget {
                 ),
                 const SizedBox(height: 10),
                 Text(
-                  data.subtitle,
+                  sectionId.subtitle(l10n),
                   textAlign: compact ? TextAlign.left : TextAlign.center,
                   style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                         height: 1.45,
@@ -67,7 +69,7 @@ class HomePlaceholderSection extends StatelessWidget {
                     ),
                   ),
                   child: Text(
-                    'Плейсхолдер контента',
+                    l10n.placeholderSectionBody,
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                           color: AppThemes.textColorGrey,
                           fontStyle: FontStyle.italic,

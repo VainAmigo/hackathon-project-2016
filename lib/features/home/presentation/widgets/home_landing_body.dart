@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 
 import 'package:project_temp/core/core.dart';
-import 'package:project_temp/features/home/home.dart';
+import 'package:project_temp/features/home/domain/home_layout_policy.dart';
+import 'package:project_temp/features/home/domain/home_placeholder_catalog.dart';
+import 'package:project_temp/features/home/presentation/widgets/home_hero_segment.dart';
+import 'package:project_temp/features/home/presentation/widgets/home_placeholder_section.dart';
 
 /// Скролл главной вкладки: hero + плейсхолдеры.
 class HomeLandingBody extends StatelessWidget {
@@ -54,9 +57,9 @@ class HomeLandingBody extends StatelessWidget {
                 textAlign: textAlign,
                 onOpenAiAssistant: onOpenAiAssistant,
               ),
-              for (final section in kHomePlaceholderSections)
+              for (final id in kHomePlaceholderSectionOrder)
                 HomePlaceholderSection(
-                  data: section,
+                  sectionId: id,
                   maxContentWidth: maxW,
                   compact: compact,
                 ),

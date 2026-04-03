@@ -8,6 +8,5 @@ export 'presentation/widgets/home_landing_body.dart';
 export 'presentation/widgets/home_placeholder_section.dart';
 export 'presentation/widgets/home_tab_placeholder_page.dart';
 export 'presentation/voice_archive_app_bar.dart';
-export 'domain/home_landing_content.dart';
 export 'domain/home_layout_policy.dart';
-export 'domain/home_placeholder_sections.dart';
+export 'domain/home_placeholder_catalog.dart';

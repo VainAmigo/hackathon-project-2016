@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:project_temp/l10n/app_localizations.dart';
 
 /// Поддерживаемые коды интерфейса (кнопка переключает по кругу).
 enum AppLanguageCode {
@@ -29,12 +30,7 @@ class AppLocaleController extends ChangeNotifier {
 
   Locale get locale => _code.locale;
 
-  static const List<Locale> supportedLocales = [
-    Locale('en'),
-    Locale('ky'),
-    Locale('ru'),
-    Locale('tr'),
-  ];
+  static List<Locale> get supportedLocales => AppLocalizations.supportedLocales;
 
   void cycle() {
     const all = AppLanguageCode.values;

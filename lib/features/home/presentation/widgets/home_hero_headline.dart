@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import 'package:project_temp/core/core.dart';
-import 'package:project_temp/features/home/home.dart';
 
 /// Заголовок и подзаголовок hero (поверх тёмного фона).
 class HomeHeroHeadline extends StatelessWidget {
@@ -18,6 +17,7 @@ class HomeHeroHeadline extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     final serif = TextStyle(
       fontFamily: 'Georgia',
       color: AppThemes.homeHeroTextHeadline,
@@ -41,7 +41,7 @@ class HomeHeroHeadline extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Text(
-          HomeLandingContent.eyebrow,
+          l10n.homeHeroEyebrow,
           textAlign: textAlign,
           style: labelStyle,
         ),
@@ -53,7 +53,7 @@ class HomeHeroHeadline extends StatelessWidget {
               fontWeight: FontWeight.w700,
             ),
             children: [
-              const TextSpan(text: 'Voices from\n'),
+              TextSpan(text: '${l10n.homeHeroTitleLine1}\n'),
               TextSpan(
                 style: serif.copyWith(
                   fontSize: titleSize,
@@ -61,9 +61,9 @@ class HomeHeroHeadline extends StatelessWidget {
                   fontStyle: FontStyle.italic,
                 ),
                 children: [
-                  const TextSpan(text: 'the '),
+                  TextSpan(text: l10n.homeHeroTitleThe),
                   TextSpan(
-                    text: 'Silence',
+                    text: l10n.homeHeroTitleSilence,
                     style: serif.copyWith(
                       fontSize: titleSize * 0.92,
                       fontWeight: FontWeight.w700,
@@ -78,7 +78,7 @@ class HomeHeroHeadline extends StatelessWidget {
         ),
         SizedBox(height: compact ? 20 : 28),
         Text(
-          HomeLandingContent.subtitle,
+          l10n.homeLandingSubtitle,
           textAlign: textAlign,
           style: bodyStyle?.copyWith(
             fontSize: compact ? 15 : 16,

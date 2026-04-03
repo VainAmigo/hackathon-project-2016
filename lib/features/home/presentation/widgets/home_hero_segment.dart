@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
-import 'package:project_temp/features/home/home.dart';
+import 'package:project_temp/features/home/presentation/widgets/ask_assistant_fake_search_bar.dart';
+import 'package:project_temp/features/home/presentation/widgets/home_hero_backdrop.dart';
+import 'package:project_temp/features/home/presentation/widgets/home_hero_headline.dart';
 
 /// Первый экранный сегмент: фон + контент + кнопка «Спросите меня».
 class HomeHeroSegment extends StatelessWidget {

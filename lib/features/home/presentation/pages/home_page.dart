@@ -59,7 +59,7 @@ class _HomePageState extends State<HomePage> {
     final session = AuthSessionScope.of(context);
     final authed = session.isAuthenticated;
 
-    final mainContent = _tabBody(tabIndex: _tabIndex);
+    final mainContent = _tabBody(context, tabIndex: _tabIndex);
 
     final Widget paddedBody;
     if (adaptive.isWeb && _tabIndex != 0) {
@@ -104,17 +104,17 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _tabBody({required int tabIndex}) {
+  Widget _tabBody(BuildContext context, {required int tabIndex}) {
     switch (tabIndex) {
       case 1:
-        return const HomeTabPlaceholderPage(
-          title: 'AI Assistant',
-          subtitle: 'Здесь будет помощник.',
+        return HomeTabPlaceholderPage(
+          title: context.l10n.tabAiAssistantTitle,
+          subtitle: context.l10n.tabAiAssistantSubtitle,
         );
       case 2:
-        return const HomeTabPlaceholderPage(
-          title: 'Add Entry',
-          subtitle: 'Здесь будет форма добавления записи.',
+        return HomeTabPlaceholderPage(
+          title: context.l10n.tabAddEntryTitle,
+          subtitle: context.l10n.tabAddEntrySubtitle,
         );
       case 0:
       default:

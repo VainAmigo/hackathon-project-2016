@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:project_temp/core/core.dart';
-import 'package:project_temp/features/home/home.dart';
+import 'package:project_temp/features/home/presentation/constants/home_assets.dart';
 
 /// Полноэкранный фон первого сегмента (изображение + затемнение для читаемости).
 class HomeHeroBackdrop extends StatelessWidget {
