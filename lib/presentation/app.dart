@@ -3,7 +3,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:project_temp/core/core.dart';
 import 'package:project_temp/features/auth/application/auth_session_controller.dart';
 import 'package:project_temp/features/auth/presentation/auth_session_scope.dart';
-import 'package:project_temp/features/home/presentation/home_page.dart';
+import 'package:project_temp/features/home/home.dart';
 
 class App extends StatefulWidget {
   const App({super.key});
@@ -45,6 +45,7 @@ class _AppState extends State<App> {
             GlobalCupertinoLocalizations.delegate,
           ],
           supportedLocales: AppLocaleController.supportedLocales,
+          debugShowCheckedModeBanner: false,
           theme: ThemeData(
             colorScheme: ColorScheme.fromSeed(seedColor: Colors.indigo),
             useMaterial3: true,
