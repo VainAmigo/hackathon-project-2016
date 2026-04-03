@@ -10,10 +10,10 @@ void main() {
     await initDependencies(testMode: true);
   });
 
-  testWidgets('Без токена показывается экран входа', (tester) async {
+  testWidgets('При старте открывается главная (вход не обязателен)', (tester) async {
     await tester.pumpWidget(const App());
     await tester.pumpAndSettle();
-    expect(find.text('Войти'), findsOneWidget);
-    expect(find.text('Телефон'), findsOneWidget);
+    expect(find.text('Главная'), findsOneWidget);
+    expect(find.text('Вы не авторизованы'), findsOneWidget);
   });
 }

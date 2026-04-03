@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:project_temp/core/core.dart';
 
-import 'core/di/injection_container.dart';
 import 'presentation/app.dart';
 
 Future<void> main() async {
