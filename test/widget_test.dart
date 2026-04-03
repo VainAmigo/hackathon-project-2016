@@ -1,4 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:project_temp/core/di/injection_container.dart';
 import 'package:project_temp/presentation/app.dart';
@@ -7,6 +8,7 @@ void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
   setUpAll(() async {
+    SharedPreferences.setMockInitialValues({});
     await initDependencies(testMode: true);
   });
 

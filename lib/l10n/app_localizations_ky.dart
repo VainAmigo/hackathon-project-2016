@@ -16,7 +16,7 @@ class AppLocalizationsKy extends AppLocalizations {
 
   @override
   String get homeLandingSubtitle =>
-      'A digital repository dedicated to preserving the testimonies, records, and identities of those once erased by institutional repression.';
+      'Бир кездеги институционалдык репрессиядан улам өчүрүлгөндөрдүн күбөлүктөрүн, документтерин жана инсандыгын сактоого арналган санариптик репозиторий.';
 
   @override
   String get homeHeroTitleLine1 => 'Voices from';

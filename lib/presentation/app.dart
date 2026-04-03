@@ -5,7 +5,10 @@ import 'package:project_temp/features/auth/presentation/auth_session_scope.dart'
 import 'package:project_temp/features/home/home.dart';
 
 class App extends StatefulWidget {
-  const App({super.key});
+  const App({super.key, this.initialLanguage});
+
+  /// Восстановленный из [SharedPreferences] язык; если null — по умолчанию en.
+  final AppLanguageCode? initialLanguage;
 
   @override
   State<App> createState() => _AppState();
@@ -13,12 +16,16 @@ class App extends StatefulWidget {
 
 class _AppState extends State<App> {
   late final AuthSessionController _auth = AuthSessionController(sl());
-  late final AppLocaleController _locale = AppLocaleController();
+  late AppLocaleController _locale;
   bool _ready = false;
 
   @override
   void initState() {
     super.initState();
+    _locale = AppLocaleController(
+      localePreferences: sl(),
+      initialCode: widget.initialLanguage,
+    );
     _auth.bootstrap().then((_) {
       if (mounted) setState(() => _ready = true);
     });
