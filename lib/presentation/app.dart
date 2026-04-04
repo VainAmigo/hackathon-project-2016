@@ -5,6 +5,8 @@ import 'package:project_temp/features/auth/cubit/auth_session_cubit.dart';
 import 'package:project_temp/features/auth/cubit/auth_session_state.dart';
 import 'package:project_temp/features/home/home.dart';
 
+import '../l10n/app_localizations.dart';
+
 class App extends StatefulWidget {
   const App({super.key, this.initialLanguage});
 

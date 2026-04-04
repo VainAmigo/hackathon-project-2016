@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:project_temp/core/core.dart';
 
+import '../../../../l10n/app_localizations.dart';
+
 class _AuthEnter extends StatelessWidget {
   const _AuthEnter({
     required this.child,

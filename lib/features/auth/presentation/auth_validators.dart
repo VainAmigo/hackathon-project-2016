@@ -1,4 +1,4 @@
-import 'package:project_temp/core/core.dart';
+import '../../../l10n/app_localizations.dart';
 
 /// Правила ввода для форм auth (без зависимости от Cubit).
 abstract final class AuthValidators {

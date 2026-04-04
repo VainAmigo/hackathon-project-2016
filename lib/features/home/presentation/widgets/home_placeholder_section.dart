@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:project_temp/core/core.dart';
 import 'package:project_temp/features/home/domain/home_placeholder_catalog.dart';
 import 'package:project_temp/features/home/presentation/animation/fade_slide_in.dart';
-import 'package:project_temp/features/home/presentation/l10n/home_placeholder_section_l10n.dart';
+import 'package:project_temp/features/home/presentation/home_l10n/home_placeholder_section_l10n.dart';
 
 /// Светлый блок-плейсхолдер под hero.
 class HomePlaceholderSection extends StatelessWidget {

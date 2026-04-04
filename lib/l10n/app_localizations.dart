@@ -1,71 +1,12 @@
-import 'dart:async';
+// Локализация вручную: правки только в этом файле. Файлы lib/l10n/arb/*.arb — справочно для переводчиков, сборку не затрагивают.
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:intl/intl.dart' as intl;
 
-import 'app_localizations_en.dart';
-import 'app_localizations_ky.dart';
-import 'app_localizations_ru.dart';
-import 'app_localizations_tr.dart';
-
-// ignore_for_file: type=lint
-
-/// Callers can lookup localized strings with an instance of AppLocalizations
-/// returned by `AppLocalizations.of(context)`.
-///
-/// Applications need to include `AppLocalizations.delegate()` in their app's
-/// `localizationDelegates` list, and the locales they support in the app's
-/// `supportedLocales` list. For example:
-///
-/// ```dart
-/// import 'l10n/app_localizations.dart';
-///
-/// return MaterialApp(
-///   localizationsDelegates: AppLocalizations.localizationsDelegates,
-///   supportedLocales: AppLocalizations.supportedLocales,
-///   home: MyApplicationHome(),
-/// );
-/// ```
-///
-/// ## Update pubspec.yaml
-///
-/// Please make sure to update your pubspec.yaml to include the following
-/// packages:
-///
-/// ```yaml
-/// dependencies:
-///   # Internationalization support.
-///   flutter_localizations:
-///     sdk: flutter
-///   intl: any # Use the pinned version from flutter_localizations
-///
-///   # Rest of dependencies
-/// ```
-///
-/// ## iOS Applications
-///
-/// iOS applications define key application metadata, including supported
-/// locales, in an Info.plist file that is built into the application bundle.
-/// To configure the locales supported by your app, you’ll need to edit this
-/// file.
-///
-/// First, open your project’s ios/Runner.xcworkspace Xcode workspace file.
-/// Then, in the Project Navigator, open the Info.plist file under the Runner
-/// project’s Runner folder.
-///
-/// Next, select the Information Property List item, select Add Item from the
-/// Editor menu, then select Localizations from the pop-up menu.
-///
-/// Select and expand the newly-created Localizations item then, for each
-/// locale your application supports, add a new item and select the locale
-/// you wish to add from the pop-up menu in the Value field. This list should
-/// be consistent with the languages listed in the AppLocalizations.supportedLocales
-/// property.
+/// Интерфейс всех строк UI.
 abstract class AppLocalizations {
-  AppLocalizations(String locale)
-    : localeName = intl.Intl.canonicalizedLocale(locale.toString());
+  AppLocalizations(this.localeName);
 
   final String localeName;
 
@@ -76,16 +17,6 @@ abstract class AppLocalizations {
   static const LocalizationsDelegate<AppLocalizations> delegate =
       _AppLocalizationsDelegate();
 
-  /// A list of this localizations delegate along with the default localizations
-  /// delegates.
-  ///
-  /// Returns a list of localizations delegates containing this delegate along with
-  /// GlobalMaterialLocalizations.delegate, GlobalCupertinoLocalizations.delegate,
-  /// and GlobalWidgetsLocalizations.delegate.
-  ///
-  /// Additional delegates can be added by appending to this list in
-  /// MaterialApp. This list does not have to be used at all if a custom list
-  /// of delegates is preferred or required.
   static const List<LocalizationsDelegate<dynamic>> localizationsDelegates =
       <LocalizationsDelegate<dynamic>>[
         delegate,
@@ -94,527 +25,460 @@ abstract class AppLocalizations {
         GlobalWidgetsLocalizations.delegate,
       ];
 
-  /// A list of this localizations delegate's supported locales.
   static const List<Locale> supportedLocales = <Locale>[
     Locale('en'),
     Locale('ky'),
     Locale('ru'),
     Locale('tr'),
   ];
-
-  /// No description provided for @appTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Voice from the Archive'**
   String get appTitle;
-
-  /// No description provided for @homeHeroEyebrow.
-  ///
-  /// In en, this message translates to:
-  /// **'THE LIVING DOSSIER'**
   String get homeHeroEyebrow;
-
-  /// No description provided for @homeLandingSubtitle.
-  ///
-  /// In en, this message translates to:
-  /// **'A digital repository dedicated to preserving the testimonies, records, and identities of those once erased by institutional repression.'**
   String get homeLandingSubtitle;
-
-  /// No description provided for @homeHeroTitleLine1.
-  ///
-  /// In en, this message translates to:
-  /// **'Voices from'**
   String get homeHeroTitleLine1;
-
-  /// No description provided for @homeHeroTitleThe.
-  ///
-  /// In en, this message translates to:
-  /// **'the '**
   String get homeHeroTitleThe;
-
-  /// No description provided for @homeHeroTitleSilence.
-  ///
-  /// In en, this message translates to:
-  /// **'Silence'**
   String get homeHeroTitleSilence;
-
-  /// No description provided for @askAssistantHint.
-  ///
-  /// In en, this message translates to:
-  /// **'Ask me'**
   String get askAssistantHint;
-
-  /// No description provided for @placeholderSectionBody.
-  ///
-  /// In en, this message translates to:
-  /// **'Content placeholder'**
   String get placeholderSectionBody;
-
-  /// No description provided for @homeSectionArchiveTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Archive materials'**
   String get homeSectionArchiveTitle;
-
-  /// No description provided for @homeSectionArchiveSubtitle.
-  ///
-  /// In en, this message translates to:
-  /// **'A catalog of documents, records, and memories will appear here.'**
   String get homeSectionArchiveSubtitle;
-
-  /// No description provided for @homeSectionStoriesTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Stories and testimonies'**
   String get homeSectionStoriesTitle;
-
-  /// No description provided for @homeSectionStoriesSubtitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Personal stories and related materials.'**
   String get homeSectionStoriesSubtitle;
-
-  /// No description provided for @homeSectionHelpTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Support the project'**
   String get homeSectionHelpTitle;
-
-  /// No description provided for @homeSectionHelpSubtitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Volunteering, donations, and spreading the word — placeholder.'**
   String get homeSectionHelpSubtitle;
-
-  /// No description provided for @homeSectionLegalTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Contacts and legal'**
   String get homeSectionLegalTitle;
-
-  /// No description provided for @homeSectionLegalSubtitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Details, privacy policy, and contact — placeholder.'**
   String get homeSectionLegalSubtitle;
-
-  /// No description provided for @tabAiAssistantTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'AI Assistant'**
   String get tabAiAssistantTitle;
-
-  /// No description provided for @tabAiAssistantSubtitle.
-  ///
-  /// In en, this message translates to:
-  /// **'The assistant will be here.'**
   String get tabAiAssistantSubtitle;
-
-  /// No description provided for @tabAddEntryTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Add Entry'**
   String get tabAddEntryTitle;
-
-  /// No description provided for @tabAddEntrySubtitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Form to add a record to the archive.'**
   String get tabAddEntrySubtitle;
-
-  /// No description provided for @navArchive.
-  ///
-  /// In en, this message translates to:
-  /// **'ARCHIVE'**
   String get navArchive;
-
-  /// No description provided for @navAiAssistant.
-  ///
-  /// In en, this message translates to:
-  /// **'AI ASSISTANT'**
   String get navAiAssistant;
-
-  /// No description provided for @navAddEntry.
-  ///
-  /// In en, this message translates to:
-  /// **'ADD ENTRY'**
   String get navAddEntry;
-
-  /// No description provided for @searchHint.
-  ///
-  /// In en, this message translates to:
-  /// **'Search'**
   String get searchHint;
-
-  /// No description provided for @tooltipMenu.
-  ///
-  /// In en, this message translates to:
-  /// **'Menu'**
   String get tooltipMenu;
-
-  /// No description provided for @tooltipSearch.
-  ///
-  /// In en, this message translates to:
-  /// **'Search'**
   String get tooltipSearch;
-
-  /// No description provided for @drawerLanguage.
-  ///
-  /// In en, this message translates to:
-  /// **'Language'**
   String get drawerLanguage;
-
-  /// No description provided for @actionLogin.
-  ///
-  /// In en, this message translates to:
-  /// **'LOG IN'**
   String get actionLogin;
-
-  /// No description provided for @actionLogout.
-  ///
-  /// In en, this message translates to:
-  /// **'LOG OUT'**
   String get actionLogout;
-
-  /// No description provided for @authLoginTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Sign in'**
   String get authLoginTitle;
-
-  /// No description provided for @authRegisterTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Create account'**
   String get authRegisterTitle;
-
-  /// No description provided for @authEmailLabel.
-  ///
-  /// In en, this message translates to:
-  /// **'Email'**
   String get authEmailLabel;
-
-  /// No description provided for @authPasswordLabel.
-  ///
-  /// In en, this message translates to:
-  /// **'Password'**
   String get authPasswordLabel;
-
-  /// No description provided for @authConfirmPasswordLabel.
-  ///
-  /// In en, this message translates to:
-  /// **'Confirm password'**
   String get authConfirmPasswordLabel;
-
-  /// No description provided for @authFirstNameLabel.
-  ///
-  /// In en, this message translates to:
-  /// **'First name (optional)'**
   String get authFirstNameLabel;
-
-  /// No description provided for @authLastNameLabel.
-  ///
-  /// In en, this message translates to:
-  /// **'Last name (optional)'**
   String get authLastNameLabel;
-
-  /// No description provided for @authSignIn.
-  ///
-  /// In en, this message translates to:
-  /// **'Sign in'**
   String get authSignIn;
-
-  /// No description provided for @authSignUp.
-  ///
-  /// In en, this message translates to:
-  /// **'Register'**
   String get authSignUp;
-
-  /// No description provided for @authNoAccount.
-  ///
-  /// In en, this message translates to:
-  /// **'No account yet?'**
   String get authNoAccount;
-
-  /// No description provided for @authHaveAccount.
-  ///
-  /// In en, this message translates to:
-  /// **'Already have an account?'**
   String get authHaveAccount;
-
-  /// No description provided for @authGoRegister.
-  ///
-  /// In en, this message translates to:
-  /// **'Create account'**
   String get authGoRegister;
-
-  /// No description provided for @authGoLogin.
-  ///
-  /// In en, this message translates to:
-  /// **'Sign in'**
   String get authGoLogin;
-
-  /// No description provided for @authPanelSubtitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Preserve testimonies and memory.'**
   String get authPanelSubtitle;
-
-  /// No description provided for @authEmailRequired.
-  ///
-  /// In en, this message translates to:
-  /// **'Enter your email'**
   String get authEmailRequired;
-
-  /// No description provided for @authEmailInvalid.
-  ///
-  /// In en, this message translates to:
-  /// **'Invalid email format'**
   String get authEmailInvalid;
-
-  /// No description provided for @authPasswordRequired.
-  ///
-  /// In en, this message translates to:
-  /// **'Enter your password'**
   String get authPasswordRequired;
-
-  /// No description provided for @authPasswordTooShort.
-  ///
-  /// In en, this message translates to:
-  /// **'At least 8 characters'**
   String get authPasswordTooShort;
-
-  /// No description provided for @authConfirmMismatch.
-  ///
-  /// In en, this message translates to:
-  /// **'Passwords do not match'**
   String get authConfirmMismatch;
-
-  /// No description provided for @addEntryEyebrow.
-  ///
-  /// In en, this message translates to:
-  /// **'ENTRY FORM'**
   String get addEntryEyebrow;
-
-  /// No description provided for @addEntryTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Add a new record'**
   String get addEntryTitle;
-
-  /// No description provided for @addEntryWhyTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Why your contribution matters'**
   String get addEntryWhyTitle;
-
-  /// No description provided for @addEntryWhyBody.
-  ///
-  /// In en, this message translates to:
-  /// **'Each documented life restores names, dates, and context that repression tried to erase. Careful, source-based entries strengthen collective memory for families, researchers, and the public.'**
   String get addEntryWhyBody;
-
-  /// No description provided for @addEntryHowTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'How to use this form'**
   String get addEntryHowTitle;
-
-  /// No description provided for @addEntryHowIntro.
-  ///
-  /// In en, this message translates to:
-  /// **'Upload scans and photos for automatic extraction where available, or type everything yourself — you can combine both approaches.'**
   String get addEntryHowIntro;
-
-  /// No description provided for @addEntryHowStep1.
-  ///
-  /// In en, this message translates to:
-  /// **'«From files»: upload one PDF; text and fields will be suggested when the import service is enabled.'**
   String get addEntryHowStep1;
-
-  /// No description provided for @addEntryHowStep2.
-  ///
-  /// In en, this message translates to:
-  /// **'Manual: fill biographical fields and attach portrait or evidence photos yourself.'**
   String get addEntryHowStep2;
-
-  /// No description provided for @addEntryHowStep3.
-  ///
-  /// In en, this message translates to:
-  /// **'Review the draft, submit it for moderation, and be ready to clarify sources if we contact you.'**
   String get addEntryHowStep3;
-
-  /// No description provided for @addEntryTabAuto.
-  ///
-  /// In en, this message translates to:
-  /// **'FROM FILES'**
   String get addEntryTabAuto;
-
-  /// No description provided for @addEntryTabManual.
-  ///
-  /// In en, this message translates to:
-  /// **'MANUAL'**
   String get addEntryTabManual;
-
-  /// No description provided for @addEntryDocumentsTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'PDF document'**
   String get addEntryDocumentsTitle;
-
-  /// No description provided for @addEntryDocumentsHint.
-  ///
-  /// In en, this message translates to:
-  /// **'Only PDF. Drag and drop here or choose a file.'**
   String get addEntryDocumentsHint;
-
-  /// No description provided for @addEntryPhotosTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Photo'**
   String get addEntryPhotosTitle;
-
-  /// No description provided for @addEntryPhotosHint.
-  ///
-  /// In en, this message translates to:
-  /// **'Only JPEG or PNG. Drag and drop here or choose a file.'**
   String get addEntryPhotosHint;
-
-  /// No description provided for @addEntryBrowseFiles.
-  ///
-  /// In en, this message translates to:
-  /// **'Choose file'**
   String get addEntryBrowseFiles;
-
-  /// No description provided for @addEntryFileChange.
-  ///
-  /// In en, this message translates to:
-  /// **'Replace'**
   String get addEntryFileChange;
-
-  /// No description provided for @addEntryFileRemove.
-  ///
-  /// In en, this message translates to:
-  /// **'Remove file'**
   String get addEntryFileRemove;
-
-  /// No description provided for @addEntryInvalidFilePdf.
-  ///
-  /// In en, this message translates to:
-  /// **'Only PDF files are accepted.'**
   String get addEntryInvalidFilePdf;
-
-  /// No description provided for @addEntryInvalidFileImage.
-  ///
-  /// In en, this message translates to:
-  /// **'Only JPEG or PNG images are accepted.'**
   String get addEntryInvalidFileImage;
-
-  /// No description provided for @addEntrySendData.
-  ///
-  /// In en, this message translates to:
-  /// **'SEND MATERIALS'**
   String get addEntrySendData;
-
-  /// No description provided for @addEntryPublish.
-  ///
-  /// In en, this message translates to:
-  /// **'PUBLISH RECORD'**
   String get addEntryPublish;
-
-  /// No description provided for @addEntryCancel.
-  ///
-  /// In en, this message translates to:
-  /// **'CANCEL'**
   String get addEntryCancel;
-
-  /// No description provided for @addEntryFieldFullName.
-  ///
-  /// In en, this message translates to:
-  /// **'Full name'**
   String get addEntryFieldFullName;
-
-  /// No description provided for @addEntryFieldFullNameHint.
-  ///
-  /// In en, this message translates to:
-  /// **'e.g. Ivan Ivanov'**
   String get addEntryFieldFullNameHint;
-
-  /// No description provided for @addEntryFieldAccusation.
-  ///
-  /// In en, this message translates to:
-  /// **'Charge / statutory article'**
   String get addEntryFieldAccusation;
-
-  /// No description provided for @addEntryFieldLifeYears.
-  ///
-  /// In en, this message translates to:
-  /// **'Years of life'**
   String get addEntryFieldLifeYears;
-
-  /// No description provided for @addEntryYearFrom.
-  ///
-  /// In en, this message translates to:
-  /// **'from'**
   String get addEntryYearFrom;
-
-  /// No description provided for @addEntryYearTo.
-  ///
-  /// In en, this message translates to:
-  /// **'to'**
   String get addEntryYearTo;
-
-  /// No description provided for @addEntryFieldPunishment.
-  ///
-  /// In en, this message translates to:
-  /// **'Punishment'**
   String get addEntryFieldPunishment;
-
-  /// No description provided for @addEntryFieldRegion.
-  ///
-  /// In en, this message translates to:
-  /// **'Region of residence'**
   String get addEntryFieldRegion;
-
-  /// No description provided for @addEntryFieldRegionHint.
-  ///
-  /// In en, this message translates to:
-  /// **'e.g. Chüy'**
   String get addEntryFieldRegionHint;
-
-  /// No description provided for @addEntryFieldPunishmentDate.
-  ///
-  /// In en, this message translates to:
-  /// **'Punishment carried out (date)'**
   String get addEntryFieldPunishmentDate;
-
-  /// No description provided for @addEntryFieldOccupation.
-  ///
-  /// In en, this message translates to:
-  /// **'Occupation or public role'**
   String get addEntryFieldOccupation;
-
-  /// No description provided for @addEntryFieldRehabDate.
-  ///
-  /// In en, this message translates to:
-  /// **'Rehabilitation date'**
   String get addEntryFieldRehabDate;
-
-  /// No description provided for @addEntryFieldBiography.
-  ///
-  /// In en, this message translates to:
-  /// **'Biography'**
   String get addEntryFieldBiography;
-
-  /// No description provided for @addEntrySubmitPlaceholder.
-  ///
-  /// In en, this message translates to:
-  /// **'Sending to the server is not enabled yet — your draft stays on this device.'**
   String get addEntrySubmitPlaceholder;
 }
 
-class _AppLocalizationsDelegate
-    extends LocalizationsDelegate<AppLocalizations> {
+class AppLocalizationsEn extends AppLocalizations {
+  AppLocalizationsEn() : super('en');
+
+  @override String get appTitle => "Voice from the Archive";
+  @override String get homeHeroEyebrow => "THE LIVING DOSSIER";
+  @override String get homeLandingSubtitle => "A digital repository dedicated to preserving the testimonies, records, and identities of those once erased by institutional repression.";
+  @override String get homeHeroTitleLine1 => "Voices from";
+  @override String get homeHeroTitleThe => "the ";
+  @override String get homeHeroTitleSilence => "Silence";
+  @override String get askAssistantHint => "Ask me";
+  @override String get placeholderSectionBody => "Content placeholder";
+  @override String get homeSectionArchiveTitle => "Archive materials";
+  @override String get homeSectionArchiveSubtitle => "A catalog of documents, records, and memories will appear here.";
+  @override String get homeSectionStoriesTitle => "Stories and testimonies";
+  @override String get homeSectionStoriesSubtitle => "Personal stories and related materials.";
+  @override String get homeSectionHelpTitle => "Support the project";
+  @override String get homeSectionHelpSubtitle => "Volunteering, donations, and spreading the word — placeholder.";
+  @override String get homeSectionLegalTitle => "Contacts and legal";
+  @override String get homeSectionLegalSubtitle => "Details, privacy policy, and contact — placeholder.";
+  @override String get tabAiAssistantTitle => "AI Assistant";
+  @override String get tabAiAssistantSubtitle => "The assistant will be here.";
+  @override String get tabAddEntryTitle => "Add Entry";
+  @override String get tabAddEntrySubtitle => "Form to add a record to the archive.";
+  @override String get navArchive => "ARCHIVE";
+  @override String get navAiAssistant => "AI ASSISTANT";
+  @override String get navAddEntry => "ADD ENTRY";
+  @override String get searchHint => "Search";
+  @override String get tooltipMenu => "Menu";
+  @override String get tooltipSearch => "Search";
+  @override String get drawerLanguage => "Language";
+  @override String get actionLogin => "LOG IN";
+  @override String get actionLogout => "LOG OUT";
+  @override String get authLoginTitle => "Sign in";
+  @override String get authRegisterTitle => "Create account";
+  @override String get authEmailLabel => "Email";
+  @override String get authPasswordLabel => "Password";
+  @override String get authConfirmPasswordLabel => "Confirm password";
+  @override String get authFirstNameLabel => "First name (optional)";
+  @override String get authLastNameLabel => "Last name (optional)";
+  @override String get authSignIn => "Sign in";
+  @override String get authSignUp => "Register";
+  @override String get authNoAccount => "No account yet?";
+  @override String get authHaveAccount => "Already have an account?";
+  @override String get authGoRegister => "Create account";
+  @override String get authGoLogin => "Sign in";
+  @override String get authPanelSubtitle => "Preserve testimonies and memory.";
+  @override String get authEmailRequired => "Enter your email";
+  @override String get authEmailInvalid => "Invalid email format";
+  @override String get authPasswordRequired => "Enter your password";
+  @override String get authPasswordTooShort => "At least 8 characters";
+  @override String get authConfirmMismatch => "Passwords do not match";
+  @override String get addEntryEyebrow => "ENTRY FORM";
+  @override String get addEntryTitle => "Add a new record";
+  @override String get addEntryWhyTitle => "Why your contribution matters";
+  @override String get addEntryWhyBody => "Each documented life restores names, dates, and context that repression tried to erase. Careful, source-based entries strengthen collective memory for families, researchers, and the public.";
+  @override String get addEntryHowTitle => "How to use this form";
+  @override String get addEntryHowIntro => "Upload scans and photos for automatic extraction where available, or type everything yourself — you can combine both approaches.";
+  @override String get addEntryHowStep1 => "«From files»: upload one PDF; text and fields will be suggested when the import service is enabled.";
+  @override String get addEntryHowStep2 => "Manual: fill biographical fields and attach portrait or evidence photos yourself.";
+  @override String get addEntryHowStep3 => "Review the draft, submit it for moderation, and be ready to clarify sources if we contact you.";
+  @override String get addEntryTabAuto => "FROM FILES";
+  @override String get addEntryTabManual => "MANUAL";
+  @override String get addEntryDocumentsTitle => "PDF document";
+  @override String get addEntryDocumentsHint => "Only PDF. Drag and drop here or choose a file.";
+  @override String get addEntryPhotosTitle => "Photo";
+  @override String get addEntryPhotosHint => "Only JPEG or PNG. Drag and drop here or choose a file.";
+  @override String get addEntryBrowseFiles => "Choose file";
+  @override String get addEntryFileChange => "Replace";
+  @override String get addEntryFileRemove => "Remove file";
+  @override String get addEntryInvalidFilePdf => "Only PDF files are accepted.";
+  @override String get addEntryInvalidFileImage => "Only JPEG or PNG images are accepted.";
+  @override String get addEntrySendData => "SEND MATERIALS";
+  @override String get addEntryPublish => "PUBLISH RECORD";
+  @override String get addEntryCancel => "CANCEL";
+  @override String get addEntryFieldFullName => "Full name";
+  @override String get addEntryFieldFullNameHint => "e.g. Ivan Ivanov";
+  @override String get addEntryFieldAccusation => "Charge / statutory article";
+  @override String get addEntryFieldLifeYears => "Years of life";
+  @override String get addEntryYearFrom => "from";
+  @override String get addEntryYearTo => "to";
+  @override String get addEntryFieldPunishment => "Punishment";
+  @override String get addEntryFieldRegion => "Region of residence";
+  @override String get addEntryFieldRegionHint => "e.g. Chüy";
+  @override String get addEntryFieldPunishmentDate => "Punishment carried out (date)";
+  @override String get addEntryFieldOccupation => "Occupation or public role";
+  @override String get addEntryFieldRehabDate => "Rehabilitation date";
+  @override String get addEntryFieldBiography => "Biography";
+  @override String get addEntrySubmitPlaceholder => "Sending to the server is not enabled yet — your draft stays on this device.";
+}
+
+class AppLocalizationsKy extends AppLocalizations {
+  AppLocalizationsKy() : super('ky');
+
+  @override String get appTitle => "Voice from the Archive";
+  @override String get homeHeroEyebrow => "THE LIVING DOSSIER";
+  @override String get homeLandingSubtitle => "Бир кездеги институционалдык репрессиядан улам өчүрүлгөндөрдүн күбөлүктөрүн, документтерин жана инсандыгын сактоого арналган санариптик репозиторий.";
+  @override String get homeHeroTitleLine1 => "Voices from";
+  @override String get homeHeroTitleThe => "the ";
+  @override String get homeHeroTitleSilence => "Silence";
+  @override String get askAssistantHint => "Суроо бериңиз";
+  @override String get placeholderSectionBody => "Мазмун үчүн орун ээлеп турат";
+  @override String get homeSectionArchiveTitle => "Архив материалдары";
+  @override String get homeSectionArchiveSubtitle => "Документтердин, жазуулардын жана эстеликтердин каталогу бул жерде болот.";
+  @override String get homeSectionStoriesTitle => "Окуялар жана күбөлүктөр";
+  @override String get homeSectionStoriesSubtitle => "Жеке окуялар жана тиешелүү материалдар.";
+  @override String get homeSectionHelpTitle => "Долбоорго жардам";
+  @override String get homeSectionHelpSubtitle => "Волонтёрдук, демөөр жана жайылтуу — орун ээлеп турат.";
+  @override String get homeSectionLegalTitle => "Байланыш жана укук";
+  @override String get homeSectionLegalSubtitle => "Реквизиттер, купуялык саясаты — орун ээлеп турат.";
+  @override String get tabAiAssistantTitle => "AI жардамчы";
+  @override String get tabAiAssistantSubtitle => "Жардамчы бул жерде болот.";
+  @override String get tabAddEntryTitle => "Кошуу";
+  @override String get tabAddEntrySubtitle => "Архивге жазуу кошуу формасы.";
+  @override String get navArchive => "АРХИВ";
+  @override String get navAiAssistant => "AI ЖАРДАМЧЫ";
+  @override String get navAddEntry => "КОШУУ";
+  @override String get searchHint => "Издөө";
+  @override String get tooltipMenu => "Меню";
+  @override String get tooltipSearch => "Издөө";
+  @override String get drawerLanguage => "Тил";
+  @override String get actionLogin => "КИРҮҮ";
+  @override String get actionLogout => "ЧЫГУУ";
+  @override String get authLoginTitle => "Кирүү";
+  @override String get authRegisterTitle => "Катталуу";
+  @override String get authEmailLabel => "Электрондук почта";
+  @override String get authPasswordLabel => "Сырсөз";
+  @override String get authConfirmPasswordLabel => "Сырсөздү кайталоо";
+  @override String get authFirstNameLabel => "Аты (милдеттүү эмес)";
+  @override String get authLastNameLabel => "Фамилиясы (милдеттүү эмес)";
+  @override String get authSignIn => "Кирүү";
+  @override String get authSignUp => "Катталуу";
+  @override String get authNoAccount => "Аккаунт жокпу?";
+  @override String get authHaveAccount => "Аккаунт барбы?";
+  @override String get authGoRegister => "Аккаунт түзүү";
+  @override String get authGoLogin => "Кирүү";
+  @override String get authPanelSubtitle => "Күбөлүктөрдү жана эстеликтерди сактайбыз.";
+  @override String get authEmailRequired => "Почтаны киргизиңиз";
+  @override String get authEmailInvalid => "Email форматы туура эмес";
+  @override String get authPasswordRequired => "Сырсөздү киргизиңиз";
+  @override String get authPasswordTooShort => "Эң аз 8 символ";
+  @override String get authConfirmMismatch => "Сырсөздөр дал келбейт";
+  @override String get addEntryEyebrow => "ЖАЗУУ ФОРМАСЫ";
+  @override String get addEntryTitle => "Жаңы жазуу кошуу";
+  @override String get addEntryWhyTitle => "Сиздин салымыңыз эмне үчүн маанилүү";
+  @override String get addEntryWhyBody => "Ар бир текшерилген жазуу аттарды, даталарды жана контекстти калыбына келтирет. Бул үй-бүлөлөр, изилдөөчүлөр жана коомчулук үчүн орток эстелик базасын бекемдейт.";
+  @override String get addEntryHowTitle => "Форманы кантип колдонуу керек";
+  @override String get addEntryHowIntro => "Сканерлөө жана сүрөттөрдү жүктөп автоматтык толтурууга (кызмат иштешкенде) же бардыгын кол менен киргизүүгө болот — экөөнү бириктирүүгө да болот.";
+  @override String get addEntryHowStep1 => "«Файлдардан» өткөндө: бир PDF тиркеңиз — импорт иштегенде текст жана талаалар сунушталат.";
+  @override String get addEntryHowStep2 => "«Кол менен» өткөндө: биографиялык маалыматтарды өзүңүз киргизип, портрет же далил сүрөттөрүн кошуңуз.";
+  @override String get addEntryHowStep3 => "Карап чыгыңыз, модерацияга жөнөтүңүз; булактарды тактоо керек болсо сиз менен байланышабыз.";
+  @override String get addEntryTabAuto => "ФАЙЛДАН";
+  @override String get addEntryTabManual => "КОЛ МЕНЕН";
+  @override String get addEntryDocumentsTitle => "PDF документ";
+  @override String get addEntryDocumentsHint => "Гана PDF. Сүйрөп алып келиңиз же файл тандаңыз.";
+  @override String get addEntryPhotosTitle => "Сүрөт";
+  @override String get addEntryPhotosHint => "Гана JPEG же PNG. Сүйрөп алып келиңиз же файл тандаңыз.";
+  @override String get addEntryBrowseFiles => "Файл тандоо";
+  @override String get addEntryFileChange => "Алмаштыруу";
+  @override String get addEntryFileRemove => "Файлды алып салуу";
+  @override String get addEntryInvalidFilePdf => "Гана PDF файл кабыл алынат.";
+  @override String get addEntryInvalidFileImage => "Гана JPEG же PNG сүрөттөр кабыл алынат.";
+  @override String get addEntrySendData => "МАТЕРИАЛДАРДЫ ЖӨНӨТҮҮ";
+  @override String get addEntryPublish => "ЖАЗУУНУ ЖАРЫЯЛОО";
+  @override String get addEntryCancel => "ЖОККО ЧЫГАРУУ";
+  @override String get addEntryFieldFullName => "Аты-жөнү";
+  @override String get addEntryFieldFullNameHint => "мисалы: Айбек Айбеков";
+  @override String get addEntryFieldAccusation => "Айыптоо / берене";
+  @override String get addEntryFieldLifeYears => "Өмүр жылдары";
+  @override String get addEntryYearFrom => "баштап";
+  @override String get addEntryYearTo => "чейин";
+  @override String get addEntryFieldPunishment => "Жаза";
+  @override String get addEntryFieldRegion => "Турмуш аймагы";
+  @override String get addEntryFieldRegionHint => "мисалы: Чүй";
+  @override String get addEntryFieldPunishmentDate => "Жаза аткарылган күн";
+  @override String get addEntryFieldOccupation => "Кесиби же кызматы";
+  @override String get addEntryFieldRehabDate => "Реабилитация күнү";
+  @override String get addEntryFieldBiography => "Биография";
+  @override String get addEntrySubmitPlaceholder => "Серверге жөнөтүү азыр иштебейт — черновик бул түзмөктө калат.";
+}
+
+class AppLocalizationsRu extends AppLocalizations {
+  AppLocalizationsRu() : super('ru');
+
+  @override String get appTitle => "Голос из архива";
+  @override String get homeHeroEyebrow => "THE LIVING DOSSIER";
+  @override String get homeLandingSubtitle => "Цифровой репозиторий, посвящённый сохранению свидетельств, записей и личностей тех, кого когда-то стёрла институциональная репрессия.";
+  @override String get homeHeroTitleLine1 => "Voices from";
+  @override String get homeHeroTitleThe => "the ";
+  @override String get homeHeroTitleSilence => "Silence";
+  @override String get askAssistantHint => "Спросите меня";
+  @override String get placeholderSectionBody => "Плейсхолдер контента";
+  @override String get homeSectionArchiveTitle => "Материалы архива";
+  @override String get homeSectionArchiveSubtitle => "Здесь будет каталог документов, записей и воспоминаний.";
+  @override String get homeSectionStoriesTitle => "Истории и свидетельства";
+  @override String get homeSectionStoriesSubtitle => "Раздел для личных историй и связанных с ними материалов.";
+  @override String get homeSectionHelpTitle => "Как помочь проекту";
+  @override String get homeSectionHelpSubtitle => "Плейсхолдер: волонтёрство, пожертвования, распространение.";
+  @override String get homeSectionLegalTitle => "Контакты и правовая информация";
+  @override String get homeSectionLegalSubtitle => "Плейсхолдер: реквизиты, политика конфиденциальности, связь.";
+  @override String get tabAiAssistantTitle => "AI Assistant";
+  @override String get tabAiAssistantSubtitle => "Здесь будет помощник.";
+  @override String get tabAddEntryTitle => "Новая запись";
+  @override String get tabAddEntrySubtitle => "Форма добавления записи в архив.";
+  @override String get navArchive => "АРХИВ";
+  @override String get navAiAssistant => "AI АССИСТЕНТ";
+  @override String get navAddEntry => "ДОБАВИТЬ";
+  @override String get searchHint => "Поиск";
+  @override String get tooltipMenu => "Меню";
+  @override String get tooltipSearch => "Поиск";
+  @override String get drawerLanguage => "Язык";
+  @override String get actionLogin => "ВОЙТИ";
+  @override String get actionLogout => "ВЫЙТИ";
+  @override String get authLoginTitle => "Вход";
+  @override String get authRegisterTitle => "Регистрация";
+  @override String get authEmailLabel => "Электронная почта";
+  @override String get authPasswordLabel => "Пароль";
+  @override String get authConfirmPasswordLabel => "Повторите пароль";
+  @override String get authFirstNameLabel => "Имя (необязательно)";
+  @override String get authLastNameLabel => "Фамилия (необязательно)";
+  @override String get authSignIn => "Войти";
+  @override String get authSignUp => "Зарегистрироваться";
+  @override String get authNoAccount => "Нет аккаунта?";
+  @override String get authHaveAccount => "Уже есть аккаунт?";
+  @override String get authGoRegister => "Создать аккаунт";
+  @override String get authGoLogin => "Войти";
+  @override String get authPanelSubtitle => "Сохраняем свидетельства и память.";
+  @override String get authEmailRequired => "Введите почту";
+  @override String get authEmailInvalid => "Некорректный формат email";
+  @override String get authPasswordRequired => "Введите пароль";
+  @override String get authPasswordTooShort => "Не менее 8 символов";
+  @override String get authConfirmMismatch => "Пароли не совпадают";
+  @override String get addEntryEyebrow => "ФОРМА ЗАПИСИ";
+  @override String get addEntryTitle => "Добавление новой записи";
+  @override String get addEntryWhyTitle => "Почему ваша запись важна";
+  @override String get addEntryWhyBody => "Каждая тщательно оформленная карточка возвращает в оборот памяти имена, даты и обстоятельства, которые пытались стереть. Проверяемые факты помогают родственникам, исследователям и широкой аудитории опираться на общую базу.";
+  @override String get addEntryHowTitle => "Как пользоваться формой";
+  @override String get addEntryHowIntro => "Можно загрузить сканы и фото для автоматического разбора (когда сервис подключён) или заполнить всё вручную — оба способа можно сочетать.";
+  @override String get addEntryHowStep1 => "Вкладка «Из файлов»: прикрепите один PDF — текст и поля будут предложены после включения импорта.";
+  @override String get addEntryHowStep2 => "Вкладка «Вручную»: введите биографию и ключевые сведения сами и добавьте портретные или документальные фото.";
+  @override String get addEntryHowStep3 => "Проверьте черновик, отправьте запись на модерацию и будьте готовы уточнить источники, если с вами свяжутся.";
+  @override String get addEntryTabAuto => "ИЗ ФАЙЛОВ";
+  @override String get addEntryTabManual => "ВРУЧНУЮ";
+  @override String get addEntryDocumentsTitle => "PDF-документ";
+  @override String get addEntryDocumentsHint => "Только PDF. Перетащите сюда или выберите файл.";
+  @override String get addEntryPhotosTitle => "Фотография";
+  @override String get addEntryPhotosHint => "Только JPEG или PNG. Перетащите сюда или выберите файл.";
+  @override String get addEntryBrowseFiles => "Выбрать файл";
+  @override String get addEntryFileChange => "Заменить";
+  @override String get addEntryFileRemove => "Убрать файл";
+  @override String get addEntryInvalidFilePdf => "Допускается только файл в формате PDF.";
+  @override String get addEntryInvalidFileImage => "Допускаются только изображения JPEG или PNG.";
+  @override String get addEntrySendData => "ОТПРАВИТЬ МАТЕРИАЛЫ";
+  @override String get addEntryPublish => "ОПУБЛИКОВАТЬ ЗАПИСЬ";
+  @override String get addEntryCancel => "ОТМЕНА";
+  @override String get addEntryFieldFullName => "Имя и фамилия";
+  @override String get addEntryFieldFullNameHint => "например: Иван Иванов";
+  @override String get addEntryFieldAccusation => "Обвинение / статья";
+  @override String get addEntryFieldLifeYears => "Годы жизни";
+  @override String get addEntryYearFrom => "от";
+  @override String get addEntryYearTo => "до";
+  @override String get addEntryFieldPunishment => "Наказание";
+  @override String get addEntryFieldRegion => "Регион проживания";
+  @override String get addEntryFieldRegionHint => "например: Чуйская область";
+  @override String get addEntryFieldPunishmentDate => "Дата исполнения наказания";
+  @override String get addEntryFieldOccupation => "Род деятельности";
+  @override String get addEntryFieldRehabDate => "Дата реабилитации";
+  @override String get addEntryFieldBiography => "Биография";
+  @override String get addEntrySubmitPlaceholder => "Отправка на сервер пока не подключена — черновик остаётся на этом устройстве.";
+}
+
+class AppLocalizationsTr extends AppLocalizations {
+  AppLocalizationsTr() : super('tr');
+
+  @override String get appTitle => "Arşivden ses";
+  @override String get homeHeroEyebrow => "THE LIVING DOSSIER";
+  @override String get homeLandingSubtitle => "Kurumsal baskı tarafından silinenlerin tanıklıklarını, kayıtlarını ve kimliklerini korumaya adanmış dijital bir depo.";
+  @override String get homeHeroTitleLine1 => "Voices from";
+  @override String get homeHeroTitleThe => "the ";
+  @override String get homeHeroTitleSilence => "Silence";
+  @override String get askAssistantHint => "Bana sor";
+  @override String get placeholderSectionBody => "İçerik yer tutucu";
+  @override String get homeSectionArchiveTitle => "Arşiv materyalleri";
+  @override String get homeSectionArchiveSubtitle => "Belgelerin, kayıtların ve anıların kataloğu burada olacak.";
+  @override String get homeSectionStoriesTitle => "Hikâyeler ve tanıklıklar";
+  @override String get homeSectionStoriesSubtitle => "Kişisel hikâyeler ve ilgili materyaller.";
+  @override String get homeSectionHelpTitle => "Projeye nasıl destek olunur";
+  @override String get homeSectionHelpSubtitle => "Gönüllülük, bağış ve yayma — yer tutucu.";
+  @override String get homeSectionLegalTitle => "İletişim ve hukuki bilgi";
+  @override String get homeSectionLegalSubtitle => "Ayrıntılar, gizlilik politikası — yer tutucu.";
+  @override String get tabAiAssistantTitle => "Yapay zekâ asistanı";
+  @override String get tabAiAssistantSubtitle => "Asistan burada olacak.";
+  @override String get tabAddEntryTitle => "Kayıt ekle";
+  @override String get tabAddEntrySubtitle => "Arşive kayıt ekleme formu.";
+  @override String get navArchive => "ARŞİV";
+  @override String get navAiAssistant => "YZ ASİSTAN";
+  @override String get navAddEntry => "EKLE";
+  @override String get searchHint => "Ara";
+  @override String get tooltipMenu => "Menü";
+  @override String get tooltipSearch => "Ara";
+  @override String get drawerLanguage => "Dil";
+  @override String get actionLogin => "GİRİŞ";
+  @override String get actionLogout => "ÇIKIŞ";
+  @override String get authLoginTitle => "Giriş";
+  @override String get authRegisterTitle => "Hesap oluştur";
+  @override String get authEmailLabel => "E-posta";
+  @override String get authPasswordLabel => "Şifre";
+  @override String get authConfirmPasswordLabel => "Şifreyi onayla";
+  @override String get authFirstNameLabel => "Ad (isteğe bağlı)";
+  @override String get authLastNameLabel => "Soyad (isteğe bağlı)";
+  @override String get authSignIn => "Giriş yap";
+  @override String get authSignUp => "Kayıt ol";
+  @override String get authNoAccount => "Hesabınız yok mu?";
+  @override String get authHaveAccount => "Zaten hesabınız var mı?";
+  @override String get authGoRegister => "Hesap oluştur";
+  @override String get authGoLogin => "Giriş yap";
+  @override String get authPanelSubtitle => "Tanıklıkları ve hafızayı koruyoruz.";
+  @override String get authEmailRequired => "E-postanızı girin";
+  @override String get authEmailInvalid => "Geçersiz e-posta biçimi";
+  @override String get authPasswordRequired => "Şifrenizi girin";
+  @override String get authPasswordTooShort => "En az 8 karakter";
+  @override String get authConfirmMismatch => "Şifreler eşleşmiyor";
+  @override String get addEntryEyebrow => "KAYIT FORMU";
+  @override String get addEntryTitle => "Yeni kayıt ekle";
+  @override String get addEntryWhyTitle => "Katkınız neden önemli";
+  @override String get addEntryWhyBody => "Her doğrulanmış kayıt, baskının silmeye çalıştığı isimleri, tarihleri ve bağlamı geri getirir. Aileler, araştırmacılar ve kamu için ortak, güvenilir bir hafıza oluşturur.";
+  @override String get addEntryHowTitle => "Formu nasıl kullanırsınız";
+  @override String get addEntryHowIntro => "Taramaları ve fotoğrafları içe aktarma hizmeti açıldığında otomatik doldurma için yükleyebilir veya her şeyi elle girebilirsiniz — ikisini birleştirmek de mümkün.";
+  @override String get addEntryHowStep1 => "«Dosyalardan» sekmesi: bir PDF yükleyin; içe aktarma etkinleşince metin ve alanlar önerilecek.";
+  @override String get addEntryHowStep2 => "«Elle» sekmesi: biyografik bilgileri kendiniz girin; portre veya kanıt fotoğrafları ekleyin.";
+  @override String get addEntryHowStep3 => "Taslağı gözden geçirin, moderasyona gönderin; kaynakları netleştirmemiz gerekirse size ulaşırız.";
+  @override String get addEntryTabAuto => "DOSYALARDAN";
+  @override String get addEntryTabManual => "ELLE";
+  @override String get addEntryDocumentsTitle => "PDF belgesi";
+  @override String get addEntryDocumentsHint => "Yalnızca PDF. Sürükleyip bırakın veya dosya seçin.";
+  @override String get addEntryPhotosTitle => "Fotoğraf";
+  @override String get addEntryPhotosHint => "Yalnızca JPEG veya PNG. Sürükleyip bırakın veya dosya seçin.";
+  @override String get addEntryBrowseFiles => "Dosya seç";
+  @override String get addEntryFileChange => "Değiştir";
+  @override String get addEntryFileRemove => "Dosyayı kaldır";
+  @override String get addEntryInvalidFilePdf => "Yalnızca PDF dosyaları kabul edilir.";
+  @override String get addEntryInvalidFileImage => "Yalnızca JPEG veya PNG görselleri kabul edilir.";
+  @override String get addEntrySendData => "MATERYALLERİ GÖNDER";
+  @override String get addEntryPublish => "KAYDI YAYINLA";
+  @override String get addEntryCancel => "İPTAL";
+  @override String get addEntryFieldFullName => "Ad soyad";
+  @override String get addEntryFieldFullNameHint => "ör. Ahmet Yılmaz";
+  @override String get addEntryFieldAccusation => "Suçlama / madde";
+  @override String get addEntryFieldLifeYears => "Yaşam yılları";
+  @override String get addEntryYearFrom => "başlangıç";
+  @override String get addEntryYearTo => "bitiş";
+  @override String get addEntryFieldPunishment => "Ceza";
+  @override String get addEntryFieldRegion => "İkamet bölgesi";
+  @override String get addEntryFieldRegionHint => "ör. Çüy";
+  @override String get addEntryFieldPunishmentDate => "Ceza infaz tarihi";
+  @override String get addEntryFieldOccupation => "Meslek veya kamusal rol";
+  @override String get addEntryFieldRehabDate => "Rehabilitasyon tarihi";
+  @override String get addEntryFieldBiography => "Biyografi";
+  @override String get addEntrySubmitPlaceholder => "Sunucuya gönderim henüz yok — taslak bu cihazda kalır.";
+}
+
+class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
   const _AppLocalizationsDelegate();
 
   @override
@@ -631,7 +495,6 @@ class _AppLocalizationsDelegate
 }
 
 AppLocalizations lookupAppLocalizations(Locale locale) {
-  // Lookup logic when only language code is specified.
   switch (locale.languageCode) {
     case 'en':
       return AppLocalizationsEn();
@@ -642,11 +505,5 @@ AppLocalizations lookupAppLocalizations(Locale locale) {
     case 'tr':
       return AppLocalizationsTr();
   }
-
-  throw FlutterError(
-    'AppLocalizations.delegate failed to load unsupported locale "$locale". This is likely '
-    'an issue with the localizations generation tool. Please file an issue '
-    'on GitHub with a reproducible sample app and the gen-l10n configuration '
-    'that was used.',
-  );
+  return AppLocalizationsEn();
 }

@@ -7,6 +7,7 @@ import 'package:project_temp/features/auth/cubit/login_state.dart';
 import 'package:project_temp/features/auth/presentation/auth_validators.dart';
 import 'package:project_temp/features/auth/presentation/pages/register_page.dart';
 import 'package:project_temp/features/auth/presentation/widgets/auth_page_scaffold.dart';
+import 'package:project_temp/l10n/app_localizations.dart';
 import 'package:project_temp/source/source.dart';
 
 class LoginPage extends StatelessWidget {

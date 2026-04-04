@@ -42,7 +42,11 @@ class VoiceArchiveAppBar extends StatelessWidget
     final dense = _dense(adaptive);
     final locale = AppLocaleScope.of(context);
     final l10n = context.l10n;
-    final tabLabels = [l10n.navArchive, l10n.navAiAssistant, l10n.navAddEntry];
+    final tabLabels = <String>[
+      l10n.navArchive,
+      l10n.navAiAssistant,
+      l10n.navAddEntry,
+    ];
 
     return Material(
       color: AppThemes.backgroundColor,
@@ -271,7 +275,11 @@ class VoiceArchiveDrawer extends StatelessWidget {
   Widget build(BuildContext context) {
     final locale = AppLocaleScope.of(context);
     final l10n = context.l10n;
-    final tabLabels = [l10n.navArchive, l10n.navAiAssistant, l10n.navAddEntry];
+    final tabLabels = <String>[
+      l10n.navArchive,
+      l10n.navAiAssistant,
+      l10n.navAddEntry,
+    ];
 
     return Drawer(
       backgroundColor: kVoiceArchiveCream,

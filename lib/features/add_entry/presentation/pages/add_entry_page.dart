@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:project_temp/components/components.dart';
 import 'package:project_temp/core/core.dart';
 
+import '../../../../l10n/app_localizations.dart';
+
 /// Вкладка навигации «Добавить запись»: авто (файлы) и ручное заполнение.
 class AddEntryPage extends StatefulWidget {
   const AddEntryPage({super.key});
