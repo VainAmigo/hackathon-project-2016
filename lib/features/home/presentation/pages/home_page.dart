@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:project_temp/core/core.dart';
 import 'package:project_temp/features/auth/auth.dart';
 import 'package:project_temp/features/add_entry/add_entry.dart';
+import 'package:project_temp/features/chat/chat.dart';
 import 'package:project_temp/features/home/home.dart';
 import 'package:project_temp/source/source.dart';
 
@@ -87,7 +88,8 @@ class _HomePageState extends State<HomePage> {
     );
 
     final Widget paddedBody;
-    if (adaptive.isWeb && _tabIndex != 0) {
+    // Главная и чат — на всю ширину; остальные вкладки на вебе — в узкой колонке.
+    if (adaptive.isWeb && _tabIndex != 0 && _tabIndex != 1) {
       paddedBody = Align(
         alignment: Alignment.topCenter,
         child: ConstrainedBox(
@@ -132,10 +134,7 @@ class _HomePageState extends State<HomePage> {
   Widget _tabBody(BuildContext context, {required int tabIndex}) {
     switch (tabIndex) {
       case 1:
-        return HomeTabPlaceholderPage(
-          title: context.l10n.tabAiAssistantTitle,
-          subtitle: context.l10n.tabAiAssistantSubtitle,
-        );
+        return const ChatAssistantPage();
       case 2:
         return const AddEntryPage();
       case 0:

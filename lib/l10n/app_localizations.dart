@@ -134,6 +134,18 @@ abstract class AppLocalizations {
   String get addEntryFieldRehabDate;
   String get addEntryFieldBiography;
   String get addEntrySubmitPlaceholder;
+  String get chatSidebarTitle;
+  String get chatNewChat;
+  String get chatUntitled;
+  String get chatOpenChatsListTooltip;
+  String get chatThreadTitle;
+  String get chatEmptyThreadTitle;
+  String get chatEmptyThreadSubtitle;
+  String get chatComposerHint;
+  String get chatSendTooltip;
+  String get chatSourcesHeading;
+  String chatDocumentChipLabel(int documentId);
+  String get chatMockAnswerPlaceholder;
 }
 
 class AppLocalizationsEn extends AppLocalizations {
@@ -242,6 +254,20 @@ class AppLocalizationsEn extends AppLocalizations {
   @override String get addEntryFieldRehabDate => "Rehabilitation date";
   @override String get addEntryFieldBiography => "Biography";
   @override String get addEntrySubmitPlaceholder => "Sending to the server is not enabled yet — your draft stays on this device.";
+  @override String get chatSidebarTitle => "Chats";
+  @override String get chatNewChat => "New chat";
+  @override String get chatUntitled => "Untitled";
+  @override String get chatOpenChatsListTooltip => "Open chat list";
+  @override String get chatThreadTitle => "Assistant";
+  @override String get chatEmptyThreadTitle => "Start a conversation";
+  @override String get chatEmptyThreadSubtitle =>
+      "Ask a question. When the backend is connected, answers will follow the API: one MessageDto per exchange, with optional sources (documentId).";
+  @override String get chatComposerHint => "Your question…";
+  @override String get chatSendTooltip => "Send";
+  @override String get chatSourcesHeading => "Sources";
+  @override String chatDocumentChipLabel(int documentId) => "Document $documentId";
+  @override String get chatMockAnswerPlaceholder =>
+      "Placeholder reply (connect POST /api/chats or /api/chats/{id}/messages for a real answer).";
 }
 
 class AppLocalizationsKy extends AppLocalizations {
@@ -350,6 +376,20 @@ class AppLocalizationsKy extends AppLocalizations {
   @override String get addEntryFieldRehabDate => "Реабилитация күнү";
   @override String get addEntryFieldBiography => "Биография";
   @override String get addEntrySubmitPlaceholder => "Серверге жөнөтүү азыр иштебейт — черновик бул түзмөктө калат.";
+  @override String get chatSidebarTitle => "Чаттар";
+  @override String get chatNewChat => "Жаңы чат";
+  @override String get chatUntitled => "Аталышы жок";
+  @override String get chatOpenChatsListTooltip => "Чаттар тизмесин ачуу";
+  @override String get chatThreadTitle => "Жардамчы";
+  @override String get chatEmptyThreadTitle => "Сүйлөшүүнү баштаңыз";
+  @override String get chatEmptyThreadSubtitle =>
+      "Суроо бериңиз. Сервер туташканда ар бир жооп MessageDto болуп келет, булактар documentId менен.";
+  @override String get chatComposerHint => "Сурооңуз…";
+  @override String get chatSendTooltip => "Жөнөтүү";
+  @override String get chatSourcesHeading => "Булактар";
+  @override String chatDocumentChipLabel(int documentId) => "Документ $documentId";
+  @override String get chatMockAnswerPlaceholder =>
+      "Жооп-орун басуучу (чыныгы жооп үчүн POST /api/chats же /api/chats/{id}/messages туташтырыңыз).";
 }
 
 class AppLocalizationsRu extends AppLocalizations {
@@ -458,6 +498,20 @@ class AppLocalizationsRu extends AppLocalizations {
   @override String get addEntryFieldRehabDate => "Дата реабилитации";
   @override String get addEntryFieldBiography => "Биография";
   @override String get addEntrySubmitPlaceholder => "Отправка на сервер пока не подключена — черновик остаётся на этом устройстве.";
+  @override String get chatSidebarTitle => "Чаты";
+  @override String get chatNewChat => "Новый чат";
+  @override String get chatUntitled => "Без названия";
+  @override String get chatOpenChatsListTooltip => "Список чатов";
+  @override String get chatThreadTitle => "Ассистент";
+  @override String get chatEmptyThreadTitle => "Начните диалог";
+  @override String get chatEmptyThreadSubtitle =>
+      "Задайте вопрос. После подключения API каждый обмен — это MessageDto с необязательными источниками (documentId).";
+  @override String get chatComposerHint => "Ваш вопрос…";
+  @override String get chatSendTooltip => "Отправить";
+  @override String get chatSourcesHeading => "Источники";
+  @override String chatDocumentChipLabel(int documentId) => "Документ $documentId";
+  @override String get chatMockAnswerPlaceholder =>
+      "Заглушка ответа (для реального ответа подключите POST /api/chats или /api/chats/{id}/messages).";
 }
 
 class AppLocalizationsTr extends AppLocalizations {
@@ -566,6 +620,20 @@ class AppLocalizationsTr extends AppLocalizations {
   @override String get addEntryFieldRehabDate => "Rehabilitasyon tarihi";
   @override String get addEntryFieldBiography => "Biyografi";
   @override String get addEntrySubmitPlaceholder => "Sunucuya gönderim henüz yok — taslak bu cihazda kalır.";
+  @override String get chatSidebarTitle => "Sohbetler";
+  @override String get chatNewChat => "Yeni sohbet";
+  @override String get chatUntitled => "Adsız";
+  @override String get chatOpenChatsListTooltip => "Sohbet listesini aç";
+  @override String get chatThreadTitle => "Asistan";
+  @override String get chatEmptyThreadTitle => "Konuşmayı başlatın";
+  @override String get chatEmptyThreadSubtitle =>
+      "Bir soru yazın. Sunucu bağlandığında her tur MessageDto olarak gelir; kaynaklar documentId içerebilir.";
+  @override String get chatComposerHint => "Sorunuz…";
+  @override String get chatSendTooltip => "Gönder";
+  @override String get chatSourcesHeading => "Kaynaklar";
+  @override String chatDocumentChipLabel(int documentId) => "Belge $documentId";
+  @override String get chatMockAnswerPlaceholder =>
+      "Yer tutucu yanıt (gerçek yanıt için POST /api/chats veya /api/chats/{id}/messages bağlayın).";
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
