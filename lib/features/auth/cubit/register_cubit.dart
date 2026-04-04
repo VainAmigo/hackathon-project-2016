@@ -8,35 +8,32 @@ class RegisterCubit extends Cubit<RegisterState> {
   final AuthRepository _auth;
 
   Future<void> register({
-    required String email,
+    required String username,
     required String password,
-    String? firstName,
-    String? lastName,
   }) async {
     emit(
       state.copyWith(
         isSubmitting: true,
         clearFailure: true,
-        clearUser: true,
+        clearRegistration: true,
       ),
     );
     final result = await _auth.register(
-      email: email,
+      username: username,
       password: password,
-      firstName: firstName,
-      lastName: lastName,
     );
     result.fold(
       (f) => emit(
         state.copyWith(
           isSubmitting: false,
           failureMessage: f.message,
+          clearRegistration: true,
         ),
       ),
       (res) => emit(
         RegisterState(
           isSubmitting: false,
-          user: res.user,
+          registration: res,
         ),
       ),
     );

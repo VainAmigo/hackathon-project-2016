@@ -5,28 +5,30 @@ class RegisterState extends Equatable {
   const RegisterState({
     this.isSubmitting = false,
     this.failureMessage,
-    this.user,
+    this.registration,
   });
 
   final bool isSubmitting;
   final String? failureMessage;
-  final User? user;
+  final RegisterResult? registration;
 
   RegisterState copyWith({
     bool? isSubmitting,
     String? failureMessage,
-    User? user,
+    RegisterResult? registration,
     bool clearFailure = false,
-    bool clearUser = false,
+    bool clearRegistration = false,
   }) {
     return RegisterState(
       isSubmitting: isSubmitting ?? this.isSubmitting,
       failureMessage:
           clearFailure ? null : (failureMessage ?? this.failureMessage),
-      user: clearUser ? null : (user ?? this.user),
+      registration: clearRegistration
+          ? null
+          : (registration ?? this.registration),
     );
   }
 
   @override
-  List<Object?> get props => [isSubmitting, failureMessage, user];
+  List<Object?> get props => [isSubmitting, failureMessage, registration];
 }

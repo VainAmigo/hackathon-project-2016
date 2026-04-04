@@ -7,7 +7,6 @@ import 'package:project_temp/features/auth/cubit/register_state.dart';
 import 'package:project_temp/features/auth/presentation/auth_validators.dart';
 import 'package:project_temp/features/auth/presentation/widgets/auth_page_scaffold.dart';
 import 'package:project_temp/l10n/app_localizations.dart';
-import 'package:project_temp/source/source.dart';
 
 class RegisterPage extends StatelessWidget {
   const RegisterPage({super.key});
@@ -20,7 +19,8 @@ class RegisterPage extends StatelessWidget {
         listenWhen: (prev, curr) =>
             (curr.failureMessage != null &&
                 curr.failureMessage != prev.failureMessage) ||
-            (curr.user != null && curr.user != prev.user),
+            (curr.registration != null &&
+                curr.registration != prev.registration),
         listener: (context, state) {
           final msg = state.failureMessage;
           if (msg != null) {
@@ -32,9 +32,12 @@ class RegisterPage extends StatelessWidget {
             );
             return;
           }
-          final user = state.user;
-          if (user != null) {
-            Navigator.of(context).pop<User>(user);
+          if (state.registration != null) {
+            final l10n = AppLocalizations.of(context);
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text(l10n.authRegisterSuccess)),
+            );
+            Navigator.of(context).pop();
           }
         },
         child: const _RegisterForm(),
@@ -52,9 +55,7 @@ class _RegisterForm extends StatefulWidget {
 
 class _RegisterFormState extends State<_RegisterForm> {
   final _formKey = GlobalKey<FormState>();
-  final _firstName = TextEditingController();
-  final _lastName = TextEditingController();
-  final _email = TextEditingController();
+  final _username = TextEditingController();
   final _password = TextEditingController();
   final _confirm = TextEditingController();
   bool _obscure = true;
@@ -62,9 +63,7 @@ class _RegisterFormState extends State<_RegisterForm> {
 
   @override
   void dispose() {
-    _firstName.dispose();
-    _lastName.dispose();
-    _email.dispose();
+    _username.dispose();
     _password.dispose();
     _confirm.dispose();
     super.dispose();
@@ -74,10 +73,8 @@ class _RegisterFormState extends State<_RegisterForm> {
     if (!_formKey.currentState!.validate()) return;
     FocusScope.of(context).unfocus();
     context.read<RegisterCubit>().register(
-          email: _email.text.trim(),
+          username: _username.text.trim(),
           password: _password.text,
-          firstName: _firstName.text.trim().isEmpty ? null : _firstName.text,
-          lastName: _lastName.text.trim().isEmpty ? null : _lastName.text,
         );
   }
 
@@ -104,36 +101,15 @@ class _RegisterFormState extends State<_RegisterForm> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   CustomTextFormField(
-                    controller: _firstName,
-                    label: l10n.authFirstNameLabel,
+                    controller: _username,
+                    label: l10n.authUsernameLabel,
                     textInputAction: TextInputAction.next,
-                    autofillHints: const [AutofillHints.givenName],
+                    autofillHints: const [AutofillHints.newUsername],
                     prefixIcon: Icon(
                       Icons.person_outline_rounded,
                       color: AppThemes.textColorGrey,
                     ),
-                  ),
-                  CustomTextFormField(
-                    controller: _lastName,
-                    label: l10n.authLastNameLabel,
-                    textInputAction: TextInputAction.next,
-                    autofillHints: const [AutofillHints.familyName],
-                    prefixIcon: Icon(
-                      Icons.badge_outlined,
-                      color: AppThemes.textColorGrey,
-                    ),
-                  ),
-                  CustomTextFormField(
-                    controller: _email,
-                    label: l10n.authEmailLabel,
-                    keyboardType: TextInputType.emailAddress,
-                    textInputAction: TextInputAction.next,
-                    autofillHints: const [AutofillHints.email],
-                    prefixIcon: Icon(
-                      Icons.mail_outline_rounded,
-                      color: AppThemes.textColorGrey,
-                    ),
-                    validator: (v) => AuthValidators.email(l10n, v),
+                    validator: (v) => AuthValidators.username(l10n, v),
                   ),
                   CustomTextFormField(
                     controller: _password,

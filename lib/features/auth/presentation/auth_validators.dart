@@ -4,6 +4,13 @@ import '../../../l10n/app_localizations.dart';
 abstract final class AuthValidators {
   AuthValidators._();
 
+  static String? username(AppLocalizations l10n, String? v) {
+    final s = v?.trim() ?? '';
+    if (s.isEmpty) return l10n.authUsernameRequired;
+    if (s.length < minUsernameLength) return l10n.authUsernameTooShort;
+    return null;
+  }
+
   static String? email(AppLocalizations l10n, String? v) {
     final s = v?.trim() ?? '';
     if (s.isEmpty) return l10n.authEmailRequired;
@@ -28,6 +35,7 @@ abstract final class AuthValidators {
   }
 
   static const int minPasswordLength = 8;
+  static const int minUsernameLength = 3;
 
   static final RegExp _email = RegExp(r'^[\w.+-]+@[\w.-]+\.\w{2,}$');
 }

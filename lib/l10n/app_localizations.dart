@@ -97,6 +97,10 @@ abstract class AppLocalizations {
   String get authPasswordRequired;
   String get authPasswordTooShort;
   String get authConfirmMismatch;
+  String get authUsernameLabel;
+  String get authUsernameRequired;
+  String get authUsernameTooShort;
+  String get authRegisterSuccess;
   String get addEntryEyebrow;
   String get addEntryTitle;
   String get addEntryWhyTitle;
@@ -217,6 +221,11 @@ class AppLocalizationsEn extends AppLocalizations {
   @override String get authPasswordRequired => "Enter your password";
   @override String get authPasswordTooShort => "At least 8 characters";
   @override String get authConfirmMismatch => "Passwords do not match";
+  @override String get authUsernameLabel => "Username";
+  @override String get authUsernameRequired => "Enter your username";
+  @override String get authUsernameTooShort => "At least 3 characters";
+  @override String get authRegisterSuccess =>
+      "Account created. Sign in with your username.";
   @override String get addEntryEyebrow => "ENTRY FORM";
   @override String get addEntryTitle => "Add a new record";
   @override String get addEntryWhyTitle => "Why your contribution matters";
@@ -339,6 +348,11 @@ class AppLocalizationsKy extends AppLocalizations {
   @override String get authPasswordRequired => "Сырсөздү киргизиңиз";
   @override String get authPasswordTooShort => "Эң аз 8 символ";
   @override String get authConfirmMismatch => "Сырсөздөр дал келбейт";
+  @override String get authUsernameLabel => "Колдонуучу аты";
+  @override String get authUsernameRequired => "Колдонуучу атын киргизиңиз";
+  @override String get authUsernameTooShort => "Эң аз 3 символ";
+  @override String get authRegisterSuccess =>
+      "Аккаунт түзүлдү. Ошол ат менен кириңиз.";
   @override String get addEntryEyebrow => "ЖАЗУУ ФОРМАСЫ";
   @override String get addEntryTitle => "Жаңы жазуу кошуу";
   @override String get addEntryWhyTitle => "Сиздин салымыңыз эмне үчүн маанилүү";
@@ -461,6 +475,11 @@ class AppLocalizationsRu extends AppLocalizations {
   @override String get authPasswordRequired => "Введите пароль";
   @override String get authPasswordTooShort => "Не менее 8 символов";
   @override String get authConfirmMismatch => "Пароли не совпадают";
+  @override String get authUsernameLabel => "Имя пользователя";
+  @override String get authUsernameRequired => "Введите имя пользователя";
+  @override String get authUsernameTooShort => "Не менее 3 символов";
+  @override String get authRegisterSuccess =>
+      "Аккаунт создан. Войдите с этим именем.";
   @override String get addEntryEyebrow => "ФОРМА ЗАПИСИ";
   @override String get addEntryTitle => "Добавление новой записи";
   @override String get addEntryWhyTitle => "Почему ваша запись важна";
@@ -583,6 +602,11 @@ class AppLocalizationsTr extends AppLocalizations {
   @override String get authPasswordRequired => "Şifrenizi girin";
   @override String get authPasswordTooShort => "En az 8 karakter";
   @override String get authConfirmMismatch => "Şifreler eşleşmiyor";
+  @override String get authUsernameLabel => "Kullanıcı adı";
+  @override String get authUsernameRequired => "Kullanıcı adınızı girin";
+  @override String get authUsernameTooShort => "En az 3 karakter";
+  @override String get authRegisterSuccess =>
+      "Hesap oluşturuldu. Kullanıcı adınızla giriş yapın.";
   @override String get addEntryEyebrow => "KAYIT FORMU";
   @override String get addEntryTitle => "Yeni kayıt ekle";
   @override String get addEntryWhyTitle => "Katkınız neden önemli";

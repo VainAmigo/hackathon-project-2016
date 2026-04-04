@@ -18,7 +18,8 @@ class App extends StatefulWidget {
 }
 
 class _AppState extends State<App> {
-  late final AuthSessionCubit _sessionCubit = AuthSessionCubit(sl());
+  late final AuthSessionCubit _sessionCubit =
+      AuthSessionCubit(sl(), sl());
   late AppLocaleController _locale;
 
   @override

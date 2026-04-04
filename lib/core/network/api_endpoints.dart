@@ -1,14 +1,14 @@
-/// Базовый URL API. Переопределение: `--dart-define=API_BASE_URL=http://10.0.2.2:7007/api/v1`
-/// (10.0.2.2 — хост-машина с Android-эмулятора).
+/// Базовый URL API. Переопределение: `--dart-define=API_BASE_URL=http://host:port`
 abstract final class ApiConfig {
   static const baseUrl = String.fromEnvironment(
     'API_BASE_URL',
-    defaultValue: 'https://',
+    defaultValue: 'http://54.147.49.220:8081',
   );
 }
 
 abstract final class ApiEndpoints {
-  static const login = 'api/v1/auth/login';
-  static const register = 'api/v1/auth/register';
-  static const userProfile = 'api/v1/user/profile';
+  static const login = '/api/auth/login';
+  static const register = '/api/auth/register';
+  static const refresh = '/api/auth/refresh';
+  static const logout = '/api/auth/logout';
 }

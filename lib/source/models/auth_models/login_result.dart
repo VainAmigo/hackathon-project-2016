@@ -1,29 +1,13 @@
 import 'package:project_temp/source/models/models.dart';
 
-Map<String, dynamic> _normalizeLoginJson(Map<String, dynamic> json) {
-  final data = json['data'] is Map<String, dynamic>
-      ? json['data'] as Map<String, dynamic>
-      : json;
-
-  final userRaw = data['user'] as Map<String, dynamic>? ??
-      json['user'] as Map<String, dynamic>?;
-
-  if (userRaw == null) {
-    throw FormatException('Ответ входа: нет поля user');
+Map<String, dynamic> _unwrapData(Map<String, dynamic> json) {
+  if (json['data'] is Map<String, dynamic>) {
+    return json['data'] as Map<String, dynamic>;
   }
-
-  final token = data['token'] ?? data['access_token'] ?? data['accessToken'] ?? '';
-  final refresh =
-      data['refreshToken'] ?? data['refresh_token'] ?? '';
-
-  return <String, dynamic>{
-    'token': token is String ? token : token.toString(),
-    'refreshToken': refresh is String ? refresh : refresh.toString(),
-    'user': userRaw,
-  };
+  return json;
 }
 
-/// Результат успешного входа: токены и пользователь из одного ответа API.
+/// Ответ POST /api/auth/login: токены и профиль в одном JSON.
 class LoginResult {
   const LoginResult({
     required this.accessToken,
@@ -36,11 +20,23 @@ class LoginResult {
   final User user;
 
   factory LoginResult.fromJson(Map<String, dynamic> json) {
-    final n = _normalizeLoginJson(json);
+    final data = _unwrapData(json);
+    final access = (data['accessToken'] ??
+            data['access_token'] ??
+            data['token'] ??
+            '')
+        .toString();
+    final refresh = (data['refreshToken'] ?? data['refresh_token'] ?? '')
+        .toString();
+    final username = (data['username'] ?? '').toString().trim();
+    final role = (data['role'] ?? '').toString();
+    if (username.isEmpty) {
+      throw const FormatException('Ответ входа: нет username');
+    }
     return LoginResult(
-      accessToken: (n['token'] ?? '').toString(),
-      refreshToken: (n['refreshToken'] ?? '').toString(),
-      user: User.fromJson(n['user'] as Map<String, dynamic>),
+      accessToken: access,
+      refreshToken: refresh,
+      user: User(username: username, role: role),
     );
   }
 }

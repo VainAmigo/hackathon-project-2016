@@ -13,16 +13,27 @@ class AuthRepositoryImpl implements AuthRepository {
   final DioClient _dio;
   final PreferencesService _preferences;
 
+  Future<void> _persistLogin(LoginResult result) async {
+    await _preferences.saveAccessToken(result.accessToken);
+    await _preferences.saveRefreshToken(
+      result.refreshToken.isEmpty ? null : result.refreshToken,
+    );
+    await _preferences.saveAuthProfile(
+      username: result.user.username,
+      role: result.user.role,
+    );
+  }
+
   @override
   Future<Either<Failure, LoginResult>> login({
-    required String email,
+    required String username,
     required String password,
   }) async {
     try {
       final response = await _dio.publicDio.post<Map<String, dynamic>>(
         ApiEndpoints.login,
         data: {
-          'email': email.trim(),
+          'username': username.trim(),
           'password': password,
         },
       );
@@ -32,12 +43,9 @@ class AuthRepositoryImpl implements AuthRepository {
       }
       final result = LoginResult.fromJson(data);
       if (result.accessToken.isEmpty) {
-        return const Left(ValidationFailure('Сервер не вернул токен'));
+        return const Left(ValidationFailure('Сервер не вернул accessToken'));
       }
-      await _preferences.saveAccessToken(result.accessToken);
-      await _preferences.saveRefreshToken(
-        result.refreshToken.isEmpty ? null : result.refreshToken,
-      );
+      await _persistLogin(result);
       return Right(result);
     } on DioException catch (e) {
       return Left(_mapDio(e));
@@ -49,41 +57,61 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<Either<Failure, LoginResult>> register({
-    required String email,
+  Future<Either<Failure, RegisterResult>> register({
+    required String username,
     required String password,
-    String? firstName,
-    String? lastName,
   }) async {
     try {
       final response = await _dio.publicDio.post<Map<String, dynamic>>(
         ApiEndpoints.register,
-        data: <String, dynamic>{
-          'email': email.trim(),
+        data: {
+          'username': username.trim(),
           'password': password,
-          if (firstName != null && firstName.trim().isNotEmpty)
-            'firstName': firstName.trim(),
-          if (lastName != null && lastName.trim().isNotEmpty)
-            'lastName': lastName.trim(),
         },
       );
       final data = response.data;
       if (data == null) {
         return const Left(ServerFailure('Пустой ответ сервера'));
       }
-      final result = LoginResult.fromJson(data);
-      if (result.accessToken.isEmpty) {
-        return const Left(ValidationFailure('Сервер не вернул токен'));
+      final result = RegisterResult.fromJson(data);
+      if (result.username.isEmpty) {
+        return const Left(ValidationFailure('Сервер не вернул username'));
       }
-      await _preferences.saveAccessToken(result.accessToken);
-      await _preferences.saveRefreshToken(
-        result.refreshToken.isEmpty ? null : result.refreshToken,
-      );
       return Right(result);
     } on DioException catch (e) {
       return Left(_mapDio(e));
-    } on FormatException catch (e) {
-      return Left(ValidationFailure(e.message));
+    } on Object catch (e) {
+      return Left(ExceptionToFailure.map(e));
+    }
+  }
+
+  @override
+  Future<Either<Failure, Unit>> refreshTokens() async {
+    final refresh = await _preferences.getRefreshToken();
+    if (refresh == null || refresh.isEmpty) {
+      return const Left(ValidationFailure('Нет refresh-токена'));
+    }
+    try {
+      final response = await _dio.publicDio.post<Map<String, dynamic>>(
+        ApiEndpoints.refresh,
+        data: {'refreshToken': refresh},
+      );
+      final data = response.data;
+      if (data == null) {
+        return const Left(ServerFailure('Пустой ответ сервера'));
+      }
+      final access = data['accessToken']?.toString() ?? '';
+      final newRefresh = data['refreshToken']?.toString() ?? '';
+      if (access.isEmpty) {
+        return const Left(ValidationFailure('Сервер не вернул accessToken'));
+      }
+      await _preferences.saveAccessToken(access);
+      if (newRefresh.isNotEmpty) {
+        await _preferences.saveRefreshToken(newRefresh);
+      }
+      return const Right(unit);
+    } on DioException catch (e) {
+      return Left(_mapDio(e));
     } on Object catch (e) {
       return Left(ExceptionToFailure.map(e));
     }
@@ -91,6 +119,17 @@ class AuthRepositoryImpl implements AuthRepository {
 
   @override
   Future<Either<Failure, Unit>> logout() async {
+    final refresh = await _preferences.getRefreshToken();
+    if (refresh != null && refresh.isNotEmpty) {
+      try {
+        await _dio.publicDio.post<Map<String, dynamic>>(
+          ApiEndpoints.logout,
+          data: {'refreshToken': refresh},
+        );
+      } on DioException catch (_) {
+        // Локальную сессию всё равно сбрасываем.
+      } on Object catch (_) {}
+    }
     try {
       await _preferences.clearSession();
       return const Right(unit);

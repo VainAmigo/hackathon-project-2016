@@ -45,6 +45,12 @@ class DioClient {
       AppLoggingInterceptor(_logger),
       ErrorMappingInterceptor(_logger),
       if (includeAuth) AuthInterceptor(_preferences),
+      if (includeAuth)
+        TokenRefreshInterceptor(
+          preferences: _preferences,
+          publicDio: _publicDio,
+          authDio: dio,
+        ),
     ]);
 
     return dio;

@@ -3,16 +3,17 @@ import 'package:project_temp/source/source.dart';
 
 abstract class AuthRepository {
   Future<Either<Failure, LoginResult>> login({
-    required String email,
+    required String username,
     required String password,
   });
 
-  Future<Either<Failure, LoginResult>> register({
-    required String email,
+  Future<Either<Failure, RegisterResult>> register({
+    required String username,
     required String password,
-    String? firstName,
-    String? lastName,
   });
+
+  /// Обновляет access/refresh по сохранённому refresh-токену.
+  Future<Either<Failure, Unit>> refreshTokens();
 
   Future<Either<Failure, Unit>> logout();
 }

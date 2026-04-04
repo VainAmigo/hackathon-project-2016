@@ -7,6 +7,7 @@ export 'network/api_endpoints.dart';
 export 'network/dio_client.dart';
 export 'network/interceptors/auth_interceptor.dart';
 export 'network/interceptors/error_interceptor.dart';
+export 'network/interceptors/token_refresh_interceptor.dart';
 export 'network/interceptors/logging_interceptor.dart';
 export 'storage/preferences_service.dart';
 export 'storage/preferences_service_impl.dart';
