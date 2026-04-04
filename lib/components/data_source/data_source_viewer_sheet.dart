@@ -7,7 +7,7 @@ import 'package:pdfx/pdfx.dart';
 import 'package:project_temp/core/core.dart';
 import 'package:project_temp/core/platform/share_bytes.dart';
 import 'package:project_temp/l10n/app_localizations.dart';
-import 'package:project_temp/features/archive/domain/data_source_format.dart';
+import 'package:project_temp/source/models/person_models/data_source_format.dart';
 
 /// Показывает нижний лист с просмотром источника (PDF / Markdown / текст) и кнопкой «Сохранить / поделиться».
 Future<void> showDataSourceViewerSheet({

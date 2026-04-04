@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:fpdart/fpdart.dart' hide State;
 
 import 'package:project_temp/core/core.dart';
-import 'package:project_temp/features/archive/domain/archive_entry.dart';
+import 'package:project_temp/features/archive/presentation/widgets/archive_detail_documents_block.dart';
+import 'package:project_temp/features/archive/presentation/widgets/archive_entry_portrait.dart';
 import 'package:project_temp/l10n/app_localizations.dart';
-import 'package:project_temp/features/archive/presentation/utils/archive_entry_source_actions.dart';
+import 'package:project_temp/source/source.dart';
 
-/// Страница деталей записи (пергаментный макет: шапка, сетка, текст, источник).
-class ArchiveEntryDetailPage extends StatelessWidget {
-  const ArchiveEntryDetailPage({super.key, required this.entry});
+/// Детали записи: загрузка GET /api/v1/persons/{id}.
+class ArchiveEntryDetailPage extends StatefulWidget {
+  const ArchiveEntryDetailPage({super.key, required this.personId});
 
-  final ArchiveEntry entry;
+  final String personId;
 
   static const _nameStyle = TextStyle(
     fontFamily: 'serif',
@@ -35,37 +37,123 @@ class ArchiveEntryDetailPage extends StatelessWidget {
   );
 
   @override
+  State<ArchiveEntryDetailPage> createState() => _ArchiveEntryDetailPageState();
+}
+
+class _ArchiveEntryDetailPageState extends State<ArchiveEntryDetailPage> {
+  late Future<Either<Failure, ArchiveEntry>> _future;
+
+  @override
+  void initState() {
+    super.initState();
+    _future = sl<PersonsRepository>().getPerson(widget.personId);
+  }
+
+  void _retry() {
+    setState(() {
+      _future = sl<PersonsRepository>().getPerson(widget.personId);
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
     final wide = MediaQuery.sizeOf(context).width >= 760;
 
-    return Scaffold(
-      backgroundColor: AppThemes.backgroundColor,
-      appBar: AppBar(
-        backgroundColor: AppThemes.backgroundColor,
-        foregroundColor: AppThemes.textColorPrimary,
-        elevation: 0,
-        title: Text(
-          entry.fullName,
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-          style: const TextStyle(
-            fontFamily: 'serif',
-            fontSize: 17,
-            fontWeight: FontWeight.w700,
+    return FutureBuilder<Either<Failure, ArchiveEntry>>(
+      future: _future,
+      builder: (context, snap) {
+        final title = _resolveTitle(l10n, snap);
+        Widget body;
+        if (snap.connectionState == ConnectionState.waiting) {
+          body = const Center(child: CircularProgressIndicator());
+        } else {
+          final data = snap.data;
+          if (data == null) {
+            body = _ErrorBody(message: l10n.archiveCatalogEmpty, onRetry: _retry);
+          } else {
+            body = data.fold(
+              (f) => _ErrorBody(message: f.message, onRetry: _retry),
+              (entry) {
+                return Align(
+                  alignment: Alignment.topCenter,
+                  child: ConstrainedBox(
+                    constraints: const BoxConstraints(maxWidth: 920),
+                    child: SingleChildScrollView(
+                      padding: const EdgeInsets.fromLTRB(20, 12, 20, 44),
+                      child: wide
+                          ? _DetailWideLayout(entry: entry, l10n: l10n)
+                          : _DetailNarrowLayout(entry: entry, l10n: l10n),
+                    ),
+                  ),
+                );
+              },
+            );
+          }
+        }
+
+        return Scaffold(
+          backgroundColor: AppThemes.backgroundColor,
+          appBar: AppBar(
+            backgroundColor: AppThemes.backgroundColor,
+            foregroundColor: AppThemes.textColorPrimary,
+            elevation: 0,
+            title: Text(
+              title,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: const TextStyle(
+                fontFamily: 'serif',
+                fontSize: 17,
+                fontWeight: FontWeight.w700,
+              ),
+            ),
           ),
-        ),
-      ),
-      body: Align(
-        alignment: Alignment.topCenter,
-        child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 920),
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.fromLTRB(20, 12, 20, 44),
-            child: wide
-                ? _DetailWideLayout(entry: entry, l10n: l10n)
-                : _DetailNarrowLayout(entry: entry, l10n: l10n),
-          ),
+          body: body,
+        );
+      },
+    );
+  }
+
+  static String _resolveTitle(
+    AppLocalizations l10n,
+    AsyncSnapshot<Either<Failure, ArchiveEntry>> snap,
+  ) {
+    if (snap.connectionState == ConnectionState.waiting) {
+      return l10n.navArchive;
+    }
+    final data = snap.data;
+    if (data == null) return l10n.navArchive;
+    return data.fold((_) => l10n.navArchive, (e) => e.fullName);
+  }
+}
+
+class _ErrorBody extends StatelessWidget {
+  const _ErrorBody({required this.message, required this.onRetry});
+
+  final String message;
+  final VoidCallback onRetry;
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(24),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              message,
+              textAlign: TextAlign.center,
+              style: TextStyle(color: AppThemes.textColorSecondary),
+            ),
+            const SizedBox(height: 16),
+            TextButton.icon(
+              icon: const Icon(Icons.refresh, size: 18),
+              label: const Text('Повторить'),
+              onPressed: onRetry,
+            ),
+          ],
         ),
       ),
     );
@@ -93,17 +181,11 @@ class _DetailWideLayout extends StatelessWidget {
             children: [
               AspectRatio(
                 aspectRatio: 1,
-                child: Image.asset(
-                  entry.portraitAssetPath,
+                child: ArchiveEntryPortrait(
+                  entry: entry,
+                  width: 208,
+                  height: 208,
                   fit: BoxFit.cover,
-                  errorBuilder: (_, _, _) => ColoredBox(
-                    color: AppThemes.textColorGrey.withValues(alpha: 0.12),
-                    child: Icon(
-                      Icons.person_outline,
-                      size: 56,
-                      color: AppThemes.textColorGrey,
-                    ),
-                  ),
                 ),
               ),
               const SizedBox(height: 28),
@@ -117,7 +199,7 @@ class _DetailWideLayout extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 10),
-              _SourceLink(entry: entry),
+              ArchiveDetailDocumentsBlock(entry: entry, l10n: l10n),
             ],
           ),
         ),
@@ -149,17 +231,11 @@ class _DetailNarrowLayout extends StatelessWidget {
             constraints: const BoxConstraints(maxWidth: 260),
             child: AspectRatio(
               aspectRatio: 1,
-              child: Image.asset(
-                entry.portraitAssetPath,
+              child: ArchiveEntryPortrait(
+                entry: entry,
+                width: 260,
+                height: 260,
                 fit: BoxFit.cover,
-                errorBuilder: (_, _, _) => ColoredBox(
-                  color: AppThemes.textColorGrey.withValues(alpha: 0.12),
-                  child: Icon(
-                    Icons.person_outline,
-                    size: 56,
-                    color: AppThemes.textColorGrey,
-                  ),
-                ),
               ),
             ),
           ),
@@ -177,7 +253,7 @@ class _DetailNarrowLayout extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 10),
-        _SourceLink(entry: entry),
+        ArchiveDetailDocumentsBlock(entry: entry, l10n: l10n),
       ],
     );
   }
@@ -193,6 +269,8 @@ class _DetailMainColumn extends StatelessWidget {
   final ArchiveEntry entry;
   final AppLocalizations l10n;
   final bool threeColumnGrid;
+
+  static bool _has(String s) => s.trim().isNotEmpty && s.trim() != '—';
 
   @override
   Widget build(BuildContext context) {
@@ -222,28 +300,31 @@ class _DetailMainColumn extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 22),
-        _MetaGrid(
+        _DetailMetaGrid(
           entry: entry,
           l10n: l10n,
           threeColumn: threeColumnGrid,
         ),
-        const SizedBox(height: 28),
-        Text(entry.biography, style: ArchiveEntryDetailPage._bodySerif),
-        if (entry.transcriptSection != null &&
-            entry.transcriptSection!.trim().isNotEmpty) ...[
+        if (_has(entry.arrestDate) ||
+            _has(entry.punishmentDate) ||
+            _has(entry.rehabDate)) ...[
+          const SizedBox(height: 20),
+          _DateMetaBlock(entry: entry, l10n: l10n),
+        ],
+        if (_has(entry.accusation)) ...[
           const SizedBox(height: 28),
           Text(
-            l10n.archiveTranscriptHeading,
+            l10n.addEntryFieldAccusation,
             style: ArchiveEntryDetailPage._sectionHeading,
           ),
           const SizedBox(height: 12),
-          Text(
-            entry.transcriptSection!,
-            style: ArchiveEntryDetailPage._bodySerif,
-          ),
+          Text(entry.accusation, style: ArchiveEntryDetailPage._bodySerif),
         ],
-        if (entry.verdictSection != null &&
-            entry.verdictSection!.trim().isNotEmpty) ...[
+        if (_has(entry.biography)) ...[
+          const SizedBox(height: 28),
+          Text(entry.biography, style: ArchiveEntryDetailPage._bodySerif),
+        ],
+        if (entry.verdictSection != null && _has(entry.verdictSection!)) ...[
           const SizedBox(height: 28),
           Text(
             l10n.archiveVerdictHeading,
@@ -255,37 +336,84 @@ class _DetailMainColumn extends StatelessWidget {
             style: ArchiveEntryDetailPage._bodySerif,
           ),
         ],
-        if (entry.familyConsequencesSection != null &&
-            entry.familyConsequencesSection!.trim().isNotEmpty) ...[
-          const SizedBox(height: 28),
-          Text(
-            l10n.archiveFamilyHeading,
-            style: ArchiveEntryDetailPage._sectionHeading,
-          ),
-          const SizedBox(height: 12),
-          Text(
-            entry.familyConsequencesSection!,
-            style: ArchiveEntryDetailPage._bodySerif,
-          ),
-        ],
-        const SizedBox(height: 32),
-        Text(
-          entry.rehabFootnote,
-          style: TextStyle(
-            fontFamily: 'serif',
-            fontSize: 14,
-            height: 1.5,
-            fontStyle: FontStyle.italic,
-            color: AppThemes.textColorSecondary,
-          ),
-        ),
       ],
     );
   }
 }
 
-class _MetaGrid extends StatelessWidget {
-  const _MetaGrid({
+class _DateMetaBlock extends StatelessWidget {
+  const _DateMetaBlock({required this.entry, required this.l10n});
+
+  final ArchiveEntry entry;
+  final AppLocalizations l10n;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        if (entry.arrestDate.trim().isNotEmpty)
+          _DateRow(label: l10n.archiveMetaArrestDate, value: entry.arrestDate),
+        if (entry.arrestDate.trim().isNotEmpty &&
+            entry.punishmentDate.trim().isNotEmpty)
+          const SizedBox(height: 10),
+        if (entry.punishmentDate.trim().isNotEmpty)
+          _DateRow(
+            label: l10n.addEntryFieldPunishmentDate,
+            value: entry.punishmentDate,
+          ),
+        if (entry.punishmentDate.trim().isNotEmpty &&
+            entry.rehabDate.trim().isNotEmpty)
+          const SizedBox(height: 10),
+        if (entry.rehabDate.trim().isNotEmpty)
+          _DateRow(
+            label: l10n.addEntryFieldRehabDate,
+            value: entry.rehabDate,
+          ),
+      ],
+    );
+  }
+}
+
+class _DateRow extends StatelessWidget {
+  const _DateRow({required this.label, required this.value});
+
+  final String label;
+  final String value;
+
+  @override
+  Widget build(BuildContext context) {
+    return RichText(
+      text: TextSpan(
+        style: TextStyle(
+          fontSize: 13,
+          height: 1.45,
+          color: AppThemes.textColorSecondary,
+        ),
+        children: [
+          TextSpan(
+            text: '$label: ',
+            style: TextStyle(
+              fontWeight: FontWeight.w600,
+              color: AppThemes.textColorGrey,
+            ),
+          ),
+          TextSpan(
+            text: value,
+            style: const TextStyle(
+              fontFamily: 'serif',
+              fontWeight: FontWeight.w600,
+              color: AppThemes.textColorPrimary,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _DetailMetaGrid extends StatelessWidget {
+  const _DetailMetaGrid({
     required this.entry,
     required this.l10n,
     required this.threeColumn,
@@ -295,22 +423,34 @@ class _MetaGrid extends StatelessWidget {
   final AppLocalizations l10n;
   final bool threeColumn;
 
+  static bool _use(String s) => s.trim().isNotEmpty && s.trim() != '—';
+
   @override
   Widget build(BuildContext context) {
-    final cells = [
-      _GridCell(
-        label: l10n.archiveMetaBirthPlace,
-        value: entry.birthPlace,
-      ),
-      _GridCell(
-        label: l10n.archiveMetaSocialOrigin,
-        value: entry.socialOrigin,
-      ),
-      _GridCell(
-        label: l10n.archiveMetaOccupationShort,
-        value: entry.occupation,
-      ),
-    ];
+    final cells = <_GridCell>[];
+    if (_use(entry.birthPlace)) {
+      cells.add(_GridCell(label: l10n.archiveMetaBirthPlace, value: entry.birthPlace));
+    }
+    if (_use(entry.region)) {
+      cells.add(_GridCell(label: l10n.addEntryFieldRegion, value: entry.region));
+    }
+    if (_use(entry.district)) {
+      cells.add(_GridCell(label: l10n.archiveMetaDistrict, value: entry.district));
+    }
+    if (_use(entry.deathPlace)) {
+      cells.add(
+        _GridCell(label: l10n.archiveMetaDeathPlace, value: entry.deathPlace),
+      );
+    }
+    if (_use(entry.occupation)) {
+      cells.add(
+        _GridCell(label: l10n.archiveMetaOccupationShort, value: entry.occupation),
+      );
+    }
+
+    if (cells.isEmpty) {
+      return const SizedBox.shrink();
+    }
 
     if (!threeColumn) {
       return Column(
@@ -324,14 +464,45 @@ class _MetaGrid extends StatelessWidget {
       );
     }
 
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        for (var i = 0; i < cells.length; i++) ...[
-          if (i > 0) const SizedBox(width: 16),
-          Expanded(child: cells[i]),
-        ],
-      ],
+    return LayoutBuilder(
+      builder: (context, c) {
+        if (c.maxWidth < 520) {
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              for (var i = 0; i < cells.length; i++) ...[
+                if (i > 0) const SizedBox(height: 16),
+                cells[i],
+              ],
+            ],
+          );
+        }
+        final rows = <Widget>[];
+        for (var i = 0; i < cells.length; i += 3) {
+          final chunk = cells.sublist(
+            i,
+            i + 3 > cells.length ? cells.length : i + 3,
+          );
+          rows.add(
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                for (var j = 0; j < chunk.length; j++) ...[
+                  if (j > 0) const SizedBox(width: 16),
+                  Expanded(child: chunk[j]),
+                ],
+              ],
+            ),
+          );
+          if (i + 3 < cells.length) {
+            rows.add(const SizedBox(height: 16));
+          }
+        }
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: rows,
+        );
+      },
     );
   }
 }
@@ -368,33 +539,6 @@ class _GridCell extends StatelessWidget {
           ),
         ),
       ],
-    );
-  }
-}
-
-class _SourceLink extends StatelessWidget {
-  const _SourceLink({required this.entry});
-
-  final ArchiveEntry entry;
-
-  @override
-  Widget build(BuildContext context) {
-    return MouseRegion(
-      cursor: SystemMouseCursors.click,
-      child: GestureDetector(
-        onTap: () => openArchiveEntrySource(context, entry),
-        child: Text(
-          archiveSourceDisplayTitle(entry.source),
-          style: const TextStyle(
-            fontFamily: 'serif',
-            fontSize: 16,
-            fontWeight: FontWeight.w600,
-            color: AppThemes.accentColor,
-            decoration: TextDecoration.underline,
-            decorationColor: AppThemes.accentColor,
-          ),
-        ),
-      ),
     );
   }
 }

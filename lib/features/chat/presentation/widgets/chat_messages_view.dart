@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 import 'package:project_temp/core/core.dart';
-import 'package:project_temp/features/chat/domain/chat_models.dart';
+import 'package:project_temp/source/models/chat_models/chat_message_response.dart';
 
-/// Лента сообщений: [MessageDto.question] / [MessageDto.answer] и источники.
+/// Лента сообщений: вопрос / ответ и источники из [ChatMessageResponse].
 class ChatMessagesView extends StatelessWidget {
   const ChatMessagesView({
     super.key,
@@ -12,7 +12,7 @@ class ChatMessagesView extends StatelessWidget {
     required this.emptySubtitle,
   });
 
-  final List<ChatMessage> messages;
+  final List<ChatMessageResponse> messages;
   final String emptyTitle;
   final String emptySubtitle;
 
@@ -88,7 +88,7 @@ class ChatMessagesView extends StatelessWidget {
                         text: m.answer,
                         alignRight: false,
                       ),
-                      if (m.sources.isNotEmpty) ...[
+                      if (m.sources.any((s) => s.documentId != null)) ...[
                         const SizedBox(height: 8),
                         _SourcesRow(sources: m.sources),
                       ],

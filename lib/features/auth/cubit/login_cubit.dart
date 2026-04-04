@@ -8,7 +8,7 @@ class LoginCubit extends Cubit<LoginState> {
   final AuthRepository _auth;
 
   Future<void> login({
-    required String username,
+    required String email,
     required String password,
   }) async {
     emit(
@@ -18,7 +18,7 @@ class LoginCubit extends Cubit<LoginState> {
         clearUser: true,
       ),
     );
-    final result = await _auth.login(username: username, password: password);
+    final result = await _auth.login(email: email, password: password);
     result.fold(
       (f) => emit(
         state.copyWith(

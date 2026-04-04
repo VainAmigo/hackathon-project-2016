@@ -8,10 +8,7 @@ import 'package:project_temp/features/home/presentation/widgets/regional_map/hom
 
 /// Скролл главной вкладки: hero + материалы архива.
 class HomeLandingBody extends StatelessWidget {
-  const HomeLandingBody({
-    super.key,
-    required this.onOpenAiAssistant,
-  });
+  const HomeLandingBody({super.key, required this.onOpenAiAssistant});
 
   final VoidCallback onOpenAiAssistant;
 
@@ -29,7 +26,8 @@ class HomeLandingBody extends StatelessWidget {
     return LayoutBuilder(
       builder: (context, constraints) {
         final viewH = MediaQuery.sizeOf(context).height;
-        final segmentH = constraints.hasBoundedHeight &&
+        final segmentH =
+            constraints.hasBoundedHeight &&
                 constraints.maxHeight.isFinite &&
                 constraints.maxHeight > 0
             ? constraints.maxHeight
@@ -38,8 +36,8 @@ class HomeLandingBody extends StatelessWidget {
         final padX = compact ? 24.0 : 40.0;
         final layoutW =
             (constraints.maxWidth.isFinite && constraints.maxWidth > 0)
-                ? constraints.maxWidth
-                : MediaQuery.sizeOf(context).width;
+            ? constraints.maxWidth
+            : MediaQuery.sizeOf(context).width;
         final innerMaxW = (layoutW - 2 * padX).clamp(1.0, double.infinity);
         final capW = maxW.isFinite ? maxW.clamp(1.0, innerMaxW) : innerMaxW;
 
@@ -57,14 +55,8 @@ class HomeLandingBody extends StatelessWidget {
                 textAlign: textAlign,
                 onOpenAiAssistant: onOpenAiAssistant,
               ),
-              HomeArchiveSection(
-                maxContentWidth: maxW,
-                compact: compact,
-              ),
-              HomeRegionalMapSection(
-                maxContentWidth: maxW,
-                compact: compact,
-              ),
+              HomeArchiveSection(maxContentWidth: maxW, compact: compact),
+              HomeRegionalMapSection(maxContentWidth: maxW, compact: compact),
               SizedBox(height: 24 + MediaQuery.paddingOf(context).bottom),
             ],
           ),

@@ -1,3 +1,4 @@
+export 'home_shell_tab_sync.dart';
 export 'presentation/pages/home_page.dart';
 export 'presentation/constants/home_assets.dart';
 export 'presentation/widgets/ask_assistant_fake_search_bar.dart';

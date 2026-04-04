@@ -55,11 +55,7 @@ Future<void> showHomeRegionVictimsSheet({
                 ),
               ),
               const SizedBox(height: 10),
-              Container(
-                width: 56,
-                height: 3,
-                color: AppThemes.accentColor,
-              ),
+              Container(width: 56, height: 3, color: AppThemes.accentColor),
               const SizedBox(height: 18),
               if (victims.isEmpty)
                 Padding(

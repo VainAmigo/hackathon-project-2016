@@ -40,9 +40,7 @@ class HomeHeroSegment extends StatelessWidget {
           fit: StackFit.expand,
           children: [
             const Positioned.fill(
-              child: HomeHeroFallbackBackground(
-                child: HomeHeroBackdrop(),
-              ),
+              child: HomeHeroFallbackBackground(child: HomeHeroBackdrop()),
             ),
             Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -75,9 +73,7 @@ class HomeHeroSegment extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.stretch,
                                 children: [
                                   FadeSlideIn(
-                                    duration: const Duration(
-                                      milliseconds: 560,
-                                    ),
+                                    duration: const Duration(milliseconds: 560),
                                     slideBegin: const Offset(0, 0.05),
                                     child: HomeHeroHeadline(
                                       titleSize: titleSize,
@@ -88,9 +84,7 @@ class HomeHeroSegment extends StatelessWidget {
                                   SizedBox(height: compact ? 20 : 24),
                                   FadeSlideIn(
                                     delay: const Duration(milliseconds: 140),
-                                    duration: const Duration(
-                                      milliseconds: 520,
-                                    ),
+                                    duration: const Duration(milliseconds: 520),
                                     slideBegin: const Offset(0, 0.07),
                                     child: AskAssistantFakeSearchBar(
                                       onPressed: onOpenAiAssistant,

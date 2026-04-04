@@ -66,13 +66,13 @@ class _LoginForm extends StatefulWidget {
 
 class _LoginFormState extends State<_LoginForm> {
   final _formKey = GlobalKey<FormState>();
-  final _username = TextEditingController();
+  final _email = TextEditingController();
   final _password = TextEditingController();
   bool _obscure = true;
 
   @override
   void dispose() {
-    _username.dispose();
+    _email.dispose();
     _password.dispose();
     super.dispose();
   }
@@ -81,7 +81,7 @@ class _LoginFormState extends State<_LoginForm> {
     if (!_formKey.currentState!.validate()) return;
     FocusScope.of(context).unfocus();
     context.read<LoginCubit>().login(
-          username: _username.text.trim(),
+          email: _email.text.trim(),
           password: _password.text,
         );
   }
@@ -120,15 +120,16 @@ class _LoginFormState extends State<_LoginForm> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   CustomTextFormField(
-                    controller: _username,
-                    label: l10n.authUsernameLabel,
+                    controller: _email,
+                    label: l10n.authEmailLabel,
+                    keyboardType: TextInputType.emailAddress,
                     textInputAction: TextInputAction.next,
-                    autofillHints: const [AutofillHints.username],
+                    autofillHints: const [AutofillHints.email],
                     prefixIcon: Icon(
-                      Icons.person_outline_rounded,
+                      Icons.email_outlined,
                       color: AppThemes.textColorGrey,
                     ),
-                    validator: (v) => AuthValidators.username(l10n, v),
+                    validator: (v) => AuthValidators.email(l10n, v),
                   ),
                   CustomTextFormField(
                     controller: _password,

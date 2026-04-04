@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:project_temp/core/core.dart';
 
-/// Нижняя панель: ввод [SendMessageRequest.question] и отправка.
+/// Нижняя панель ввода вопроса и отправки.
 class ChatComposerBar extends StatelessWidget {
   const ChatComposerBar({
     super.key,

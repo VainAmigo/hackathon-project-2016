@@ -52,7 +52,9 @@ class _HomeRegionalMapSectionState extends State<HomeRegionalMapSection> {
     final repo = sl<RegionalVictimsRepository>();
     final l10n = context.l10n;
     final horizontal = widget.compact ? 24.0 : 40.0;
-    final capW = widget.maxContentWidth.isFinite ? widget.maxContentWidth : 640.0;
+    final capW = widget.maxContentWidth.isFinite
+        ? widget.maxContentWidth
+        : 640.0;
 
     return ColoredBox(
       color: AppThemes.surfaceColor,
@@ -67,11 +69,7 @@ class _HomeRegionalMapSectionState extends State<HomeRegionalMapSection> {
               children: [
                 Text(l10n.homeMapSectionTitle, style: _titleStyle),
                 const SizedBox(height: 8),
-                Container(
-                  width: 96,
-                  height: 4,
-                  color: AppThemes.accentColor,
-                ),
+                Container(width: 96, height: 4, color: AppThemes.accentColor),
                 const SizedBox(height: 12),
                 Text(
                   l10n.homeMapSectionSubtitle,

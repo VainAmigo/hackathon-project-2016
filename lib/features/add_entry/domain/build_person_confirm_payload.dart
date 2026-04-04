@@ -53,8 +53,9 @@ Map<String, dynamic> buildPersonConfirmPayload({
 
   final fn = _pickStr(fullName, ru?.fullName);
   final ruNorm = ru?.normalizedName?.trim();
-  final norm =
-      (ruNorm != null && ruNorm.isNotEmpty) ? ruNorm : fn.toLowerCase();
+  final norm = (ruNorm != null && ruNorm.isNotEmpty)
+      ? ruNorm
+      : fn.toLowerCase();
 
   final birthYear = _pickYear(yearFrom, ru?.birthYear);
   final deathYear = _pickYear(yearTo, ru?.deathYear);
@@ -79,29 +80,28 @@ Map<String, dynamic> buildPersonConfirmPayload({
   final bio = _pickStr(biography, ru?.biography);
   final rd = _pickStr(rehabDate, ru?.rehabilitationDate);
 
-  final repressionYear = _yearFromDateOrYearField(pd) ??
-      _yearFromDateOrYearField(rd) ??
-      birthYear;
+  final repressionYear =
+      _yearFromDateOrYearField(pd) ?? _yearFromDateOrYearField(rd) ?? birthYear;
 
   Map<String, dynamic> translationSlice() => <String, dynamic>{
-        'fullName': fn.isEmpty ? null : fn,
-        'normalizedName': norm.isEmpty ? null : norm,
-        'birthYear': birthYear,
-        'deathYear': deathYear,
-        'birthDate': ru?.birthDate,
-        'deathDate': ru?.deathDate,
-        'birthPlace': ru?.birthPlace,
-        'deathPlace': ru?.deathPlace,
-        'region': reg,
-        'district': dist,
-        'occupation': occ.isEmpty ? null : occ,
-        'charge': charge.isEmpty ? null : charge,
-        'arrestDate': pd.isEmpty ? null : pd,
-        'sentence': sentence.isEmpty ? null : sentence,
-        'sentenceDate': ru?.sentenceDate ?? (pd.isEmpty ? null : pd),
-        'rehabilitationDate': rd.isEmpty ? null : rd,
-        'biography': bio.isEmpty ? null : bio,
-      };
+    'fullName': fn.isEmpty ? null : fn,
+    'normalizedName': norm.isEmpty ? null : norm,
+    'birthYear': birthYear,
+    'deathYear': deathYear,
+    'birthDate': ru?.birthDate,
+    'deathDate': ru?.deathDate,
+    'birthPlace': ru?.birthPlace,
+    'deathPlace': ru?.deathPlace,
+    'region': reg,
+    'district': dist,
+    'occupation': occ.isEmpty ? null : occ,
+    'charge': charge.isEmpty ? null : charge,
+    'arrestDate': pd.isEmpty ? null : pd,
+    'sentence': sentence.isEmpty ? null : sentence,
+    'sentenceDate': ru?.sentenceDate ?? (pd.isEmpty ? null : pd),
+    'rehabilitationDate': rd.isEmpty ? null : rd,
+    'biography': bio.isEmpty ? null : bio,
+  };
 
   final slice = translationSlice();
   final translations = <String, Map<String, dynamic>>{

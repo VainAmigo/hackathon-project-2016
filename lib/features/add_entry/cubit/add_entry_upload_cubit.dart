@@ -10,26 +10,12 @@ class AddEntryUploadCubit extends Cubit<AddEntryUploadState> {
 
   Future<void> uploadPdf(XFile file) async {
     emit(
-      state.copyWith(
-        isUploading: true,
-        clearError: true,
-        clearResult: true,
-      ),
+      state.copyWith(isUploading: true, clearError: true, clearResult: true),
     );
     final out = await _repo.uploadPdf(file);
     out.fold(
-      (f) => emit(
-        state.copyWith(
-          isUploading: false,
-          errorMessage: f.message,
-        ),
-      ),
-      (doc) => emit(
-        AddEntryUploadState(
-          isUploading: false,
-          result: doc,
-        ),
-      ),
+      (f) => emit(state.copyWith(isUploading: false, errorMessage: f.message)),
+      (doc) => emit(AddEntryUploadState(isUploading: false, result: doc)),
     );
   }
 

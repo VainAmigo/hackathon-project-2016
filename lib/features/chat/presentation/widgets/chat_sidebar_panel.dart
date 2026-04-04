@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:project_temp/core/core.dart';
-import 'package:project_temp/features/chat/domain/chat_models.dart';
+import 'package:project_temp/source/models/chat_models/chat_summary.dart';
 
 /// Левая колонка: список чатов + «новый чат».
 class ChatSidebarPanel extends StatelessWidget {
@@ -13,7 +13,7 @@ class ChatSidebarPanel extends StatelessWidget {
     required this.onNewChat,
   });
 
-  final List<ChatListItem> chats;
+  final List<ChatSummary> chats;
   final int? selectedChatId;
   final ValueChanged<int> onSelectChat;
   final VoidCallback onNewChat;

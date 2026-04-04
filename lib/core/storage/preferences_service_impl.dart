@@ -4,7 +4,7 @@ import 'secure_storage.dart';
 
 class PreferencesServiceImpl implements PreferencesService {
   PreferencesServiceImpl({required SecureStorage secureStorage})
-      : _secure = secureStorage;
+    : _secure = secureStorage;
 
   final SecureStorage _secure;
 
@@ -28,19 +28,23 @@ class PreferencesServiceImpl implements PreferencesService {
 
   @override
   Future<void> saveAuthProfile({
-    required String username,
+    required String email,
     required String role,
   }) async {
-    await _secure.write(key: PreferencesKeys.authUsername, value: username);
+    await _secure.write(key: PreferencesKeys.authEmail, value: email);
     await _secure.write(key: PreferencesKeys.authRole, value: role);
   }
 
   @override
-  Future<String?> getStoredUsername() =>
-      _secure.read(key: PreferencesKeys.authUsername);
+  Future<String?> getStoredEmail() async {
+    final v = await _secure.read(key: PreferencesKeys.authEmail);
+    if (v != null && v.isNotEmpty) return v;
+    return _secure.read(key: PreferencesKeys.authUsernameLegacy);
+  }
 
   @override
-  Future<String?> getStoredRole() => _secure.read(key: PreferencesKeys.authRole);
+  Future<String?> getStoredRole() =>
+      _secure.read(key: PreferencesKeys.authRole);
 
   @override
   Future<void> clearSession() => _secure.deleteAll();

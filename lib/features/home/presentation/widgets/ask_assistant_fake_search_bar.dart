@@ -17,15 +17,15 @@ class AskAssistantFakeSearchBar extends StatelessWidget {
   Widget build(BuildContext context) {
     final (Color fill, Color border, Color fg) = switch (variant) {
       AskAssistantSearchBarVariant.onHero => (
-          AppThemes.backgroundColor.withValues(alpha: 0.18),
-          AppThemes.backgroundColor.withValues(alpha: 0.28),
-          AppThemes.surfaceColor,
-        ),
+        AppThemes.backgroundColor.withValues(alpha: 0.18),
+        AppThemes.backgroundColor.withValues(alpha: 0.28),
+        AppThemes.surfaceColor,
+      ),
       AskAssistantSearchBarVariant.light => (
-          AppThemes.backgroundColor,
-          AppThemes.textColorGrey.withValues(alpha: 0.45),
-          AppThemes.textColorSecondary,
-        ),
+        AppThemes.backgroundColor,
+        AppThemes.textColorGrey.withValues(alpha: 0.45),
+        AppThemes.textColorSecondary,
+      ),
     };
 
     return Material(
@@ -49,10 +49,10 @@ class AskAssistantFakeSearchBar extends StatelessWidget {
                   child: Text(
                     context.l10n.askAssistantHint,
                     style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                          color: fg,
-                          fontStyle: FontStyle.italic,
-                          fontWeight: FontWeight.w400,
-                        ),
+                      color: fg,
+                      fontStyle: FontStyle.italic,
+                      fontWeight: FontWeight.w400,
+                    ),
                   ),
                 ),
               ],

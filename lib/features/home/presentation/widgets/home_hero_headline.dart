@@ -25,26 +25,22 @@ class HomeHeroHeadline extends StatelessWidget {
     );
 
     final labelStyle = Theme.of(context).textTheme.labelSmall?.copyWith(
-          letterSpacing: 4,
-          fontWeight: FontWeight.w400,
-          color: AppThemes.textColorGrey,
-        );
+      letterSpacing: 4,
+      fontWeight: FontWeight.w400,
+      color: AppThemes.textColorGrey,
+    );
 
     final bodyStyle = Theme.of(context).textTheme.bodyLarge?.copyWith(
-          height: 1.5,
-          fontWeight: FontWeight.w400,
-          color: AppThemes.surfaceColor,
-        );
+      height: 1.5,
+      fontWeight: FontWeight.w400,
+      color: AppThemes.surfaceColor,
+    );
 
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Text(
-          l10n.homeHeroEyebrow,
-          textAlign: textAlign,
-          style: labelStyle,
-        ),
+        Text(l10n.homeHeroEyebrow, textAlign: textAlign, style: labelStyle),
         SizedBox(height: compact ? 14 : 20),
         Text.rich(
           TextSpan(
@@ -80,9 +76,7 @@ class HomeHeroHeadline extends StatelessWidget {
         Text(
           l10n.homeLandingSubtitle,
           textAlign: textAlign,
-          style: bodyStyle?.copyWith(
-            fontSize: compact ? 15 : 16,
-          ),
+          style: bodyStyle?.copyWith(fontSize: compact ? 15 : 16),
         ),
       ],
     );

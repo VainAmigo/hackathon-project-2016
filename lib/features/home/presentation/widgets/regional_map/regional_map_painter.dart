@@ -5,10 +5,7 @@ import 'package:project_temp/features/home/domain/map_region_id.dart';
 
 /// Отрисовка регионов карты в координатах viewBox 815×403.
 class RegionalMapPainter extends CustomPainter {
-  RegionalMapPainter({
-    required this.layers,
-    this.highlighted,
-  });
+  RegionalMapPainter({required this.layers, this.highlighted});
 
   final List<MapSvgPathLayer> layers;
   final MapRegionId? highlighted;

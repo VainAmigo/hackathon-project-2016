@@ -40,10 +40,7 @@ class HomeMapSummaryPanel extends StatelessWidget {
 }
 
 class _SummaryCard extends StatelessWidget {
-  const _SummaryCard({
-    required this.value,
-    required this.label,
-  });
+  const _SummaryCard({required this.value, required this.label});
 
   final String value;
   final String label;
@@ -81,11 +78,7 @@ class _SummaryCard extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 6),
-            Container(
-              width: 40,
-              height: 3,
-              color: AppThemes.accentColor,
-            ),
+            Container(width: 40, height: 3, color: AppThemes.accentColor),
             const SizedBox(height: 8),
             Text(
               label,

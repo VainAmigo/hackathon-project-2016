@@ -5,6 +5,7 @@ import 'package:project_temp/features/archive/data/archive_catalog_repository_im
 import 'package:project_temp/features/archive/domain/archive_catalog_repository.dart';
 import 'package:project_temp/features/home/data/regional_victims_repository_impl.dart';
 import 'package:project_temp/features/home/domain/regional_victims_repository.dart';
+import 'package:project_temp/features/home/home_shell_tab_sync.dart';
 import 'package:project_temp/source/source.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -36,6 +37,7 @@ Future<void> initDependencies({bool testMode = false}) async {
   }
 
   sl
+    ..registerLazySingleton<HomeShellTabSync>(HomeShellTabSync.new)
     ..registerLazySingleton<AppLogger>(AppLogger.new)
     ..registerLazySingleton<PreferencesService>(
       () => PreferencesServiceImpl(secureStorage: sl()),
@@ -44,10 +46,7 @@ Future<void> initDependencies({bool testMode = false}) async {
       () => DioClient(preferencesService: sl(), logger: sl()),
     )
     ..registerLazySingleton<AuthRepository>(
-      () => AuthRepositoryImpl(
-        dioClient: sl(),
-        preferences: sl(),
-      ),
+      () => AuthRepositoryImpl(dioClient: sl(), preferences: sl()),
     )
     ..registerLazySingleton<EntryUploadRepository>(
       () => EntryUploadRepositoryImpl(dioClient: sl()),
@@ -55,8 +54,17 @@ Future<void> initDependencies({bool testMode = false}) async {
     ..registerLazySingleton<EntryConfirmRepository>(
       () => EntryConfirmRepositoryImpl(dioClient: sl()),
     )
+    ..registerLazySingleton<PersonsRepository>(
+      () => PersonsRepositoryImpl(dioClient: sl()),
+    )
+    ..registerLazySingleton<FilesRepository>(
+      () => FilesRepositoryImpl(dioClient: sl()),
+    )
+    ..registerLazySingleton<ChatsRepository>(
+      () => ChatsRepositoryImpl(dioClient: sl()),
+    )
     ..registerLazySingleton<ArchiveCatalogRepository>(
-      ArchiveCatalogRepositoryImpl.new,
+      () => ArchiveCatalogRepositoryImpl(sl()),
     )
     ..registerLazySingleton<RegionalVictimsRepository>(
       RegionalVictimsRepositoryImpl.new,

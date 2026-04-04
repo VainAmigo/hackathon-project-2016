@@ -55,7 +55,7 @@ class _RegisterForm extends StatefulWidget {
 
 class _RegisterFormState extends State<_RegisterForm> {
   final _formKey = GlobalKey<FormState>();
-  final _username = TextEditingController();
+  final _email = TextEditingController();
   final _password = TextEditingController();
   final _confirm = TextEditingController();
   bool _obscure = true;
@@ -63,7 +63,7 @@ class _RegisterFormState extends State<_RegisterForm> {
 
   @override
   void dispose() {
-    _username.dispose();
+    _email.dispose();
     _password.dispose();
     _confirm.dispose();
     super.dispose();
@@ -73,7 +73,7 @@ class _RegisterFormState extends State<_RegisterForm> {
     if (!_formKey.currentState!.validate()) return;
     FocusScope.of(context).unfocus();
     context.read<RegisterCubit>().register(
-          username: _username.text.trim(),
+          email: _email.text.trim(),
           password: _password.text,
         );
   }
@@ -101,15 +101,16 @@ class _RegisterFormState extends State<_RegisterForm> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   CustomTextFormField(
-                    controller: _username,
-                    label: l10n.authUsernameLabel,
+                    controller: _email,
+                    label: l10n.authEmailLabel,
+                    keyboardType: TextInputType.emailAddress,
                     textInputAction: TextInputAction.next,
-                    autofillHints: const [AutofillHints.newUsername],
+                    autofillHints: const [AutofillHints.email],
                     prefixIcon: Icon(
-                      Icons.person_outline_rounded,
+                      Icons.email_outlined,
                       color: AppThemes.textColorGrey,
                     ),
-                    validator: (v) => AuthValidators.username(l10n, v),
+                    validator: (v) => AuthValidators.email(l10n, v),
                   ),
                   CustomTextFormField(
                     controller: _password,

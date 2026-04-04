@@ -7,8 +7,8 @@ class AuthRepositoryImpl implements AuthRepository {
   AuthRepositoryImpl({
     required DioClient dioClient,
     required PreferencesService preferences,
-  })  : _dio = dioClient,
-        _preferences = preferences;
+  }) : _dio = dioClient,
+       _preferences = preferences;
 
   final DioClient _dio;
   final PreferencesService _preferences;
@@ -19,23 +19,20 @@ class AuthRepositoryImpl implements AuthRepository {
       result.refreshToken.isEmpty ? null : result.refreshToken,
     );
     await _preferences.saveAuthProfile(
-      username: result.user.username,
+      email: result.user.email,
       role: result.user.role,
     );
   }
 
   @override
   Future<Either<Failure, LoginResult>> login({
-    required String username,
+    required String email,
     required String password,
   }) async {
     try {
       final response = await _dio.publicDio.post<Map<String, dynamic>>(
         ApiEndpoints.login,
-        data: {
-          'username': username.trim(),
-          'password': password,
-        },
+        data: {'email': email.trim(), 'password': password},
       );
       final data = response.data;
       if (data == null) {
@@ -58,24 +55,21 @@ class AuthRepositoryImpl implements AuthRepository {
 
   @override
   Future<Either<Failure, RegisterResult>> register({
-    required String username,
+    required String email,
     required String password,
   }) async {
     try {
       final response = await _dio.publicDio.post<Map<String, dynamic>>(
         ApiEndpoints.register,
-        data: {
-          'username': username.trim(),
-          'password': password,
-        },
+        data: {'email': email.trim(), 'password': password},
       );
       final data = response.data;
       if (data == null) {
         return const Left(ServerFailure('Пустой ответ сервера'));
       }
       final result = RegisterResult.fromJson(data);
-      if (result.username.isEmpty) {
-        return const Left(ValidationFailure('Сервер не вернул username'));
+      if (result.email.isEmpty) {
+        return const Left(ValidationFailure('Сервер не вернул email'));
       }
       return Right(result);
     } on DioException catch (e) {

@@ -47,8 +47,11 @@ class EntryExtractedFields extends Equatable {
     return int.tryParse(v.toString());
   }
 
-  static String? _asStr(Object? v) =>
-      v == null ? null : v.toString().trim().isEmpty ? null : v.toString();
+  static String? _asStr(Object? v) => v == null
+      ? null
+      : v.toString().trim().isEmpty
+      ? null
+      : v.toString();
 
   factory EntryExtractedFields.fromJson(Map<String, dynamic> json) {
     return EntryExtractedFields(
@@ -98,11 +101,14 @@ class EntryMlResponse extends Equatable {
   factory EntryMlResponse.fromJson(Map<String, dynamic> json) {
     final byLocale = <String, EntryExtractedFields>{};
     final raw = json['result'];
-    if (raw is Map<String, dynamic>) {
-      for (final e in raw.entries) {
+    if (raw is Map) {
+      final rawMap = Map<String, dynamic>.from(raw);
+      for (final e in rawMap.entries) {
         final v = e.value;
-        if (v is Map<String, dynamic>) {
-          byLocale[e.key] = EntryExtractedFields.fromJson(v);
+        if (v is Map) {
+          byLocale[e.key.toString()] = EntryExtractedFields.fromJson(
+            Map<String, dynamic>.from(v),
+          );
         }
       }
     }
@@ -133,8 +139,22 @@ class DocumentUploadResponse extends Equatable {
   factory DocumentUploadResponse.fromJson(Map<String, dynamic> json) {
     EntryMlResponse? ml;
     final rawMl = json['mlResponse'];
-    if (rawMl is Map<String, dynamic>) {
-      ml = EntryMlResponse.fromJson(rawMl);
+    if (rawMl is Map) {
+      ml = EntryMlResponse.fromJson(Map<String, dynamic>.from(rawMl));
+    }
+    if (ml == null || ml.byLocale.isEmpty) {
+      final top = json['result'];
+      if (top is Map) {
+        final topMap = Map<String, dynamic>.from(top);
+        if (_isLocaleKeyedFieldMap(topMap)) {
+          ml = EntryMlResponse.fromJson({
+            'type': json['type'],
+            'result': topMap,
+            'missing_fields': json['missing_fields'],
+            'warnings': json['warnings'],
+          });
+        }
+      }
     }
     final idRaw = json['documentId'];
     int? docId;
@@ -152,4 +172,12 @@ class DocumentUploadResponse extends Equatable {
 
   @override
   List<Object?> get props => [mlResponse, documentId, fileUrl];
+}
+
+/// В `result` могут быть лишние поля (например `normalized_name: null`); учитываем только вложенные карты локалей.
+bool _isLocaleKeyedFieldMap(Map<String, dynamic> map) {
+  for (final v in map.values) {
+    if (v is Map) return true;
+  }
+  return false;
 }

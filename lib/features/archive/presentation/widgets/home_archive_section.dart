@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 
 import 'package:project_temp/core/core.dart';
 import 'package:project_temp/features/archive/domain/archive_catalog_repository.dart';
-import 'package:project_temp/features/archive/domain/archive_entry.dart';
 import 'package:project_temp/features/archive/presentation/archive_navigation.dart';
 import 'package:project_temp/features/archive/presentation/widgets/archive_entry_card.dart';
+import 'package:project_temp/features/archive/presentation/widgets/home_archive_empty_placeholder.dart';
+import 'package:project_temp/source/source.dart';
 
 /// Секция архива под hero: заголовок макета + карточки.
-class HomeArchiveSection extends StatelessWidget {
+class HomeArchiveSection extends StatefulWidget {
   const HomeArchiveSection({
     super.key,
     required this.maxContentWidth,
@@ -18,9 +19,22 @@ class HomeArchiveSection extends StatelessWidget {
   final bool compact;
 
   @override
+  State<HomeArchiveSection> createState() => _HomeArchiveSectionState();
+}
+
+class _HomeArchiveSectionState extends State<HomeArchiveSection> {
+  late final Future<List<ArchiveEntry>> _previewFuture = _loadPreview();
+
+  Future<List<ArchiveEntry>> _loadPreview() async {
+    final r = await sl<ArchiveCatalogRepository>().loadHomePreview();
+    return r.fold((_) => <ArchiveEntry>[], (list) => list);
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final horizontal = compact ? 24.0 : 40.0;
-    final capW = maxContentWidth.isFinite ? maxContentWidth : 640.0;
+    final horizontal = widget.compact ? 24.0 : 40.0;
+    final capW =
+        widget.maxContentWidth.isFinite ? widget.maxContentWidth : 640.0;
 
     return ColoredBox(
       color: AppThemes.backgroundColor,
@@ -31,7 +45,7 @@ class HomeArchiveSection extends StatelessWidget {
           child: ConstrainedBox(
             constraints: BoxConstraints(maxWidth: capW),
             child: FutureBuilder<List<ArchiveEntry>>(
-              future: sl<ArchiveCatalogRepository>().loadEntries(),
+              future: _previewFuture,
               builder: (context, snap) {
                 if (snap.connectionState == ConnectionState.waiting) {
                   return const Padding(
@@ -39,31 +53,35 @@ class HomeArchiveSection extends StatelessWidget {
                     child: Center(child: CircularProgressIndicator()),
                   );
                 }
-                if (snap.hasError || snap.data == null || snap.data!.isEmpty) {
-                  return const SizedBox.shrink();
-                }
-                final entries = snap.data!;
+                final entries = snap.hasError || snap.data == null
+                    ? <ArchiveEntry>[]
+                    : snap.data!;
+                final hasEntries = entries.isNotEmpty;
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     _SectionHeader(
-                      compact: compact,
+                      compact: widget.compact,
                       onViewFullArchive: () => pushArchiveCatalog(context),
                     ),
                     const SizedBox(height: 28),
-                    for (var i = 0; i < entries.length; i++) ...[
-                      if (i > 0)
-                        Divider(
-                          height: 1,
-                          thickness: 1,
-                          color: AppThemes.textColorGrey.withValues(alpha: 0.18),
+                    if (hasEntries)
+                      for (var i = 0; i < entries.length; i++) ...[
+                        if (i > 0)
+                          Divider(
+                            height: 1,
+                            thickness: 1,
+                            color: AppThemes.textColorGrey
+                                .withValues(alpha: 0.18),
+                          ),
+                        ArchiveEntryCard(
+                          entry: entries[i],
+                          onTap: () =>
+                              pushArchiveEntryDetail(context, entries[i].id),
                         ),
-                      ArchiveEntryCard(
-                        entry: entries[i],
-                        onTap: () =>
-                            pushArchiveEntryDetail(context, entries[i]),
-                      ),
-                    ],
+                      ]
+                    else
+                      const HomeArchiveEmptyPlaceholder(),
                   ],
                 );
               },

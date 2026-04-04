@@ -8,7 +8,7 @@ class RegisterCubit extends Cubit<RegisterState> {
   final AuthRepository _auth;
 
   Future<void> register({
-    required String username,
+    required String email,
     required String password,
   }) async {
     emit(
@@ -19,7 +19,7 @@ class RegisterCubit extends Cubit<RegisterState> {
       ),
     );
     final result = await _auth.register(
-      username: username,
+      email: email,
       password: password,
     );
     result.fold(

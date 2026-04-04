@@ -23,7 +23,8 @@ class HomeInteractiveRegionalMap extends StatefulWidget {
       _HomeInteractiveRegionalMapState();
 }
 
-class _HomeInteractiveRegionalMapState extends State<HomeInteractiveRegionalMap> {
+class _HomeInteractiveRegionalMapState
+    extends State<HomeInteractiveRegionalMap> {
   late final Future<List<MapSvgPathLayer>> _layersFuture;
 
   @override

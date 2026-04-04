@@ -15,6 +15,7 @@ class FadeSlideIn extends StatefulWidget {
   final Duration delay;
   final Duration duration;
   final Curve curve;
+
   /// Доля высоты родителя (как у [SlideTransition]).
   final Offset slideBegin;
 
@@ -33,9 +34,10 @@ class _FadeSlideInState extends State<FadeSlideIn>
     super.initState();
     _controller = AnimationController(vsync: this, duration: widget.duration);
     _opacity = CurvedAnimation(parent: _controller, curve: widget.curve);
-    _slide = Tween<Offset>(begin: widget.slideBegin, end: Offset.zero).animate(
-      CurvedAnimation(parent: _controller, curve: widget.curve),
-    );
+    _slide = Tween<Offset>(
+      begin: widget.slideBegin,
+      end: Offset.zero,
+    ).animate(CurvedAnimation(parent: _controller, curve: widget.curve));
     Future<void>.delayed(widget.delay, () {
       if (mounted) _controller.forward();
     });
@@ -51,10 +53,7 @@ class _FadeSlideInState extends State<FadeSlideIn>
   Widget build(BuildContext context) {
     return FadeTransition(
       opacity: _opacity,
-      child: SlideTransition(
-        position: _slide,
-        child: widget.child,
-      ),
+      child: SlideTransition(position: _slide, child: widget.child),
     );
   }
 }

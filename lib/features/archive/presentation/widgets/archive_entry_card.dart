@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
 import 'package:project_temp/core/core.dart';
-import 'package:project_temp/features/archive/domain/archive_entry.dart';
+import 'package:project_temp/features/archive/presentation/widgets/archive_entry_portrait.dart';
+import 'package:project_temp/source/source.dart';
 
 /// Карточка записи на главной (макет: фото слева, текст и блок метаданных).
 class ArchiveEntryCard extends StatelessWidget {
@@ -47,17 +48,11 @@ class ArchiveEntryCard extends StatelessWidget {
                 width: 112,
                 child: AspectRatio(
                   aspectRatio: 1,
-                  child: Image.asset(
-                    entry.portraitAssetPath,
+                  child: ArchiveEntryPortrait(
+                    entry: entry,
+                    width: 112,
+                    height: 112,
                     fit: BoxFit.cover,
-                    errorBuilder: (_, _, _) => ColoredBox(
-                      color: AppThemes.textColorGrey.withValues(alpha: 0.15),
-                      child: Icon(
-                        Icons.person_outline,
-                        size: 48,
-                        color: AppThemes.textColorGrey,
-                      ),
-                    ),
                   ),
                 ),
               ),
@@ -100,8 +95,8 @@ class ArchiveEntryCard extends StatelessWidget {
                           ),
                           const SizedBox(height: 8),
                           _MetaPair(
-                            label: l10n.archiveMetaSocialOrigin,
-                            value: entry.socialOrigin,
+                            label: l10n.addEntryFieldRegion,
+                            value: entry.region.isNotEmpty ? entry.region : '—',
                           ),
                           const SizedBox(height: 8),
                           _MetaPair(

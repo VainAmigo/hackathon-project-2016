@@ -3,10 +3,9 @@ import 'package:fpdart/fpdart.dart';
 import 'package:project_temp/source/source.dart';
 
 abstract class EntryConfirmRepository {
-  /// Multipart: `documentId`, `personData` (JSON-строка), опционально `file` (фото).
-  Future<Either<Failure, Unit>> confirm({
-    required int documentId,
-    required Map<String, dynamic> personData,
+  /// POST `/api/v1/persons`: `application/json` — `{ "request": { ... }, "photo": "<base64>" }` (как в OpenAPI).
+  Future<Either<Failure, Unit>> createPersonFromImport({
+    required Map<String, dynamic> request,
     XFile? photo,
   });
 }

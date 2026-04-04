@@ -558,11 +558,11 @@ BorderRadius _langToggleBorderRadius(AppLanguageCode code) {
     AppLanguageCode.en => BorderRadius.circular(2),
     AppLanguageCode.ky => BorderRadius.circular(25),
     AppLanguageCode.ru => const BorderRadius.only(
-        topLeft: Radius.circular(16),
-        topRight: Radius.circular(4),
-        bottomRight: Radius.circular(16),
-        bottomLeft: Radius.circular(4),
-      ),
+      topLeft: Radius.circular(16),
+      topRight: Radius.circular(4),
+      bottomRight: Radius.circular(16),
+      bottomLeft: Radius.circular(4),
+    ),
     AppLanguageCode.tr => BorderRadius.circular(14),
   };
 }
@@ -604,8 +604,12 @@ class _LangToggle extends StatelessWidget {
                 child: InkWell(
                   onTap: controller.cycle,
                   borderRadius: radius,
-                  splashColor: AppThemes.backgroundColor.withValues(alpha: 0.22),
-                  highlightColor: AppThemes.backgroundColor.withValues(alpha: 0.08),
+                  splashColor: AppThemes.backgroundColor.withValues(
+                    alpha: 0.22,
+                  ),
+                  highlightColor: AppThemes.backgroundColor.withValues(
+                    alpha: 0.08,
+                  ),
                   child: Center(
                     child: AnimatedSwitcher(
                       duration: const Duration(milliseconds: 280),
@@ -620,7 +624,10 @@ class _LangToggle extends StatelessWidget {
                         return FadeTransition(
                           opacity: curved,
                           child: ScaleTransition(
-                            scale: Tween<double>(begin: 0.82, end: 1).animate(curved),
+                            scale: Tween<double>(
+                              begin: 0.82,
+                              end: 1,
+                            ).animate(curved),
                             child: child,
                           ),
                         );

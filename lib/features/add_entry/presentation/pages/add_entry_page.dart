@@ -4,13 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:project_temp/components/components.dart';
 import 'package:project_temp/core/core.dart';
-import 'package:project_temp/features/add_entry/cubit/add_entry_confirm_cubit.dart';
-import 'package:project_temp/features/add_entry/cubit/add_entry_confirm_state.dart';
 import 'package:project_temp/features/add_entry/cubit/add_entry_upload_cubit.dart';
 import 'package:project_temp/features/add_entry/cubit/add_entry_upload_state.dart';
-import 'package:project_temp/features/add_entry/domain/apply_extracted_entry.dart';
-import 'package:project_temp/features/add_entry/domain/build_person_confirm_payload.dart';
-import 'package:project_temp/source/source.dart';
+import 'package:project_temp/features/add_entry/presentation/pages/add_entry_imported_review_page.dart';
+import 'package:project_temp/features/add_entry/presentation/widgets/add_entry_manual_form_body.dart';
 
 import '../../../../l10n/app_localizations.dart';
 
@@ -40,10 +37,6 @@ class _AddEntryPageState extends State<AddEntryPage> {
   final _biography = TextEditingController();
 
   XFile? _selectedPdf;
-  XFile? _selectedPhoto;
-  int? _draftDocumentId;
-  bool _hasUploadDraft = false;
-  EntryMlResponse? _importedMl;
 
   int _filesEpoch = 0;
   final GlobalKey _mainColumnKey = GlobalKey();
@@ -65,15 +58,10 @@ class _AddEntryPageState extends State<AddEntryPage> {
 
   void _resetAll(BuildContext context, {bool showClearedSnack = false}) {
     context.read<AddEntryUploadCubit>().reset();
-    context.read<AddEntryConfirmCubit>().reset();
     setState(() {
       _mode = 0;
       _filesEpoch++;
       _selectedPdf = null;
-      _selectedPhoto = null;
-      _draftDocumentId = null;
-      _hasUploadDraft = false;
-      _importedMl = null;
       _fullName.clear();
       _accusation.clear();
       _yearFrom.clear();
@@ -96,50 +84,10 @@ class _AddEntryPageState extends State<AddEntryPage> {
     if (_mode == 0) {
       if (upload.state.isUploading) return;
       if (_selectedPdf == null) {
-        AppSnackMessenger.showMessage(
-          l10n.addEntryPickPdfFirst,
-          isError: true,
-        );
+        AppSnackMessenger.showMessage(l10n.addEntryPickPdfFirst, isError: true);
         return;
       }
       upload.uploadPdf(_selectedPdf!);
-      return;
-    }
-    if (_hasUploadDraft) {
-      final docId = _draftDocumentId;
-      if (docId == null) {
-        AppSnackMessenger.showMessage(
-          l10n.addEntryConfirmNoDocument,
-          isError: true,
-        );
-        return;
-      }
-      if (!(_manualKey.currentState?.validate() ?? false)) {
-        AppSnackMessenger.showMessage(
-          l10n.addEntryFormValidationFailed,
-          isError: true,
-        );
-        return;
-      }
-      final ru = _importedMl?.byLocale['ru'];
-      final payload = buildPersonConfirmPayload(
-        fullName: _fullName.text,
-        accusation: _accusation.text,
-        yearFrom: _yearFrom.text,
-        yearTo: _yearTo.text,
-        punishment: _punishment.text,
-        regionLine: _region.text,
-        punishmentDate: _punishmentDate.text,
-        occupation: _occupation.text,
-        rehabDate: _rehabDate.text,
-        biography: _biography.text,
-        ruBaseline: ru,
-      );
-      context.read<AddEntryConfirmCubit>().submit(
-            documentId: docId,
-            personData: payload,
-            photo: _selectedPhoto,
-          );
       return;
     }
     if (_manualKey.currentState?.validate() ?? false) {
@@ -154,17 +102,13 @@ class _AddEntryPageState extends State<AddEntryPage> {
 
   String _primaryLabel(AppLocalizations l10n) {
     if (_mode == 0) return l10n.addEntrySendData;
-    if (_hasUploadDraft) return l10n.addEntryConfirmSave;
     return l10n.addEntryPublish;
   }
 
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
-      providers: [
-        BlocProvider(create: (_) => AddEntryUploadCubit(sl())),
-        BlocProvider(create: (_) => AddEntryConfirmCubit(sl())),
-      ],
+      providers: [BlocProvider(create: (_) => AddEntryUploadCubit(sl()))],
       child: MultiBlocListener(
         listeners: [
           BlocListener<AddEntryUploadCubit, AddEntryUploadState>(
@@ -180,172 +124,130 @@ class _AddEntryPageState extends State<AddEntryPage> {
               }
               final res = state.result;
               if (res != null && mounted) {
-                final code = AppLocaleScope.of(context).code;
-                final fields = pickExtractedForLocale(res.mlResponse, code);
-                applyExtractedToManualForm(
-                  fields: fields,
-                  fullName: _fullName,
-                  accusation: _accusation,
-                  yearFrom: _yearFrom,
-                  yearTo: _yearTo,
-                  punishment: _punishment,
-                  region: _region,
-                  punishmentDate: _punishmentDate,
-                  occupation: _occupation,
-                  rehabDate: _rehabDate,
-                  biography: _biography,
-                );
-                setState(() {
-                  _mode = 1;
-                  _hasUploadDraft = true;
-                  _draftDocumentId = res.documentId;
-                  _importedMl = res.mlResponse;
-                });
                 context.read<AddEntryUploadCubit>().clearResult();
                 AppSnackMessenger.showMessage(
                   AppLocalizations.of(context).addEntryImportSuccessToast,
                 );
-              }
-            },
-          ),
-          BlocListener<AddEntryConfirmCubit, AddEntryConfirmState>(
-            listenWhen: (prev, curr) =>
-                (curr.errorMessage != null &&
-                    curr.errorMessage != prev.errorMessage) ||
-                (curr.success && !prev.success),
-            listener: (context, state) {
-              final err = state.errorMessage;
-              if (err != null) {
-                AppSnackMessenger.showMessage(err, isError: true);
-                context.read<AddEntryConfirmCubit>().clearError();
-              }
-              if (state.success && mounted) {
-                AppSnackMessenger.showMessage(
-                  AppLocalizations.of(context).addEntryConfirmSuccess,
-                );
-                _resetAll(context);
+                Navigator.of(context)
+                    .push<bool>(
+                      MaterialPageRoute(
+                        builder: (ctx) =>
+                            AddEntryImportedReviewPage(uploadResponse: res),
+                      ),
+                    )
+                    .then((saved) {
+                      if (saved != true) return;
+                      if (!context.mounted) return;
+                      _resetAll(context);
+                    });
               }
             },
           ),
         ],
         child: BlocBuilder<AddEntryUploadCubit, AddEntryUploadState>(
           builder: (context, uploadState) {
-            return BlocBuilder<AddEntryConfirmCubit, AddEntryConfirmState>(
-              builder: (context, confirmState) {
-                final l10n = context.l10n;
-                final adaptive = context.adaptive;
-                final wide = adaptive.canUseSideNavigation;
+            final l10n = context.l10n;
+            final adaptive = context.adaptive;
+            final wide = adaptive.canUseSideNavigation;
 
-                final primaryBusy = (_mode == 0 && uploadState.isUploading) ||
-                    (_hasUploadDraft && confirmState.isSubmitting);
+            final primaryBusy = _mode == 0 && uploadState.isUploading;
 
-                final main = Column(
-            key: _mainColumnKey,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                l10n.addEntryEyebrow,
-                style: TextStyle(
-                  fontSize: 11,
-                  letterSpacing: 1.2,
-                  fontWeight: FontWeight.w600,
-                  color: AppThemes.textColorGrey,
+            final main = Column(
+              key: _mainColumnKey,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  l10n.addEntryEyebrow,
+                  style: TextStyle(
+                    fontSize: 11,
+                    letterSpacing: 1.2,
+                    fontWeight: FontWeight.w600,
+                    color: AppThemes.textColorGrey,
+                  ),
                 ),
-              ),
-              const SizedBox(height: 8),
-              Text(
-                l10n.addEntryTitle,
-                style: const TextStyle(
-                  fontFamily: 'serif',
-                  fontSize: 32,
-                  height: 1.15,
-                  fontWeight: FontWeight.w700,
-                  color: AppThemes.textColorPrimary,
+                const SizedBox(height: 8),
+                Text(
+                  l10n.addEntryTitle,
+                  style: const TextStyle(
+                    fontFamily: 'serif',
+                    fontSize: 32,
+                    height: 1.15,
+                    fontWeight: FontWeight.w700,
+                    color: AppThemes.textColorPrimary,
+                  ),
                 ),
-              ),
-              const SizedBox(height: 24),
-              _EntryModeTabs(
-                mode: _mode,
-                onChanged: (i) => setState(() => _mode = i),
-                accent: _accentUnderline,
-              ),
-              const SizedBox(height: 24),
-              AnimatedSwitcher(
-                duration: const Duration(milliseconds: 240),
-                switchInCurve: Curves.easeOutCubic,
-                switchOutCurve: Curves.easeInCubic,
-                child: _mode == 0
-                    ? _AutoBody(
-                        key: ValueKey('auto_$_filesEpoch'),
-                        l10n: l10n,
-                        onPdfChanged: (files) {
-                          setState(() {
-                            _selectedPdf =
-                                files.isEmpty ? null : files.first;
-                          });
-                        },
-                      )
-                    : _ManualBody(
-                        key: ValueKey('manual_$_filesEpoch'),
-                        l10n: l10n,
-                        formKey: _manualKey,
-                        fullName: _fullName,
-                        accusation: _accusation,
-                        yearFrom: _yearFrom,
-                        yearTo: _yearTo,
-                        punishment: _punishment,
-                        region: _region,
-                        punishmentDate: _punishmentDate,
-                        occupation: _occupation,
-                        rehabDate: _rehabDate,
-                        biography: _biography,
-                        onPhotoChanged: (files) {
-                          setState(() {
-                            _selectedPhoto =
-                                files.isEmpty ? null : files.first;
-                          });
-                        },
-                      ),
-              ),
-              const SizedBox(height: 32),
-              _ActionRow(
-                cancelLabel: l10n.addEntryCancel,
-                primaryLabel: _primaryLabel(l10n),
-                primaryBusy: primaryBusy,
-                onCancel: () => _resetAll(context, showClearedSnack: true),
-                onPrimary: () => _onPrimary(context, l10n),
-              ),
-            ],
-          );
+                const SizedBox(height: 24),
+                _EntryModeTabs(
+                  mode: _mode,
+                  onChanged: (i) => setState(() => _mode = i),
+                  accent: _accentUnderline,
+                ),
+                const SizedBox(height: 24),
+                AnimatedSwitcher(
+                  duration: const Duration(milliseconds: 240),
+                  switchInCurve: Curves.easeOutCubic,
+                  switchOutCurve: Curves.easeInCubic,
+                  child: _mode == 0
+                      ? _AutoBody(
+                          key: ValueKey('auto_$_filesEpoch'),
+                          l10n: l10n,
+                          onPdfChanged: (files) {
+                            setState(() {
+                              _selectedPdf = files.isEmpty ? null : files.first;
+                            });
+                          },
+                        )
+                      : AddEntryManualFormBody(
+                          key: ValueKey('manual_$_filesEpoch'),
+                          l10n: l10n,
+                          formKey: _manualKey,
+                          fullName: _fullName,
+                          accusation: _accusation,
+                          yearFrom: _yearFrom,
+                          yearTo: _yearTo,
+                          punishment: _punishment,
+                          region: _region,
+                          punishmentDate: _punishmentDate,
+                          occupation: _occupation,
+                          rehabDate: _rehabDate,
+                          biography: _biography,
+                          showPhotoDropZone: false,
+                          onPhotoChanged: (_) {},
+                        ),
+                ),
+                const SizedBox(height: 32),
+                _ActionRow(
+                  cancelLabel: l10n.addEntryCancel,
+                  primaryLabel: _primaryLabel(l10n),
+                  primaryBusy: primaryBusy,
+                  onCancel: () => _resetAll(context, showClearedSnack: true),
+                  onPrimary: () => _onPrimary(context, l10n),
+                ),
+              ],
+            );
 
-                final sidebar = _SidebarPanel(l10n: l10n);
+            final sidebar = _SidebarPanel(l10n: l10n);
 
-                return LayoutBuilder(
-                  builder: (context, constraints) {
-                    return SingleChildScrollView(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: wide ? 32 : 20,
-                        vertical: 24,
-                      ),
-                      child: wide
-                          ? Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Expanded(flex: 11, child: sidebar),
-                                const SizedBox(width: 40),
-                                Expanded(flex: 19, child: main),
-                              ],
-                            )
-                          : Column(
-                              crossAxisAlignment: CrossAxisAlignment.stretch,
-                              children: [
-                                sidebar,
-                                const SizedBox(height: 32),
-                                main,
-                              ],
-                            ),
-                    );
-                  },
+            return LayoutBuilder(
+              builder: (context, constraints) {
+                return SingleChildScrollView(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: wide ? 32 : 20,
+                    vertical: 24,
+                  ),
+                  child: wide
+                      ? Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Expanded(flex: 11, child: sidebar),
+                            const SizedBox(width: 40),
+                            Expanded(flex: 19, child: main),
+                          ],
+                        )
+                      : Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [sidebar, const SizedBox(height: 32), main],
+                        ),
                 );
               },
             );
@@ -364,12 +266,12 @@ class _SidebarPanel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     TextStyle serifTitle() => const TextStyle(
-          fontFamily: 'serif',
-          fontSize: 22,
-          height: 1.2,
-          fontWeight: FontWeight.w700,
-          color: AppThemes.textColorPrimary,
-        );
+      fontFamily: 'serif',
+      fontSize: 22,
+      height: 1.2,
+      fontWeight: FontWeight.w700,
+      color: AppThemes.textColorPrimary,
+    );
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -530,11 +432,7 @@ class _TabChip extends StatelessWidget {
 }
 
 class _AutoBody extends StatelessWidget {
-  const _AutoBody({
-    super.key,
-    required this.l10n,
-    required this.onPdfChanged,
-  });
+  const _AutoBody({super.key, required this.l10n, required this.onPdfChanged});
 
   final AppLocalizations l10n;
   final ValueChanged<List<XFile>> onPdfChanged;
@@ -552,140 +450,6 @@ class _AutoBody extends StatelessWidget {
       fileType: FileType.custom,
       allowedExtensions: const ['pdf', 'txt', 'md'],
       onFilesChanged: onPdfChanged,
-    );
-  }
-}
-
-class _ManualBody extends StatelessWidget {
-  const _ManualBody({
-    super.key,
-    required this.l10n,
-    required this.formKey,
-    required this.fullName,
-    required this.accusation,
-    required this.yearFrom,
-    required this.yearTo,
-    required this.punishment,
-    required this.region,
-    required this.punishmentDate,
-    required this.occupation,
-    required this.rehabDate,
-    required this.biography,
-    required this.onPhotoChanged,
-  });
-
-  final AppLocalizations l10n;
-  final GlobalKey<FormState> formKey;
-  final TextEditingController fullName;
-  final TextEditingController accusation;
-  final TextEditingController yearFrom;
-  final TextEditingController yearTo;
-  final TextEditingController punishment;
-  final TextEditingController region;
-  final TextEditingController punishmentDate;
-  final TextEditingController occupation;
-  final TextEditingController rehabDate;
-  final TextEditingController biography;
-  final ValueChanged<List<XFile>> onPhotoChanged;
-
-  @override
-  Widget build(BuildContext context) {
-    return Form(
-      key: formKey,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          LayoutBuilder(
-            builder: (context, c) {
-              final twoCol = c.maxWidth >= 520;
-              Widget row2(Widget a, Widget b) {
-                if (!twoCol) {
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [a, b],
-                  );
-                }
-                return Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Expanded(child: a),
-                    const SizedBox(width: 20),
-                    Expanded(child: b),
-                  ],
-                );
-              }
-
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  row2(
-                    CustomTextFormField(
-                      controller: fullName,
-                      label: l10n.addEntryFieldFullName,
-                      hintText: l10n.addEntryFieldFullNameHint,
-                    ),
-                    CustomTextFormField(
-                      controller: accusation,
-                      label: l10n.addEntryFieldAccusation,
-                    ),
-                  ),
-                  row2(
-                    YearRangeFormRow(
-                      l10n: l10n,
-                      yearFrom: yearFrom,
-                      yearTo: yearTo,
-                    ),
-                    CustomTextFormField(
-                      controller: punishment,
-                      label: l10n.addEntryFieldPunishment,
-                    ),
-                  ),
-                  row2(
-                    CustomTextFormField(
-                      controller: region,
-                      label: l10n.addEntryFieldRegion,
-                      hintText: l10n.addEntryFieldRegionHint,
-                    ),
-                    CustomTextFormField(
-                      controller: punishmentDate,
-                      label: l10n.addEntryFieldPunishmentDate,
-                    ),
-                  ),
-                  row2(
-                    CustomTextFormField(
-                      controller: occupation,
-                      label: l10n.addEntryFieldOccupation,
-                    ),
-                    CustomTextFormField(
-                      controller: rehabDate,
-                      label: l10n.addEntryFieldRehabDate,
-                    ),
-                  ),
-                ],
-              );
-            },
-          ),
-          CustomTextFormField(
-            controller: biography,
-            label: l10n.addEntryFieldBiography,
-            maxLines: 6,
-          ),
-          const SizedBox(height: 8),
-          FileDropZone(
-            title: l10n.addEntryPhotosTitle,
-            hint: l10n.addEntryPhotosHint,
-            browseLabel: l10n.addEntryBrowseFiles,
-            changeFileLabel: l10n.addEntryFileChange,
-            removeFileLabel: l10n.addEntryFileRemove,
-            invalidTypeMessage: l10n.addEntryInvalidFileImage,
-            kind: FileDropZoneKind.image,
-            fileType: FileType.custom,
-            allowedExtensions: const ['jpg', 'jpeg', 'png'],
-            minHeightEmpty: 152,
-            onFilesChanged: onPhotoChanged,
-          ),
-        ],
-      ),
     );
   }
 }
@@ -727,9 +491,7 @@ class _ActionRow extends StatelessWidget {
           child: PrimaryButton(
             text: primaryLabel,
             onPressed: primaryBusy ? null : onPrimary,
-            child: primaryBusy
-                ? const CenteredProgressingButton(null)
-                : null,
+            child: primaryBusy ? const CenteredProgressingButton(null) : null,
           ),
         ),
       ],

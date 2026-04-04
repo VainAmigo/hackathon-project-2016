@@ -1,6 +1,6 @@
 import 'package:flutter/widgets.dart';
 
-import 'package:project_temp/features/archive/domain/archive_catalog_applied_query.dart';
+import 'package:project_temp/source/source.dart';
 
 /// Снимок текстовых полей фильтра → доменная модель запроса.
 ArchiveCatalogAppliedQuery archiveAppliedQueryFromControllers({

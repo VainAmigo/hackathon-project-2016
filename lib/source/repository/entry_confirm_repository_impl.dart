@@ -12,23 +12,19 @@ class EntryConfirmRepositoryImpl implements EntryConfirmRepository {
   final DioClient _dio;
 
   @override
-  Future<Either<Failure, Unit>> confirm({
-    required int documentId,
-    required Map<String, dynamic> personData,
+  Future<Either<Failure, Unit>> createPersonFromImport({
+    required Map<String, dynamic> request,
     XFile? photo,
   }) async {
     try {
-      final map = <String, dynamic>{
-        'documentId': documentId.toString(),
-        'personData': jsonEncode(personData),
+      // Контракт API: JSON { "request": { ... }, "photo": "<base64 или пустая строка>" }.
+      final body = <String, dynamic>{
+        'request': request,
+        'photo': photo != null ? base64Encode(await photo.readAsBytes()) : '',
       };
-      if (photo != null) {
-        map['file'] = await multipartFromXFile(photo);
-      }
-      final form = FormData.fromMap(map);
       await _dio.authenticatedDio.post<void>(
-        ApiEndpoints.confirm,
-        data: form,
+        ApiEndpoints.persons,
+        data: body,
       );
       return const Right(unit);
     } on DioException catch (e) {

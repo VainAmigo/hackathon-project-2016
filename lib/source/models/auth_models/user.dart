@@ -6,19 +6,19 @@ part 'user.g.dart';
 @JsonSerializable()
 class User extends Equatable {
   const User({
-    required this.username,
+    required this.email,
     required this.role,
   });
 
-  final String username;
+  final String email;
   final String role;
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
 
   Map<String, dynamic> toJson() => _$UserToJson(this);
 
-  String get displayName => username;
+  String get displayName => email;
 
   @override
-  List<Object?> get props => [username, role];
+  List<Object?> get props => [email, role];
 }

@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
 
 import 'package:project_temp/core/core.dart';
-import 'package:project_temp/features/archive/domain/archive_catalog_applied_query.dart';
 import 'package:project_temp/features/archive/domain/archive_catalog_repository.dart';
-import 'package:project_temp/features/archive/domain/archive_entry.dart';
 import 'package:project_temp/features/archive/domain/archive_layout_policy.dart';
 import 'package:project_temp/features/archive/presentation/mappers/archive_applied_query_mapper.dart';
 import 'package:project_temp/features/archive/presentation/widgets/archive_catalog_filter_fields.dart';
 import 'package:project_temp/features/archive/presentation/widgets/archive_catalog_results_list.dart';
 import 'package:project_temp/features/archive/presentation/widgets/archive_filter_bottom_sheet.dart';
 import 'package:project_temp/l10n/app_localizations.dart';
+import 'package:project_temp/source/source.dart';
 
 /// Полный каталог записей с фильтрацией (поля как на ручной форме добавления).
 class ArchiveListPage extends StatefulWidget {
@@ -20,8 +19,14 @@ class ArchiveListPage extends StatefulWidget {
 }
 
 class _ArchiveListPageState extends State<ArchiveListPage> {
-  List<ArchiveEntry> _all = [];
+  static const _pageSize = 20;
+
+  final List<ArchiveEntry> _items = [];
   bool _loading = true;
+  bool _loadingMore = false;
+  bool _lastPage = true;
+  int _pageIndex = 0;
+  String? _error;
   ArchiveCatalogAppliedQuery _applied = ArchiveCatalogAppliedQuery.empty;
 
   final _fullName = TextEditingController();
@@ -37,7 +42,7 @@ class _ArchiveListPageState extends State<ArchiveListPage> {
   @override
   void initState() {
     super.initState();
-    _load();
+    _fetchFirstPage();
   }
 
   void _submitFilter() {
@@ -55,6 +60,7 @@ class _ArchiveListPageState extends State<ArchiveListPage> {
       );
     });
     FocusManager.instance.primaryFocus?.unfocus();
+    _fetchFirstPage();
   }
 
   Future<void> _openFilterBottomSheet(BuildContext context) {
@@ -76,13 +82,49 @@ class _ArchiveListPageState extends State<ArchiveListPage> {
     );
   }
 
-  Future<void> _load() async {
-    final list = await sl<ArchiveCatalogRepository>().loadEntries();
-    if (!mounted) return;
+  Future<void> _fetchFirstPage() async {
     setState(() {
-      _all = list;
-      _loading = false;
+      _loading = true;
+      _error = null;
     });
+    final q = _applied.toPersonsListQuery(page: 0, size: _pageSize);
+    final r = await sl<ArchiveCatalogRepository>().fetchPersons(q);
+    if (!mounted) return;
+    r.fold(
+      (f) => setState(() {
+        _loading = false;
+        _error = f.message;
+        _items.clear();
+        _lastPage = true;
+        _pageIndex = 0;
+      }),
+      (page) => setState(() {
+        _loading = false;
+        _items
+          ..clear()
+          ..addAll(page.content);
+        _lastPage = page.last;
+        _pageIndex = page.number;
+      }),
+    );
+  }
+
+  Future<void> _loadMore() async {
+    if (_loadingMore || _lastPage || _loading) return;
+    setState(() => _loadingMore = true);
+    final q =
+        _applied.toPersonsListQuery(page: _pageIndex + 1, size: _pageSize);
+    final r = await sl<ArchiveCatalogRepository>().fetchPersons(q);
+    if (!mounted) return;
+    r.fold(
+      (_) => setState(() => _loadingMore = false),
+      (page) => setState(() {
+        _loadingMore = false;
+        _items.addAll(page.content);
+        _lastPage = page.last;
+        _pageIndex = page.number;
+      }),
+    );
   }
 
   @override
@@ -110,10 +152,8 @@ class _ArchiveListPageState extends State<ArchiveListPage> {
     _occupation.clear();
     _rehabDate.clear();
     setState(() => _applied = ArchiveCatalogAppliedQuery.empty);
+    _fetchFirstPage();
   }
-
-  List<ArchiveEntry> get _filtered =>
-      _all.where(_applied.matches).toList(growable: false);
 
   Widget _filterForm(AppLocalizations l10n, {required bool includeTitle}) {
     return ArchiveCatalogFilterFields(
@@ -130,6 +170,75 @@ class _ArchiveListPageState extends State<ArchiveListPage> {
       rehabDate: _rehabDate,
       onSubmit: _submitFilter,
       onClear: _clearFilters,
+    );
+  }
+
+  Widget _body(AppLocalizations l10n, {required bool wide}) {
+    if (_loading) {
+      return const Center(child: CircularProgressIndicator());
+    }
+    if (_error != null && _items.isEmpty) {
+      return Center(
+        child: Padding(
+          padding: const EdgeInsets.all(24),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                _error!,
+                textAlign: TextAlign.center,
+                style: TextStyle(color: AppThemes.textColorSecondary),
+              ),
+              const SizedBox(height: 16),
+              TextButton.icon(
+                icon: const Icon(Icons.refresh, size: 18),
+                label: const Text('Повторить'),
+                onPressed: _fetchFirstPage,
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+
+    final list = ArchiveCatalogResultsList(
+      entries: _items,
+      emptyLabel: l10n.archiveCatalogEmpty,
+      hasMore: !_lastPage,
+      loadingMore: _loadingMore,
+      onLoadMore: _loadMore,
+    );
+
+    if (wide) {
+      return Row(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          SizedBox(
+            width: 300,
+            child: ColoredBox(
+              color: AppThemes.surfaceColor,
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.fromLTRB(20, 16, 20, 24),
+                child: _filterForm(l10n, includeTitle: true),
+              ),
+            ),
+          ),
+          Container(
+            width: 1,
+            color: AppThemes.textColorGrey.withValues(alpha: 0.2),
+          ),
+          Expanded(child: list),
+        ],
+      );
+    }
+
+    return ArchiveCatalogResultsList(
+      entries: _items,
+      emptyLabel: l10n.archiveCatalogEmpty,
+      padding: const EdgeInsets.fromLTRB(20, 8, 20, 32),
+      hasMore: !_lastPage,
+      loadingMore: _loadingMore,
+      onLoadMore: _loadMore,
     );
   }
 
@@ -162,41 +271,7 @@ class _ArchiveListPageState extends State<ArchiveListPage> {
             ),
         ],
       ),
-      body: _loading
-          ? const Center(child: CircularProgressIndicator())
-          : wide
-              ? Row(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    SizedBox(
-                      width: 300,
-                      child: ColoredBox(
-                        color: AppThemes.surfaceColor,
-                        child: SingleChildScrollView(
-                          padding:
-                              const EdgeInsets.fromLTRB(20, 16, 20, 24),
-                          child: _filterForm(l10n, includeTitle: true),
-                        ),
-                      ),
-                    ),
-                    Container(
-                      width: 1,
-                      color:
-                          AppThemes.textColorGrey.withValues(alpha: 0.2),
-                    ),
-                    Expanded(
-                      child: ArchiveCatalogResultsList(
-                        entries: _filtered,
-                        emptyLabel: l10n.archiveCatalogEmpty,
-                      ),
-                    ),
-                  ],
-                )
-              : ArchiveCatalogResultsList(
-                  entries: _filtered,
-                  emptyLabel: l10n.archiveCatalogEmpty,
-                  padding: const EdgeInsets.fromLTRB(20, 8, 20, 32),
-                ),
+      body: _body(l10n, wide: wide),
     );
   }
 }

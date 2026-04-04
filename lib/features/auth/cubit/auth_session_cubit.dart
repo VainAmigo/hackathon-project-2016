@@ -13,7 +13,8 @@ class AuthSessionCubit extends Cubit<AuthSessionState> {
   Future<void> bootstrap() async {
     final access = await _prefs.getAccessToken();
     final refresh = await _prefs.getRefreshToken();
-    var authed = (access != null && access.isNotEmpty) ||
+    var authed =
+        (access != null && access.isNotEmpty) ||
         (refresh != null && refresh.isNotEmpty);
 
     if (!authed) {
@@ -39,10 +40,10 @@ class AuthSessionCubit extends Cubit<AuthSessionState> {
     authed = token != null && token.isNotEmpty;
     User? user;
     if (authed) {
-      final name = await _prefs.getStoredUsername();
+      final storedEmail = await _prefs.getStoredEmail();
       final role = await _prefs.getStoredRole();
-      if (name != null && name.isNotEmpty) {
-        user = User(username: name, role: role ?? '');
+      if (storedEmail != null && storedEmail.isNotEmpty) {
+        user = User(email: storedEmail, role: role ?? '');
       }
     }
     emit(
@@ -66,11 +67,7 @@ class AuthSessionCubit extends Cubit<AuthSessionState> {
 
   void clearSession({AuthSessionNotice notice = AuthSessionNotice.none}) {
     emit(
-      state.copyWith(
-        isAuthenticated: false,
-        clearUser: true,
-        notice: notice,
-      ),
+      state.copyWith(isAuthenticated: false, clearUser: true, notice: notice),
     );
   }
 

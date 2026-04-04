@@ -30,7 +30,16 @@ class _HomePageState extends State<HomePage> {
   bool _denseNav(AdaptiveData a) => a.isCompactLayout || a.width < 800;
 
   @override
+  void initState() {
+    super.initState();
+    sl<HomeShellTabSync>().bind((i) {
+      if (mounted) setState(() => _tabIndex = i);
+    });
+  }
+
+  @override
   void dispose() {
+    sl<HomeShellTabSync>().unbind();
     _searchController.dispose();
     super.dispose();
   }
@@ -40,18 +49,21 @@ class _HomePageState extends State<HomePage> {
     final result = await _authRepo.logout();
     if (!mounted) return;
     setState(() => _loggingOut = false);
-    result.fold((f) {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text(f.message)));
-    }, (_) {
-      context.read<AuthSessionCubit>().clearSession(
-            notice: AuthSessionNotice.logoutSuccess,
-          );
-      if (mounted && _tabIndex == _kAddEntryTabIndex) {
-        setState(() => _tabIndex = 0);
-      }
-    });
+    result.fold(
+      (f) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(f.message)));
+      },
+      (_) {
+        context.read<AuthSessionCubit>().clearSession(
+          notice: AuthSessionNotice.logoutSuccess,
+        );
+        if (mounted && _tabIndex == _kAddEntryTabIndex) {
+          setState(() => _tabIndex = 0);
+        }
+      },
+    );
   }
 
   Future<void> _openLogin() async {
@@ -134,39 +146,38 @@ class _HomePageState extends State<HomePage> {
     }
 
     return BlocListener<AuthSessionCubit, AuthSessionState>(
-      listenWhen: (prev, curr) =>
-          prev.isAuthenticated && !curr.isAuthenticated,
+      listenWhen: (prev, curr) => prev.isAuthenticated && !curr.isAuthenticated,
       listener: (context, state) {
         if (_tabIndex == _kAddEntryTabIndex && mounted) {
           setState(() => _tabIndex = 0);
         }
       },
       child: Scaffold(
-      key: _scaffoldKey,
-      backgroundColor: AppThemes.backgroundColor,
-      drawer: dense
-          ? VoiceArchiveDrawer(
-              selectedTab: _tabIndex,
-              onTabSelected: (i) => _selectTab(context, i),
-              searchController: _searchController,
-              isAuthenticated: authed,
-              loggingOut: _loggingOut,
-              onLogin: _openLogin,
-              onLogout: _onLogout,
-            )
-          : null,
-      appBar: VoiceArchiveAppBar(
-        scaffoldKey: _scaffoldKey,
-        selectedTab: _tabIndex,
-        onTabSelected: (i) => _selectTab(context, i),
-        searchController: _searchController,
-        isAuthenticated: authed,
-        loggingOut: _loggingOut,
-        onLogin: _openLogin,
-        onLogout: _onLogout,
+        key: _scaffoldKey,
+        backgroundColor: AppThemes.backgroundColor,
+        drawer: dense
+            ? VoiceArchiveDrawer(
+                selectedTab: _tabIndex,
+                onTabSelected: (i) => _selectTab(context, i),
+                searchController: _searchController,
+                isAuthenticated: authed,
+                loggingOut: _loggingOut,
+                onLogin: _openLogin,
+                onLogout: _onLogout,
+              )
+            : null,
+        appBar: VoiceArchiveAppBar(
+          scaffoldKey: _scaffoldKey,
+          selectedTab: _tabIndex,
+          onTabSelected: (i) => _selectTab(context, i),
+          searchController: _searchController,
+          isAuthenticated: authed,
+          loggingOut: _loggingOut,
+          onLogin: _openLogin,
+          onLogout: _onLogout,
+        ),
+        body: paddedBody,
       ),
-      body: paddedBody,
-    ),
     );
   }
 

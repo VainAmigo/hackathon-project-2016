@@ -2,6 +2,41 @@ import 'package:flutter/material.dart';
 import 'package:project_temp/core/locale/app_locale_controller.dart';
 import 'package:project_temp/source/source.dart';
 
+/// Редактирование при `type: single` (или тип не указан) и непустом `result`; при `plural` — только кнопка закрытия.
+bool importExtractAllowsEditing(EntryMlResponse? ml) {
+  if (ml == null || ml.byLocale.isEmpty) return false;
+  final t = (ml.type ?? '').toLowerCase();
+  if (t == 'plural') return false;
+  return t == 'single' || t.isEmpty;
+}
+
+/// Порядок вкладок языка: ky → ru → en → tr, остальные по алфавиту.
+List<String> sortedImportLocaleKeys(Map<String, EntryExtractedFields> byLocale) {
+  const order = ['ky', 'ru', 'en', 'tr'];
+  final keys = byLocale.keys.toList();
+  keys.sort((a, b) {
+    final ai = order.indexOf(a.toLowerCase());
+    final bi = order.indexOf(b.toLowerCase());
+    if (ai == -1 && bi == -1) return a.compareTo(b);
+    if (ai == -1) return 1;
+    if (bi == -1) return -1;
+    return ai.compareTo(bi);
+  });
+  return keys;
+}
+
+String pickInitialImportLocaleKey(
+  Map<String, EntryExtractedFields> byLocale,
+  AppLanguageCode ui,
+) {
+  final sorted = sortedImportLocaleKeys(byLocale);
+  if (sorted.isEmpty) return 'en';
+  for (final k in sorted) {
+    if (k.toLowerCase() == ui.name) return k;
+  }
+  return sorted.first;
+}
+
 EntryExtractedFields? pickExtractedForLocale(
   EntryMlResponse? ml,
   AppLanguageCode code,
@@ -68,8 +103,7 @@ void applyExtractedToManualForm({
   ];
   region.text = regionParts.join(', ');
 
-  punishmentDate.text =
-      fields.sentenceDate ?? fields.arrestDate ?? '';
+  punishmentDate.text = fields.sentenceDate ?? fields.arrestDate ?? '';
 
   occupation.text = fields.occupation ?? '';
   rehabDate.text = fields.rehabilitationDate ?? '';

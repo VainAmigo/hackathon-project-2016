@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
 import 'package:project_temp/core/core.dart';
-import 'package:project_temp/features/archive/domain/archive_entry.dart';
+import 'package:project_temp/features/archive/presentation/widgets/archive_entry_portrait.dart';
+import 'package:project_temp/source/source.dart';
 
 /// Карточка в каталоге архива: портрет, ФИО, даты, дело №, три строки метаданных (плоский макет).
 class ArchiveCatalogListCard extends StatelessWidget {
@@ -29,21 +30,11 @@ class ArchiveCatalogListCard extends StatelessWidget {
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(
+              ArchiveEntryPortrait(
+                entry: entry,
                 width: 100,
                 height: 132,
-                child: Image.asset(
-                  entry.portraitAssetPath,
-                  fit: BoxFit.cover,
-                  errorBuilder: (_, _, _) => ColoredBox(
-                    color: AppThemes.textColorGrey.withValues(alpha: 0.12),
-                    child: Icon(
-                      Icons.person_outline,
-                      size: 44,
-                      color: AppThemes.textColorGrey,
-                    ),
-                  ),
-                ),
+                fit: BoxFit.cover,
               ),
               const SizedBox(width: 20),
               Expanded(
@@ -88,8 +79,8 @@ class ArchiveCatalogListCard extends StatelessWidget {
                     ),
                     const SizedBox(height: 6),
                     _MetaLine(
-                      label: '${l10n.archiveMetaSocialOrigin}:',
-                      value: entry.socialOrigin,
+                      label: '${l10n.addEntryFieldRegion}:',
+                      value: entry.region.isNotEmpty ? entry.region : '—',
                     ),
                     const SizedBox(height: 6),
                     _MetaLine(

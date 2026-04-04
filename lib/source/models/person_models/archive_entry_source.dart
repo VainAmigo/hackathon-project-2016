@@ -1,8 +1,7 @@
 import 'package:equatable/equatable.dart';
 
-import 'package:project_temp/features/archive/domain/data_source_format.dart';
+import 'package:project_temp/source/models/person_models/data_source_format.dart';
 
-/// Источник данных для записи: локальный ассет (pdf/md/txt) или внешняя ссылка.
 sealed class ArchiveEntrySource extends Equatable {
   const ArchiveEntrySource();
 
@@ -10,7 +9,6 @@ sealed class ArchiveEntrySource extends Equatable {
   List<Object?> get props => [];
 }
 
-/// Файл из assets (просмотр в [DataSourceViewerSheet]).
 final class ArchiveEntryAssetSource extends ArchiveEntrySource {
   const ArchiveEntryAssetSource({
     required this.assetPath,
@@ -26,7 +24,6 @@ final class ArchiveEntryAssetSource extends ArchiveEntrySource {
   List<Object?> get props => [assetPath, format, displayFileName];
 }
 
-/// Внешний URL (открытие во внешнем приложении / браузере).
 final class ArchiveEntryLinkSource extends ArchiveEntrySource {
   const ArchiveEntryLinkSource({required this.uri});
 

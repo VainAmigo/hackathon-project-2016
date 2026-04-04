@@ -8,36 +8,19 @@ class AddEntryConfirmCubit extends Cubit<AddEntryConfirmState> {
 
   final EntryConfirmRepository _repo;
 
-  Future<void> submit({
-    required int documentId,
-    required Map<String, dynamic> personData,
+  Future<void> submitImportedPerson({
+    required Map<String, dynamic> request,
     XFile? photo,
   }) async {
-    emit(
-      state.copyWith(
-        isSubmitting: true,
-        clearError: true,
-        success: false,
-      ),
-    );
-    final out = await _repo.confirm(
-      documentId: documentId,
-      personData: personData,
+    emit(state.copyWith(isSubmitting: true, clearError: true, success: false));
+    final out = await _repo.createPersonFromImport(
+      request: request,
       photo: photo,
     );
     out.fold(
-      (f) => emit(
-        state.copyWith(
-          isSubmitting: false,
-          errorMessage: f.message,
-        ),
-      ),
-      (_) => emit(
-        const AddEntryConfirmState(
-          isSubmitting: false,
-          success: true,
-        ),
-      ),
+      (f) => emit(state.copyWith(isSubmitting: false, errorMessage: f.message)),
+      (_) =>
+          emit(const AddEntryConfirmState(isSubmitting: false, success: true)),
     );
   }
 

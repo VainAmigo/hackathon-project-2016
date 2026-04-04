@@ -60,32 +60,35 @@ class _AppState extends State<App> {
             supportedLocales: AppLocalizations.supportedLocales,
             debugShowCheckedModeBanner: false,
             builder: (context, child) {
-              return BlocListener<AuthSessionCubit, AuthSessionState>(
-                listenWhen: (prev, curr) =>
-                    curr.notice != AuthSessionNotice.none &&
-                    curr.notice != prev.notice,
-                listener: (context, state) {
-                  final l10n = AppLocalizations.of(context);
-                  late final String text;
-                  var isError = false;
-                  switch (state.notice) {
-                    case AuthSessionNotice.loginSuccess:
-                      text = l10n.authSnackLoginSuccess;
-                    case AuthSessionNotice.logoutSuccess:
-                      text = l10n.authSnackLogoutSuccess;
-                    case AuthSessionNotice.refreshFailedOnStartup:
-                      text = l10n.authSnackRefreshFailedOnStartup;
-                      isError = true;
-                    case AuthSessionNotice.sessionExpiredRefresh:
-                      text = l10n.authSnackSessionExpiredRefresh;
-                      isError = true;
-                    case AuthSessionNotice.none:
-                      return;
-                  }
-                  AppSnackMessenger.showMessage(text, isError: isError);
-                  context.read<AuthSessionCubit>().clearNotice();
-                },
-                child: child ?? const SizedBox.shrink(),
+              return AppLocaleScope(
+                notifier: _locale,
+                child: BlocListener<AuthSessionCubit, AuthSessionState>(
+                  listenWhen: (prev, curr) =>
+                      curr.notice != AuthSessionNotice.none &&
+                      curr.notice != prev.notice,
+                  listener: (context, state) {
+                    final l10n = AppLocalizations.of(context);
+                    late final String text;
+                    var isError = false;
+                    switch (state.notice) {
+                      case AuthSessionNotice.loginSuccess:
+                        text = l10n.authSnackLoginSuccess;
+                      case AuthSessionNotice.logoutSuccess:
+                        text = l10n.authSnackLogoutSuccess;
+                      case AuthSessionNotice.refreshFailedOnStartup:
+                        text = l10n.authSnackRefreshFailedOnStartup;
+                        isError = true;
+                      case AuthSessionNotice.sessionExpiredRefresh:
+                        text = l10n.authSnackSessionExpiredRefresh;
+                        isError = true;
+                      case AuthSessionNotice.none:
+                        return;
+                    }
+                    AppSnackMessenger.showMessage(text, isError: isError);
+                    context.read<AuthSessionCubit>().clearNotice();
+                  },
+                  child: child ?? const SizedBox.shrink(),
+                ),
               );
             },
             theme: ThemeData(
@@ -109,10 +112,7 @@ class _AppState extends State<App> {
                     body: Center(child: CircularProgressIndicator()),
                   );
                 }
-                return AppLocaleScope(
-                  notifier: _locale,
-                  child: const HomePage(),
-                );
+                return const HomePage();
               },
             ),
           );
