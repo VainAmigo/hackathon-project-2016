@@ -1,7 +1,16 @@
+import 'package:cross_file/cross_file.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:project_temp/components/components.dart';
 import 'package:project_temp/core/core.dart';
+import 'package:project_temp/features/add_entry/cubit/add_entry_confirm_cubit.dart';
+import 'package:project_temp/features/add_entry/cubit/add_entry_confirm_state.dart';
+import 'package:project_temp/features/add_entry/cubit/add_entry_upload_cubit.dart';
+import 'package:project_temp/features/add_entry/cubit/add_entry_upload_state.dart';
+import 'package:project_temp/features/add_entry/domain/apply_extracted_entry.dart';
+import 'package:project_temp/features/add_entry/domain/build_person_confirm_payload.dart';
+import 'package:project_temp/source/source.dart';
 
 import '../../../../l10n/app_localizations.dart';
 
@@ -30,11 +39,13 @@ class _AddEntryPageState extends State<AddEntryPage> {
   final _rehabDate = TextEditingController();
   final _biography = TextEditingController();
 
-  /// Смена ключа сбрасывает внутренние списки [FileDropZone].
-  int _filesEpoch = 0;
+  XFile? _selectedPdf;
+  XFile? _selectedPhoto;
+  int? _draftDocumentId;
+  bool _hasUploadDraft = false;
+  EntryMlResponse? _importedMl;
 
-  /// Сохраняет состояние формы и [FileDropZone] при смене ширины (main уезжает
-  /// из [Expanded] в [Column] и обратно — без ключа Flutter пересоздаёт поддерево).
+  int _filesEpoch = 0;
   final GlobalKey _mainColumnKey = GlobalKey();
 
   @override
@@ -59,9 +70,16 @@ class _AddEntryPageState extends State<AddEntryPage> {
   }
 
   void _resetAll(BuildContext context) {
+    context.read<AddEntryUploadCubit>().reset();
+    context.read<AddEntryConfirmCubit>().reset();
     setState(() {
       _mode = 0;
       _filesEpoch++;
+      _selectedPdf = null;
+      _selectedPhoto = null;
+      _draftDocumentId = null;
+      _hasUploadDraft = false;
+      _importedMl = null;
       _fullName.clear();
       _accusation.clear();
       _yearFrom.clear();
@@ -76,56 +94,91 @@ class _AddEntryPageState extends State<AddEntryPage> {
     _manualKey.currentState?.reset();
   }
 
+  void _onPrimary(BuildContext context, AppLocalizations l10n) {
+    final upload = context.read<AddEntryUploadCubit>();
+    if (_mode == 0) {
+      if (upload.state.isUploading) return;
+      if (_selectedPdf == null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(l10n.addEntryPickPdfFirst)),
+        );
+        return;
+      }
+      upload.uploadPdf(_selectedPdf!);
+      return;
+    }
+    if (_hasUploadDraft) {
+      final docId = _draftDocumentId;
+      if (docId == null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(l10n.addEntryConfirmNoDocument)),
+        );
+        return;
+      }
+      if (!(_manualKey.currentState?.validate() ?? false)) return;
+      final ru = _importedMl?.byLocale['ru'];
+      final payload = buildPersonConfirmPayload(
+        fullName: _fullName.text,
+        accusation: _accusation.text,
+        yearFrom: _yearFrom.text,
+        yearTo: _yearTo.text,
+        punishment: _punishment.text,
+        regionLine: _region.text,
+        punishmentDate: _punishmentDate.text,
+        occupation: _occupation.text,
+        rehabDate: _rehabDate.text,
+        biography: _biography.text,
+        ruBaseline: ru,
+      );
+      context.read<AddEntryConfirmCubit>().submit(
+            documentId: docId,
+            personData: payload,
+            photo: _selectedPhoto,
+          );
+      return;
+    }
+    if (_manualKey.currentState?.validate() ?? false) {
+      _showPlaceholderSnack(context);
+    }
+  }
+
+  String _primaryLabel(AppLocalizations l10n) {
+    if (_mode == 0) return l10n.addEntrySendData;
+    if (_hasUploadDraft) return l10n.addEntryConfirmSave;
+    return l10n.addEntryPublish;
+  }
+
   @override
   Widget build(BuildContext context) {
-    final l10n = context.l10n;
-    final adaptive = context.adaptive;
-    final wide = adaptive.canUseSideNavigation;
-
-    final main = Column(
-      key: _mainColumnKey,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          l10n.addEntryEyebrow,
-          style: TextStyle(
-            fontSize: 11,
-            letterSpacing: 1.2,
-            fontWeight: FontWeight.w600,
-            color: AppThemes.textColorGrey,
-          ),
-        ),
-        const SizedBox(height: 8),
-        Text(
-          l10n.addEntryTitle,
-          style: const TextStyle(
-            fontFamily: 'serif',
-            fontSize: 32,
-            height: 1.15,
-            fontWeight: FontWeight.w700,
-            color: AppThemes.textColorPrimary,
-          ),
-        ),
-        const SizedBox(height: 24),
-        _EntryModeTabs(
-          mode: _mode,
-          onChanged: (i) => setState(() => _mode = i),
-          accent: _accentUnderline,
-        ),
-        const SizedBox(height: 24),
-        AnimatedSwitcher(
-          duration: const Duration(milliseconds: 240),
-          switchInCurve: Curves.easeOutCubic,
-          switchOutCurve: Curves.easeInCubic,
-          child: _mode == 0
-              ? _AutoBody(
-                  key: ValueKey('auto_$_filesEpoch'),
-                  l10n: l10n,
-                )
-              : _ManualBody(
-                  key: ValueKey('manual_$_filesEpoch'),
-                  l10n: l10n,
-                  formKey: _manualKey,
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (_) => AddEntryUploadCubit(sl())),
+        BlocProvider(create: (_) => AddEntryConfirmCubit(sl())),
+      ],
+      child: MultiBlocListener(
+        listeners: [
+          BlocListener<AddEntryUploadCubit, AddEntryUploadState>(
+            listenWhen: (prev, curr) =>
+                (curr.errorMessage != null &&
+                    curr.errorMessage != prev.errorMessage) ||
+                (curr.result != null && curr.result != prev.result),
+            listener: (context, state) {
+              final err = state.errorMessage;
+              if (err != null) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(err),
+                    backgroundColor: Theme.of(context).colorScheme.error,
+                  ),
+                );
+                context.read<AddEntryUploadCubit>().clearError();
+              }
+              final res = state.result;
+              if (res != null && mounted) {
+                final code = AppLocaleScope.of(context).code;
+                final fields = pickExtractedForLocale(res.mlResponse, code);
+                applyExtractedToManualForm(
+                  fields: fields,
                   fullName: _fullName,
                   accusation: _accusation,
                   yearFrom: _yearFrom,
@@ -136,54 +189,177 @@ class _AddEntryPageState extends State<AddEntryPage> {
                   occupation: _occupation,
                   rehabDate: _rehabDate,
                   biography: _biography,
-                ),
-        ),
-        const SizedBox(height: 32),
-        _ActionRow(
-          cancelLabel: l10n.addEntryCancel,
-          primaryLabel: _mode == 0 ? l10n.addEntrySendData : l10n.addEntryPublish,
-          onCancel: () => _resetAll(context),
-          onPrimary: () {
-            if (_mode == 1) {
-              if (_manualKey.currentState?.validate() ?? false) {
-                _showPlaceholderSnack(context);
+                );
+                setState(() {
+                  _mode = 1;
+                  _hasUploadDraft = true;
+                  _draftDocumentId = res.documentId;
+                  _importedMl = res.mlResponse;
+                });
+                context.read<AddEntryUploadCubit>().clearResult();
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(
+                      AppLocalizations.of(context).addEntryImportSuccessToast,
+                    ),
+                  ),
+                );
               }
-            } else {
-              _showPlaceholderSnack(context);
-            }
+            },
+          ),
+          BlocListener<AddEntryConfirmCubit, AddEntryConfirmState>(
+            listenWhen: (prev, curr) =>
+                (curr.errorMessage != null &&
+                    curr.errorMessage != prev.errorMessage) ||
+                (curr.success && !prev.success),
+            listener: (context, state) {
+              final err = state.errorMessage;
+              if (err != null) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(err),
+                    backgroundColor: Theme.of(context).colorScheme.error,
+                  ),
+                );
+                context.read<AddEntryConfirmCubit>().clearError();
+              }
+              if (state.success && mounted) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(
+                      AppLocalizations.of(context).addEntryConfirmSuccess,
+                    ),
+                  ),
+                );
+                _resetAll(context);
+              }
+            },
+          ),
+        ],
+        child: BlocBuilder<AddEntryUploadCubit, AddEntryUploadState>(
+          builder: (context, uploadState) {
+            return BlocBuilder<AddEntryConfirmCubit, AddEntryConfirmState>(
+              builder: (context, confirmState) {
+                final l10n = context.l10n;
+                final adaptive = context.adaptive;
+                final wide = adaptive.canUseSideNavigation;
+
+                final primaryBusy = (_mode == 0 && uploadState.isUploading) ||
+                    (_hasUploadDraft && confirmState.isSubmitting);
+
+                final main = Column(
+            key: _mainColumnKey,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                l10n.addEntryEyebrow,
+                style: TextStyle(
+                  fontSize: 11,
+                  letterSpacing: 1.2,
+                  fontWeight: FontWeight.w600,
+                  color: AppThemes.textColorGrey,
+                ),
+              ),
+              const SizedBox(height: 8),
+              Text(
+                l10n.addEntryTitle,
+                style: const TextStyle(
+                  fontFamily: 'serif',
+                  fontSize: 32,
+                  height: 1.15,
+                  fontWeight: FontWeight.w700,
+                  color: AppThemes.textColorPrimary,
+                ),
+              ),
+              const SizedBox(height: 24),
+              _EntryModeTabs(
+                mode: _mode,
+                onChanged: (i) => setState(() => _mode = i),
+                accent: _accentUnderline,
+              ),
+              const SizedBox(height: 24),
+              AnimatedSwitcher(
+                duration: const Duration(milliseconds: 240),
+                switchInCurve: Curves.easeOutCubic,
+                switchOutCurve: Curves.easeInCubic,
+                child: _mode == 0
+                    ? _AutoBody(
+                        key: ValueKey('auto_$_filesEpoch'),
+                        l10n: l10n,
+                        onPdfChanged: (files) {
+                          setState(() {
+                            _selectedPdf =
+                                files.isEmpty ? null : files.first;
+                          });
+                        },
+                      )
+                    : _ManualBody(
+                        key: ValueKey('manual_$_filesEpoch'),
+                        l10n: l10n,
+                        formKey: _manualKey,
+                        fullName: _fullName,
+                        accusation: _accusation,
+                        yearFrom: _yearFrom,
+                        yearTo: _yearTo,
+                        punishment: _punishment,
+                        region: _region,
+                        punishmentDate: _punishmentDate,
+                        occupation: _occupation,
+                        rehabDate: _rehabDate,
+                        biography: _biography,
+                        onPhotoChanged: (files) {
+                          setState(() {
+                            _selectedPhoto =
+                                files.isEmpty ? null : files.first;
+                          });
+                        },
+                      ),
+              ),
+              const SizedBox(height: 32),
+              _ActionRow(
+                cancelLabel: l10n.addEntryCancel,
+                primaryLabel: _primaryLabel(l10n),
+                primaryBusy: primaryBusy,
+                onCancel: () => _resetAll(context),
+                onPrimary: () => _onPrimary(context, l10n),
+              ),
+            ],
+          );
+
+                final sidebar = _SidebarPanel(l10n: l10n);
+
+                return LayoutBuilder(
+                  builder: (context, constraints) {
+                    return SingleChildScrollView(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: wide ? 32 : 20,
+                        vertical: 24,
+                      ),
+                      child: wide
+                          ? Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Expanded(flex: 11, child: sidebar),
+                                const SizedBox(width: 40),
+                                Expanded(flex: 19, child: main),
+                              ],
+                            )
+                          : Column(
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              children: [
+                                sidebar,
+                                const SizedBox(height: 32),
+                                main,
+                              ],
+                            ),
+                    );
+                  },
+                );
+              },
+            );
           },
         ),
-      ],
-    );
-
-    final sidebar = _SidebarPanel(l10n: l10n);
-
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        return SingleChildScrollView(
-          padding: EdgeInsets.symmetric(
-            horizontal: wide ? 32 : 20,
-            vertical: 24,
-          ),
-          child: wide
-              ? Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Expanded(flex: 11, child: sidebar),
-                    const SizedBox(width: 40),
-                    Expanded(flex: 19, child: main),
-                  ],
-                )
-              : Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    sidebar,
-                    const SizedBox(height: 32),
-                    main,
-                  ],
-                ),
-        );
-      },
+      ),
     );
   }
 }
@@ -365,9 +541,11 @@ class _AutoBody extends StatelessWidget {
   const _AutoBody({
     super.key,
     required this.l10n,
+    required this.onPdfChanged,
   });
 
   final AppLocalizations l10n;
+  final ValueChanged<List<XFile>> onPdfChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -380,7 +558,8 @@ class _AutoBody extends StatelessWidget {
       invalidTypeMessage: l10n.addEntryInvalidFilePdf,
       kind: FileDropZoneKind.document,
       fileType: FileType.custom,
-      allowedExtensions: const ['pdf'],
+      allowedExtensions: const ['pdf', 'txt', 'md'],
+      onFilesChanged: onPdfChanged,
     );
   }
 }
@@ -400,6 +579,7 @@ class _ManualBody extends StatelessWidget {
     required this.occupation,
     required this.rehabDate,
     required this.biography,
+    required this.onPhotoChanged,
   });
 
   final AppLocalizations l10n;
@@ -414,6 +594,7 @@ class _ManualBody extends StatelessWidget {
   final TextEditingController occupation;
   final TextEditingController rehabDate;
   final TextEditingController biography;
+  final ValueChanged<List<XFile>> onPhotoChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -509,6 +690,7 @@ class _ManualBody extends StatelessWidget {
             fileType: FileType.custom,
             allowedExtensions: const ['jpg', 'jpeg', 'png'],
             minHeightEmpty: 152,
+            onFilesChanged: onPhotoChanged,
           ),
         ],
       ),
@@ -520,12 +702,14 @@ class _ActionRow extends StatelessWidget {
   const _ActionRow({
     required this.cancelLabel,
     required this.primaryLabel,
+    required this.primaryBusy,
     required this.onCancel,
     required this.onPrimary,
   });
 
   final String cancelLabel;
   final String primaryLabel;
+  final bool primaryBusy;
   final VoidCallback onCancel;
   final VoidCallback onPrimary;
 
@@ -547,7 +731,15 @@ class _ActionRow extends StatelessWidget {
           ),
         ),
         const SizedBox(width: 16),
-        Expanded(child: PrimaryButton(text: primaryLabel, onPressed: onPrimary)),
+        Expanded(
+          child: PrimaryButton(
+            text: primaryLabel,
+            onPressed: primaryBusy ? null : onPrimary,
+            child: primaryBusy
+                ? const CenteredProgressingButton(null)
+                : null,
+          ),
+        ),
       ],
     );
   }

@@ -78,6 +78,14 @@ class _FileDropZoneState extends State<FileDropZone> {
     final mime = file.mimeType?.toLowerCase();
     if (mime == null) return false;
     if (_allowedLower.contains('pdf') && mime == 'application/pdf') return true;
+    if (_allowedLower.contains('txt') && mime == 'text/plain') return true;
+    if (_allowedLower.contains('md')) {
+      if (mime == 'text/markdown' ||
+          mime == 'text/x-markdown' ||
+          mime == 'text/plain') {
+        return true;
+      }
+    }
     if (_allowedLower.contains('jpg') ||
         _allowedLower.contains('jpeg') ||
         _allowedLower.contains('png')) {

@@ -101,6 +101,15 @@ abstract class AppLocalizations {
   String get authUsernameRequired;
   String get authUsernameTooShort;
   String get authRegisterSuccess;
+  String get authLoginRequiredEyebrow;
+  String get authLoginRequiredTitle;
+  String get authLoginRequiredBody;
+  String get authLoginRequiredAddEntryBody;
+  String get authDialogCancel;
+  String get authSnackLoginSuccess;
+  String get authSnackLogoutSuccess;
+  String get authSnackRefreshFailedOnStartup;
+  String get authSnackSessionExpiredRefresh;
   String get addEntryEyebrow;
   String get addEntryTitle;
   String get addEntryWhyTitle;
@@ -138,6 +147,11 @@ abstract class AppLocalizations {
   String get addEntryFieldRehabDate;
   String get addEntryFieldBiography;
   String get addEntrySubmitPlaceholder;
+  String get addEntryPickPdfFirst;
+  String get addEntryImportSuccessToast;
+  String get addEntryConfirmSave;
+  String get addEntryConfirmSuccess;
+  String get addEntryConfirmNoDocument;
   String get chatSidebarTitle;
   String get chatNewChat;
   String get chatUntitled;
@@ -226,25 +240,38 @@ class AppLocalizationsEn extends AppLocalizations {
   @override String get authUsernameTooShort => "At least 3 characters";
   @override String get authRegisterSuccess =>
       "Account created. Sign in with your username.";
+  @override String get authLoginRequiredEyebrow => "ACCESS";
+  @override String get authLoginRequiredTitle => "Sign in required";
+  @override String get authLoginRequiredBody =>
+      "This section is only available after you sign in.";
+  @override String get authLoginRequiredAddEntryBody =>
+      "To add an archive entry, sign in first. Upload and save use a secure API with your account.";
+  @override String get authDialogCancel => "Cancel";
+  @override String get authSnackLoginSuccess => "Signed in successfully.";
+  @override String get authSnackLogoutSuccess => "You signed out.";
+  @override String get authSnackRefreshFailedOnStartup =>
+      "Could not restore your session. Please sign in again.";
+  @override String get authSnackSessionExpiredRefresh =>
+      "Session expired. Please sign in again.";
   @override String get addEntryEyebrow => "ENTRY FORM";
   @override String get addEntryTitle => "Add a new record";
   @override String get addEntryWhyTitle => "Why your contribution matters";
   @override String get addEntryWhyBody => "Each documented life restores names, dates, and context that repression tried to erase. Careful, source-based entries strengthen collective memory for families, researchers, and the public.";
   @override String get addEntryHowTitle => "How to use this form";
   @override String get addEntryHowIntro => "Upload scans and photos for automatic extraction where available, or type everything yourself — you can combine both approaches.";
-  @override String get addEntryHowStep1 => "«From files»: upload one PDF; text and fields will be suggested when the import service is enabled.";
+  @override String get addEntryHowStep1 => "«From files»: upload one PDF, TXT, or MD file; text and fields will be suggested when the import service is enabled.";
   @override String get addEntryHowStep2 => "Manual: fill biographical fields and attach portrait or evidence photos yourself.";
   @override String get addEntryHowStep3 => "Review the draft, submit it for moderation, and be ready to clarify sources if we contact you.";
   @override String get addEntryTabAuto => "FROM FILES";
   @override String get addEntryTabManual => "MANUAL";
-  @override String get addEntryDocumentsTitle => "PDF document";
-  @override String get addEntryDocumentsHint => "Only PDF. Drag and drop here or choose a file.";
+  @override String get addEntryDocumentsTitle => "Document file";
+  @override String get addEntryDocumentsHint => "PDF, TXT, or MD. Drag and drop here or choose a file.";
   @override String get addEntryPhotosTitle => "Photo";
   @override String get addEntryPhotosHint => "Only JPEG or PNG. Drag and drop here or choose a file.";
   @override String get addEntryBrowseFiles => "Choose file";
   @override String get addEntryFileChange => "Replace";
   @override String get addEntryFileRemove => "Remove file";
-  @override String get addEntryInvalidFilePdf => "Only PDF files are accepted.";
+  @override String get addEntryInvalidFilePdf => "Only PDF, TXT, and MD files are accepted.";
   @override String get addEntryInvalidFileImage => "Only JPEG or PNG images are accepted.";
   @override String get addEntrySendData => "SEND MATERIALS";
   @override String get addEntryPublish => "PUBLISH RECORD";
@@ -263,6 +290,13 @@ class AppLocalizationsEn extends AppLocalizations {
   @override String get addEntryFieldRehabDate => "Rehabilitation date";
   @override String get addEntryFieldBiography => "Biography";
   @override String get addEntrySubmitPlaceholder => "Sending to the server is not enabled yet — your draft stays on this device.";
+  @override String get addEntryPickPdfFirst => "Choose a document (PDF, TXT, or MD) first.";
+  @override String get addEntryImportSuccessToast =>
+      "Fields were filled from the document. Review and edit if needed.";
+  @override String get addEntryConfirmSave => "Confirm and save";
+  @override String get addEntryConfirmSuccess => "Record saved.";
+  @override String get addEntryConfirmNoDocument =>
+      "No document ID. Upload a file first.";
   @override String get chatSidebarTitle => "Chats";
   @override String get chatNewChat => "New chat";
   @override String get chatUntitled => "Untitled";
@@ -353,25 +387,38 @@ class AppLocalizationsKy extends AppLocalizations {
   @override String get authUsernameTooShort => "Эң аз 3 символ";
   @override String get authRegisterSuccess =>
       "Аккаунт түзүлдү. Ошол ат менен кириңиз.";
+  @override String get authLoginRequiredEyebrow => "КИРҮҮ";
+  @override String get authLoginRequiredTitle => "Кирүү талап кылынат";
+  @override String get authLoginRequiredBody =>
+      "Бул бөлүм аккаунтка киргенден кийин гана жеткиликтүү.";
+  @override String get authLoginRequiredAddEntryBody =>
+      "Архивге жазуу кошуу үчүн кириңиз. Жүктөө жана сактоо аккаунтуңуз аркылуу корголгон API аркылуу иштейт.";
+  @override String get authDialogCancel => "Жокко чыгаруу";
+  @override String get authSnackLoginSuccess => "Ийгиликтүү кирдиңиз.";
+  @override String get authSnackLogoutSuccess => "Чыктыңыз.";
+  @override String get authSnackRefreshFailedOnStartup =>
+      "Сессияны калыбына келтире алган жокпуз. Кайра кириңиз.";
+  @override String get authSnackSessionExpiredRefresh =>
+      "Сессия бүттү. Кайра кириңиз.";
   @override String get addEntryEyebrow => "ЖАЗУУ ФОРМАСЫ";
   @override String get addEntryTitle => "Жаңы жазуу кошуу";
   @override String get addEntryWhyTitle => "Сиздин салымыңыз эмне үчүн маанилүү";
   @override String get addEntryWhyBody => "Ар бир текшерилген жазуу аттарды, даталарды жана контекстти калыбына келтирет. Бул үй-бүлөлөр, изилдөөчүлөр жана коомчулук үчүн орток эстелик базасын бекемдейт.";
   @override String get addEntryHowTitle => "Форманы кантип колдонуу керек";
   @override String get addEntryHowIntro => "Сканерлөө жана сүрөттөрдү жүктөп автоматтык толтурууга (кызмат иштешкенде) же бардыгын кол менен киргизүүгө болот — экөөнү бириктирүүгө да болот.";
-  @override String get addEntryHowStep1 => "«Файлдардан» өткөндө: бир PDF тиркеңиз — импорт иштегенде текст жана талаалар сунушталат.";
+  @override String get addEntryHowStep1 => "«Файлдардан» өткөндө: бир PDF, TXT же MD файлын тиркеңиз — импорт иштегенде текст жана талаалар сунушталат.";
   @override String get addEntryHowStep2 => "«Кол менен» өткөндө: биографиялык маалыматтарды өзүңүз киргизип, портрет же далил сүрөттөрүн кошуңуз.";
   @override String get addEntryHowStep3 => "Карап чыгыңыз, модерацияга жөнөтүңүз; булактарды тактоо керек болсо сиз менен байланышабыз.";
   @override String get addEntryTabAuto => "ФАЙЛДАН";
   @override String get addEntryTabManual => "КОЛ МЕНЕН";
-  @override String get addEntryDocumentsTitle => "PDF документ";
-  @override String get addEntryDocumentsHint => "Гана PDF. Сүйрөп алып келиңиз же файл тандаңыз.";
+  @override String get addEntryDocumentsTitle => "Документ файлы";
+  @override String get addEntryDocumentsHint => "PDF, TXT же MD. Сүйрөп алып келиңиз же файл тандаңыз.";
   @override String get addEntryPhotosTitle => "Сүрөт";
   @override String get addEntryPhotosHint => "Гана JPEG же PNG. Сүйрөп алып келиңиз же файл тандаңыз.";
   @override String get addEntryBrowseFiles => "Файл тандоо";
   @override String get addEntryFileChange => "Алмаштыруу";
   @override String get addEntryFileRemove => "Файлды алып салуу";
-  @override String get addEntryInvalidFilePdf => "Гана PDF файл кабыл алынат.";
+  @override String get addEntryInvalidFilePdf => "Гана PDF, TXT жана MD файлдары кабыл алынат.";
   @override String get addEntryInvalidFileImage => "Гана JPEG же PNG сүрөттөр кабыл алынат.";
   @override String get addEntrySendData => "МАТЕРИАЛДАРДЫ ЖӨНӨТҮҮ";
   @override String get addEntryPublish => "ЖАЗУУНУ ЖАРЫЯЛОО";
@@ -390,6 +437,13 @@ class AppLocalizationsKy extends AppLocalizations {
   @override String get addEntryFieldRehabDate => "Реабилитация күнү";
   @override String get addEntryFieldBiography => "Биография";
   @override String get addEntrySubmitPlaceholder => "Серверге жөнөтүү азыр иштебейт — черновик бул түзмөктө калат.";
+  @override String get addEntryPickPdfFirst => "Алгач документ тандаңыз (PDF, TXT же MD).";
+  @override String get addEntryImportSuccessToast =>
+      "Маалыматтар документтен толтурулду. Керек болсо оңдоңуз.";
+  @override String get addEntryConfirmSave => "Ырастоо жана сактоо";
+  @override String get addEntryConfirmSuccess => "Жазуу сакталды.";
+  @override String get addEntryConfirmNoDocument =>
+      "Документ ID жок. Алгач файл жүктөңүз.";
   @override String get chatSidebarTitle => "Чаттар";
   @override String get chatNewChat => "Жаңы чат";
   @override String get chatUntitled => "Аталышы жок";
@@ -480,25 +534,38 @@ class AppLocalizationsRu extends AppLocalizations {
   @override String get authUsernameTooShort => "Не менее 3 символов";
   @override String get authRegisterSuccess =>
       "Аккаунт создан. Войдите с этим именем.";
+  @override String get authLoginRequiredEyebrow => "ДОСТУП";
+  @override String get authLoginRequiredTitle => "Нужен вход";
+  @override String get authLoginRequiredBody =>
+      "Этот раздел доступен только после входа в аккаунт.";
+  @override String get authLoginRequiredAddEntryBody =>
+      "Чтобы добавить запись в архив, войдите. Загрузка и сохранение выполняются через защищённый API с вашей учётной записью.";
+  @override String get authDialogCancel => "Отмена";
+  @override String get authSnackLoginSuccess => "Вход выполнен.";
+  @override String get authSnackLogoutSuccess => "Вы вышли из аккаунта.";
+  @override String get authSnackRefreshFailedOnStartup =>
+      "Не удалось восстановить сессию. Войдите снова.";
+  @override String get authSnackSessionExpiredRefresh =>
+      "Сессия истекла. Войдите снова.";
   @override String get addEntryEyebrow => "ФОРМА ЗАПИСИ";
   @override String get addEntryTitle => "Добавление новой записи";
   @override String get addEntryWhyTitle => "Почему ваша запись важна";
   @override String get addEntryWhyBody => "Каждая тщательно оформленная карточка возвращает в оборот памяти имена, даты и обстоятельства, которые пытались стереть. Проверяемые факты помогают родственникам, исследователям и широкой аудитории опираться на общую базу.";
   @override String get addEntryHowTitle => "Как пользоваться формой";
   @override String get addEntryHowIntro => "Можно загрузить сканы и фото для автоматического разбора (когда сервис подключён) или заполнить всё вручную — оба способа можно сочетать.";
-  @override String get addEntryHowStep1 => "Вкладка «Из файлов»: прикрепите один PDF — текст и поля будут предложены после включения импорта.";
+  @override String get addEntryHowStep1 => "Вкладка «Из файлов»: прикрепите один файл PDF, TXT или MD — текст и поля будут предложены после включения импорта.";
   @override String get addEntryHowStep2 => "Вкладка «Вручную»: введите биографию и ключевые сведения сами и добавьте портретные или документальные фото.";
   @override String get addEntryHowStep3 => "Проверьте черновик, отправьте запись на модерацию и будьте готовы уточнить источники, если с вами свяжутся.";
   @override String get addEntryTabAuto => "ИЗ ФАЙЛОВ";
   @override String get addEntryTabManual => "ВРУЧНУЮ";
-  @override String get addEntryDocumentsTitle => "PDF-документ";
-  @override String get addEntryDocumentsHint => "Только PDF. Перетащите сюда или выберите файл.";
+  @override String get addEntryDocumentsTitle => "Файл документа";
+  @override String get addEntryDocumentsHint => "PDF, TXT или MD. Перетащите сюда или выберите файл.";
   @override String get addEntryPhotosTitle => "Фотография";
   @override String get addEntryPhotosHint => "Только JPEG или PNG. Перетащите сюда или выберите файл.";
   @override String get addEntryBrowseFiles => "Выбрать файл";
   @override String get addEntryFileChange => "Заменить";
   @override String get addEntryFileRemove => "Убрать файл";
-  @override String get addEntryInvalidFilePdf => "Допускается только файл в формате PDF.";
+  @override String get addEntryInvalidFilePdf => "Допускаются только файлы PDF, TXT и MD.";
   @override String get addEntryInvalidFileImage => "Допускаются только изображения JPEG или PNG.";
   @override String get addEntrySendData => "ОТПРАВИТЬ МАТЕРИАЛЫ";
   @override String get addEntryPublish => "ОПУБЛИКОВАТЬ ЗАПИСЬ";
@@ -517,6 +584,13 @@ class AppLocalizationsRu extends AppLocalizations {
   @override String get addEntryFieldRehabDate => "Дата реабилитации";
   @override String get addEntryFieldBiography => "Биография";
   @override String get addEntrySubmitPlaceholder => "Отправка на сервер пока не подключена — черновик остаётся на этом устройстве.";
+  @override String get addEntryPickPdfFirst => "Сначала выберите документ (PDF, TXT или MD).";
+  @override String get addEntryImportSuccessToast =>
+      "Поля заполнены по документу. При необходимости отредактируйте.";
+  @override String get addEntryConfirmSave => "Подтвердить и сохранить";
+  @override String get addEntryConfirmSuccess => "Запись сохранена.";
+  @override String get addEntryConfirmNoDocument =>
+      "Нет ID документа. Сначала загрузите файл.";
   @override String get chatSidebarTitle => "Чаты";
   @override String get chatNewChat => "Новый чат";
   @override String get chatUntitled => "Без названия";
@@ -607,25 +681,38 @@ class AppLocalizationsTr extends AppLocalizations {
   @override String get authUsernameTooShort => "En az 3 karakter";
   @override String get authRegisterSuccess =>
       "Hesap oluşturuldu. Kullanıcı adınızla giriş yapın.";
+  @override String get authLoginRequiredEyebrow => "ERİŞİM";
+  @override String get authLoginRequiredTitle => "Giriş gerekli";
+  @override String get authLoginRequiredBody =>
+      "Bu bölüm yalnızca oturum açtıktan sonra kullanılabilir.";
+  @override String get authLoginRequiredAddEntryBody =>
+      "Arşive kayıt eklemek için giriş yapın. Yükleme ve kaydetme, hesabınızla güvenli API üzerinden yapılır.";
+  @override String get authDialogCancel => "İptal";
+  @override String get authSnackLoginSuccess => "Giriş başarılı.";
+  @override String get authSnackLogoutSuccess => "Çıkış yaptınız.";
+  @override String get authSnackRefreshFailedOnStartup =>
+      "Oturum geri yüklenemedi. Lütfen tekrar giriş yapın.";
+  @override String get authSnackSessionExpiredRefresh =>
+      "Oturum süresi doldu. Lütfen tekrar giriş yapın.";
   @override String get addEntryEyebrow => "KAYIT FORMU";
   @override String get addEntryTitle => "Yeni kayıt ekle";
   @override String get addEntryWhyTitle => "Katkınız neden önemli";
   @override String get addEntryWhyBody => "Her doğrulanmış kayıt, baskının silmeye çalıştığı isimleri, tarihleri ve bağlamı geri getirir. Aileler, araştırmacılar ve kamu için ortak, güvenilir bir hafıza oluşturur.";
   @override String get addEntryHowTitle => "Formu nasıl kullanırsınız";
   @override String get addEntryHowIntro => "Taramaları ve fotoğrafları içe aktarma hizmeti açıldığında otomatik doldurma için yükleyebilir veya her şeyi elle girebilirsiniz — ikisini birleştirmek de mümkün.";
-  @override String get addEntryHowStep1 => "«Dosyalardan» sekmesi: bir PDF yükleyin; içe aktarma etkinleşince metin ve alanlar önerilecek.";
+  @override String get addEntryHowStep1 => "«Dosyalardan» sekmesi: bir PDF, TXT veya MD yükleyin; içe aktarma etkinleşince metin ve alanlar önerilecek.";
   @override String get addEntryHowStep2 => "«Elle» sekmesi: biyografik bilgileri kendiniz girin; portre veya kanıt fotoğrafları ekleyin.";
   @override String get addEntryHowStep3 => "Taslağı gözden geçirin, moderasyona gönderin; kaynakları netleştirmemiz gerekirse size ulaşırız.";
   @override String get addEntryTabAuto => "DOSYALARDAN";
   @override String get addEntryTabManual => "ELLE";
-  @override String get addEntryDocumentsTitle => "PDF belgesi";
-  @override String get addEntryDocumentsHint => "Yalnızca PDF. Sürükleyip bırakın veya dosya seçin.";
+  @override String get addEntryDocumentsTitle => "Belge dosyası";
+  @override String get addEntryDocumentsHint => "PDF, TXT veya MD. Sürükleyip bırakın veya dosya seçin.";
   @override String get addEntryPhotosTitle => "Fotoğraf";
   @override String get addEntryPhotosHint => "Yalnızca JPEG veya PNG. Sürükleyip bırakın veya dosya seçin.";
   @override String get addEntryBrowseFiles => "Dosya seç";
   @override String get addEntryFileChange => "Değiştir";
   @override String get addEntryFileRemove => "Dosyayı kaldır";
-  @override String get addEntryInvalidFilePdf => "Yalnızca PDF dosyaları kabul edilir.";
+  @override String get addEntryInvalidFilePdf => "Yalnızca PDF, TXT ve MD dosyaları kabul edilir.";
   @override String get addEntryInvalidFileImage => "Yalnızca JPEG veya PNG görselleri kabul edilir.";
   @override String get addEntrySendData => "MATERYALLERİ GÖNDER";
   @override String get addEntryPublish => "KAYDI YAYINLA";
@@ -644,6 +731,13 @@ class AppLocalizationsTr extends AppLocalizations {
   @override String get addEntryFieldRehabDate => "Rehabilitasyon tarihi";
   @override String get addEntryFieldBiography => "Biyografi";
   @override String get addEntrySubmitPlaceholder => "Sunucuya gönderim henüz yok — taslak bu cihazda kalır.";
+  @override String get addEntryPickPdfFirst => "Önce bir belge seçin (PDF, TXT veya MD).";
+  @override String get addEntryImportSuccessToast =>
+      "Alanlar belgeden dolduruldu. Gerekirse düzenleyin.";
+  @override String get addEntryConfirmSave => "Onayla ve kaydet";
+  @override String get addEntryConfirmSuccess => "Kayıt kaydedildi.";
+  @override String get addEntryConfirmNoDocument =>
+      "Belge kimliği yok. Önce dosya yükleyin.";
   @override String get chatSidebarTitle => "Sohbetler";
   @override String get chatNewChat => "Yeni sohbet";
   @override String get chatUntitled => "Adsız";

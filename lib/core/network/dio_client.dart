@@ -4,7 +4,8 @@ import 'package:project_temp/core/core.dart';
 
 /// Два экземпляра Dio:
 /// - [publicDio] — без Authorization (логин, публичные эндпоинты)
-/// - [authenticatedDio] — с [AuthInterceptor]
+/// - [authenticatedDio] — с [AuthInterceptor] и refresh; для экранов с загрузкой
+///   файлов и confirm в UI нужна активная сессия (см. навигацию на «Добавить запись»).
 class DioClient {
   DioClient({
     required PreferencesService preferencesService,

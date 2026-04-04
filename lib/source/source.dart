@@ -2,3 +2,8 @@ export 'models/models.dart';
 export 'error/failures.dart';
 export 'repository/auth_repository.dart';
 export 'repository/auth_repository_impl.dart';
+export 'network/xfile_multipart.dart';
+export 'repository/entry_confirm_repository.dart';
+export 'repository/entry_confirm_repository_impl.dart';
+export 'repository/entry_upload_repository.dart';
+export 'repository/entry_upload_repository_impl.dart';

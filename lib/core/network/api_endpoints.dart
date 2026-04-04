@@ -11,4 +11,7 @@ abstract final class ApiEndpoints {
   static const register = '/api/auth/register';
   static const refresh = '/api/auth/refresh';
   static const logout = '/api/auth/logout';
+
+  static const upload = '/api/upload';
+  static const confirm = '/api/confirm';
 }

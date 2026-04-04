@@ -5,6 +5,74 @@ import 'package:project_temp/core/core.dart';
 /// Фон шапки по макету.
 const Color kVoiceArchiveCream = Color(0xFFFDFCE6);
 
+/// Поле поиска в шапке: те же токены, что и у навигации (скругление 4, крем/серый/чёрный).
+class _VoiceArchiveSearchField extends StatelessWidget {
+  const _VoiceArchiveSearchField({
+    required this.controller,
+    required this.hintText,
+    this.autofocus = false,
+  });
+
+  final TextEditingController controller;
+  final String hintText;
+  final bool autofocus;
+
+  static const double _radius = 4;
+
+  @override
+  Widget build(BuildContext context) {
+    final borderGrey = AppThemes.textColorGrey.withValues(alpha: 0.9);
+    return TextField(
+      controller: controller,
+      autofocus: autofocus,
+      style: const TextStyle(
+        fontSize: 15,
+        fontWeight: FontWeight.w500,
+        color: AppThemes.textColorPrimary,
+        height: 1.25,
+      ),
+      cursorColor: AppThemes.accentColor,
+      decoration: InputDecoration(
+        isDense: true,
+        filled: true,
+        fillColor: AppThemes.surfaceColor,
+        hintText: hintText,
+        hintStyle: TextStyle(
+          color: AppThemes.textColorGrey,
+          fontWeight: FontWeight.w400,
+          fontSize: 15,
+          height: 1.25,
+        ),
+        prefixIcon: Icon(
+          Icons.search_rounded,
+          size: 22,
+          color: AppThemes.textColorGrey,
+        ),
+        prefixIconConstraints: const BoxConstraints(
+          minWidth: 44,
+          maxHeight: 44,
+        ),
+        contentPadding: const EdgeInsets.fromLTRB(0, 12, 14, 12),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(_radius),
+          borderSide: BorderSide(color: borderGrey),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(_radius),
+          borderSide: BorderSide(color: borderGrey),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(_radius),
+          borderSide: const BorderSide(
+            color: AppThemes.textColorPrimary,
+            width: 1.5,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
 /// Индексы вкладок: 0 — Archive, 1 — AI Assistant, 2 — Add Entry.
 class VoiceArchiveAppBar extends StatelessWidget
     implements PreferredSizeWidget {
@@ -148,7 +216,7 @@ class _DesktopTopBar extends StatelessWidget {
               alignment: Alignment.centerRight,
               child: ConstrainedBox(
                 constraints: const BoxConstraints(maxWidth: 360),
-                child: CustomTextFormField(
+                child: _VoiceArchiveSearchField(
                   controller: searchController,
                   hintText: context.l10n.searchHint,
                 ),
@@ -208,11 +276,14 @@ class _MobileTopBar extends StatelessWidget {
             tooltip: context.l10n.tooltipMenu,
           ),
           Expanded(child: Center(child: _BrandTitle(compact: true))),
-          IconButton(
-            icon: const Icon(Icons.search, color: Colors.black87),
-            tooltip: context.l10n.tooltipSearch,
+          PrimaryButton(
+            text: context.l10n.tooltipSearch,
             onPressed: () => _openSearchSheet(context),
+            iconOnly: true,
+            icon: Icons.search_rounded,
+            variant: PrimaryButtonVariant.outlined,
           ),
+          const SizedBox(width: 4),
           _LangToggle(controller: locale, dense: true),
           const SizedBox(width: 4),
           _AuthChip(
@@ -230,19 +301,44 @@ class _MobileTopBar extends StatelessWidget {
   void _openSearchSheet(BuildContext context) {
     showModalBottomSheet<void>(
       context: context,
+      isScrollControlled: true,
+      backgroundColor: AppThemes.surfaceColor,
       showDragHandle: true,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
       builder: (ctx) {
-        return Padding(
-          padding: EdgeInsets.only(
-            left: 20,
-            right: 20,
-            top: 8,
-            bottom: MediaQuery.paddingOf(ctx).bottom + 20,
-          ),
-          child: CustomTextFormField(
-            controller: searchController,
-            autofocus: true,
-            hintText: ctx.l10n.searchHint,
+        final keyboard = MediaQuery.viewInsetsOf(ctx).bottom;
+        final safeBottom = MediaQuery.paddingOf(ctx).bottom;
+        return AnimatedPadding(
+          duration: const Duration(milliseconds: 120),
+          curve: Curves.easeOutCubic,
+          padding: EdgeInsets.only(bottom: keyboard),
+          child: Padding(
+            padding: EdgeInsets.fromLTRB(22, 6, 22, safeBottom + 22),
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Text(
+                    ctx.l10n.searchHint.toUpperCase(),
+                    style: const TextStyle(
+                      fontSize: 11,
+                      letterSpacing: 1.12,
+                      fontWeight: FontWeight.w600,
+                      color: AppThemes.textColorGrey,
+                    ),
+                  ),
+                  const SizedBox(height: 14),
+                  _VoiceArchiveSearchField(
+                    controller: searchController,
+                    autofocus: true,
+                    hintText: ctx.l10n.searchHint,
+                  ),
+                ],
+              ),
+            ),
           ),
         );
       },
@@ -309,7 +405,7 @@ class VoiceArchiveDrawer extends StatelessWidget {
                 },
               ),
             const Divider(height: 32),
-            CustomTextFormField(
+            _VoiceArchiveSearchField(
               controller: searchController,
               hintText: l10n.searchHint,
             ),
