@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 
 import 'package:project_temp/core/core.dart';
+import 'package:project_temp/features/archive/presentation/widgets/home_archive_section.dart';
 import 'package:project_temp/features/home/domain/home_layout_policy.dart';
-import 'package:project_temp/features/home/domain/home_placeholder_catalog.dart';
 import 'package:project_temp/features/home/presentation/widgets/home_hero_segment.dart';
-import 'package:project_temp/features/home/presentation/widgets/home_placeholder_section.dart';
 
-/// Скролл главной вкладки: hero + плейсхолдеры.
+/// Скролл главной вкладки: hero + материалы архива.
 class HomeLandingBody extends StatelessWidget {
   const HomeLandingBody({
     super.key,
@@ -57,13 +56,10 @@ class HomeLandingBody extends StatelessWidget {
                 textAlign: textAlign,
                 onOpenAiAssistant: onOpenAiAssistant,
               ),
-              for (var i = 0; i < kHomePlaceholderSectionOrder.length; i++)
-                HomePlaceholderSection(
-                  sectionIndex: i,
-                  sectionId: kHomePlaceholderSectionOrder[i],
-                  maxContentWidth: maxW,
-                  compact: compact,
-                ),
+              HomeArchiveSection(
+                maxContentWidth: maxW,
+                compact: compact,
+              ),
               SizedBox(height: 24 + MediaQuery.paddingOf(context).bottom),
             ],
           ),

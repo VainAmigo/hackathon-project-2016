@@ -457,7 +457,7 @@ class _ManualBody extends StatelessWidget {
                     ),
                   ),
                   row2(
-                    _YearRangeRow(
+                    YearRangeFormRow(
                       l10n: l10n,
                       yearFrom: yearFrom,
                       yearTo: yearTo,
@@ -509,64 +509,6 @@ class _ManualBody extends StatelessWidget {
             fileType: FileType.custom,
             allowedExtensions: const ['jpg', 'jpeg', 'png'],
             minHeightEmpty: 152,
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _YearRangeRow extends StatelessWidget {
-  const _YearRangeRow({
-    required this.l10n,
-    required this.yearFrom,
-    required this.yearTo,
-  });
-
-  final AppLocalizations l10n;
-  final TextEditingController yearFrom;
-  final TextEditingController yearTo;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            l10n.addEntryFieldLifeYears,
-            style: TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.w500,
-              color: AppThemes.textColorSecondary,
-            ),
-          ),
-          const SizedBox(height: 8),
-          Row(
-            children: [
-              Expanded(
-                child: CustomTextFormField(
-                  controller: yearFrom,
-                  hintText: l10n.addEntryYearFrom,
-                  keyboardType: TextInputType.number,
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 8, right: 8, top: 16),
-                child: Text(
-                  '—',
-                  style: TextStyle(color: AppThemes.textColorGrey),
-                ),
-              ),
-              Expanded(
-                child: CustomTextFormField(
-                  controller: yearTo,
-                  hintText: l10n.addEntryYearTo,
-                  keyboardType: TextInputType.number,
-                ),
-              ),
-            ],
           ),
         ],
       ),

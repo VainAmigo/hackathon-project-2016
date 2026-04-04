@@ -17,9 +17,9 @@ class AskAssistantFakeSearchBar extends StatelessWidget {
   Widget build(BuildContext context) {
     final (Color fill, Color border, Color fg) = switch (variant) {
       AskAssistantSearchBarVariant.onHero => (
-          AppThemes.homeHeroSearchFill,
-          AppThemes.homeHeroSearchBorder,
-          AppThemes.homeHeroSearchForeground,
+          AppThemes.backgroundColor.withValues(alpha: 0.18),
+          AppThemes.backgroundColor.withValues(alpha: 0.28),
+          AppThemes.surfaceColor,
         ),
       AskAssistantSearchBarVariant.light => (
           AppThemes.backgroundColor,

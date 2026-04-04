@@ -20,20 +20,20 @@ class HomeHeroHeadline extends StatelessWidget {
     final l10n = context.l10n;
     final serif = TextStyle(
       fontFamily: 'Georgia',
-      color: AppThemes.homeHeroTextHeadline,
+      color: AppThemes.backgroundColor,
       height: 1.05,
     );
 
     final labelStyle = Theme.of(context).textTheme.labelSmall?.copyWith(
           letterSpacing: 4,
           fontWeight: FontWeight.w400,
-          color: AppThemes.homeHeroTextEyebrow,
+          color: AppThemes.textColorGrey,
         );
 
     final bodyStyle = Theme.of(context).textTheme.bodyLarge?.copyWith(
           height: 1.5,
           fontWeight: FontWeight.w400,
-          color: AppThemes.homeHeroTextBody,
+          color: AppThemes.surfaceColor,
         );
 
     return Column(

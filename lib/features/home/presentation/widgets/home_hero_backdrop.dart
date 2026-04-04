@@ -41,6 +41,6 @@ class HomeHeroFallbackBackground extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ColoredBox(color: AppThemes.homeHeroFallbackBg, child: child);
+    return ColoredBox(color: AppThemes.textColorPrimary, child: child);
   }
 }
