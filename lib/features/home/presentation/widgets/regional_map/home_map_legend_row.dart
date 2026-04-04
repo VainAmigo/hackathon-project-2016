@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:project_temp/core/core.dart';
 import 'package:project_temp/features/home/domain/regional_map_summary.dart';
+import 'package:project_temp/features/home/presentation/localization/map_region_l10n.dart';
 
 /// Подписи регионов с цветом и числом жертв.
 class HomeMapLegendRow extends StatelessWidget {
@@ -29,6 +30,7 @@ class HomeMapLegendRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     final gap = compact ? 12.0 : 16.0;
     return Wrap(
       spacing: gap,
@@ -37,7 +39,7 @@ class HomeMapLegendRow extends StatelessWidget {
         for (final r in counts)
           _LegendChip(
             color: Color(r.colorArgb),
-            name: r.displayName,
+            name: l10n.mapRegionLabel(r.id),
             count: r.count,
             nameStyle: _nameStyle,
             countStyle: _countStyle,

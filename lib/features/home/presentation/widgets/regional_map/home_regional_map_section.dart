@@ -6,6 +6,7 @@ import 'package:project_temp/features/home/domain/regional_victims_repository.da
 import 'package:project_temp/features/home/presentation/widgets/regional_map/home_interactive_regional_map.dart';
 import 'package:project_temp/features/home/presentation/widgets/regional_map/home_map_legend_row.dart';
 import 'package:project_temp/features/home/presentation/widgets/regional_map/home_map_summary_panel.dart';
+import 'package:project_temp/features/home/presentation/localization/map_region_l10n.dart';
 import 'package:project_temp/features/home/presentation/widgets/regional_map/home_region_victims_sheet.dart';
 
 /// Нижний блок главной: карта, затем легенда (маркеры), затем сводка.
@@ -37,11 +38,10 @@ class _HomeRegionalMapSectionState extends State<HomeRegionalMapSection> {
   Future<void> _openRegion(BuildContext context, MapRegionId id) async {
     setState(() => _highlighted = id);
     final repo = sl<RegionalVictimsRepository>();
-    final meta = repo.regionCounts.firstWhere((r) => r.id == id);
     final victims = repo.victimsFor(id);
     await showHomeRegionVictimsSheet(
       context: context,
-      regionDisplayName: meta.displayName,
+      regionDisplayName: context.l10n.mapRegionLabel(id),
       victims: victims,
     );
     if (mounted) setState(() => _highlighted = null);

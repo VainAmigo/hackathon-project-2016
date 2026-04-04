@@ -152,6 +152,8 @@ abstract class AppLocalizations {
   String get addEntryConfirmSave;
   String get addEntryConfirmSuccess;
   String get addEntryConfirmNoDocument;
+  String get addEntryFormValidationFailed;
+  String get addEntryFormClearedSnack;
   String get homeMapSectionTitle;
   String get homeMapSectionSubtitle;
   String get homeMapSummaryTotalLabel;
@@ -161,6 +163,13 @@ abstract class AppLocalizations {
   String get homeMapBirthShort;
   String get homeMapDeathShort;
   String get homeMapEmptyVictims;
+  String get homeMapRegionChuy;
+  String get homeMapRegionTalas;
+  String get homeMapRegionNaryn;
+  String get homeMapRegionBatken;
+  String get homeMapRegionOsh;
+  String get homeMapRegionIssykKul;
+  String get homeMapRegionJalalAbad;
   String get chatSidebarTitle;
   String get chatNewChat;
   String get chatUntitled;
@@ -306,6 +315,9 @@ class AppLocalizationsEn extends AppLocalizations {
   @override String get addEntryConfirmSuccess => "Record saved.";
   @override String get addEntryConfirmNoDocument =>
       "No document ID. Upload a file first.";
+  @override String get addEntryFormValidationFailed =>
+      "Please fix the fields marked in the form.";
+  @override String get addEntryFormClearedSnack => "The form has been reset.";
   @override String get homeMapSectionTitle => "Regional map";
   @override String get homeMapSectionSubtitle =>
       "Tap a region to open the list of names and dates.";
@@ -317,6 +329,13 @@ class AppLocalizationsEn extends AppLocalizations {
   @override String get homeMapBirthShort => "Born";
   @override String get homeMapDeathShort => "Died";
   @override String get homeMapEmptyVictims => "No records for this region.";
+  @override String get homeMapRegionChuy => "Chüy";
+  @override String get homeMapRegionTalas => "Talas";
+  @override String get homeMapRegionNaryn => "Naryn";
+  @override String get homeMapRegionBatken => "Batken";
+  @override String get homeMapRegionOsh => "Osh";
+  @override String get homeMapRegionIssykKul => "Issyk-Kul";
+  @override String get homeMapRegionJalalAbad => "Jalal-Abad";
   @override String get chatSidebarTitle => "Chats";
   @override String get chatNewChat => "New chat";
   @override String get chatUntitled => "Untitled";
@@ -464,6 +483,9 @@ class AppLocalizationsKy extends AppLocalizations {
   @override String get addEntryConfirmSuccess => "Жазуу сакталды.";
   @override String get addEntryConfirmNoDocument =>
       "Документ ID жок. Алгач файл жүктөңүз.";
+  @override String get addEntryFormValidationFailed =>
+      "Формада белгиленген талааларды оңдоңуз.";
+  @override String get addEntryFormClearedSnack => "Форма тазаланды.";
   @override String get homeMapSectionTitle => "Региондордук карта";
   @override String get homeMapSectionSubtitle =>
       "Регионду таптап, ысымдар жана даталар тизмесин ачыңыз.";
@@ -476,6 +498,13 @@ class AppLocalizationsKy extends AppLocalizations {
   @override String get homeMapDeathShort => "Кайтышкан";
   @override String get homeMapEmptyVictims =>
       "Бул регион боюнча жазуулар жок.";
+  @override String get homeMapRegionChuy => "Чүй";
+  @override String get homeMapRegionTalas => "Талас";
+  @override String get homeMapRegionNaryn => "Нарын";
+  @override String get homeMapRegionBatken => "Баткен";
+  @override String get homeMapRegionOsh => "Ош";
+  @override String get homeMapRegionIssykKul => "Ысык-Көл";
+  @override String get homeMapRegionJalalAbad => "Жалал-Абад";
   @override String get chatSidebarTitle => "Чаттар";
   @override String get chatNewChat => "Жаңы чат";
   @override String get chatUntitled => "Аталышы жок";
@@ -623,6 +652,9 @@ class AppLocalizationsRu extends AppLocalizations {
   @override String get addEntryConfirmSuccess => "Запись сохранена.";
   @override String get addEntryConfirmNoDocument =>
       "Нет ID документа. Сначала загрузите файл.";
+  @override String get addEntryFormValidationFailed =>
+      "Исправьте поля, отмеченные в форме.";
+  @override String get addEntryFormClearedSnack => "Форма очищена.";
   @override String get homeMapSectionTitle => "Карта по регионам";
   @override String get homeMapSectionSubtitle =>
       "Нажмите на регион, чтобы открыть список имён и дат.";
@@ -635,6 +667,13 @@ class AppLocalizationsRu extends AppLocalizations {
   @override String get homeMapDeathShort => "Смерть";
   @override String get homeMapEmptyVictims =>
       "Для этого региона записей нет.";
+  @override String get homeMapRegionChuy => "Чуй";
+  @override String get homeMapRegionTalas => "Талас";
+  @override String get homeMapRegionNaryn => "Нарын";
+  @override String get homeMapRegionBatken => "Баткен";
+  @override String get homeMapRegionOsh => "Ош";
+  @override String get homeMapRegionIssykKul => "Иссык-Куль";
+  @override String get homeMapRegionJalalAbad => "Джалал-Абад";
   @override String get chatSidebarTitle => "Чаты";
   @override String get chatNewChat => "Новый чат";
   @override String get chatUntitled => "Без названия";
@@ -782,6 +821,9 @@ class AppLocalizationsTr extends AppLocalizations {
   @override String get addEntryConfirmSuccess => "Kayıt kaydedildi.";
   @override String get addEntryConfirmNoDocument =>
       "Belge kimliği yok. Önce dosya yükleyin.";
+  @override String get addEntryFormValidationFailed =>
+      "Formda işaretlenen alanları düzeltin.";
+  @override String get addEntryFormClearedSnack => "Form sıfırlandı.";
   @override String get homeMapSectionTitle => "Bölgesel harita";
   @override String get homeMapSectionSubtitle =>
       "İsimler ve tarihler listesini açmak için bir bölgeye dokunun.";
@@ -794,6 +836,13 @@ class AppLocalizationsTr extends AppLocalizations {
   @override String get homeMapDeathShort => "Ölüm";
   @override String get homeMapEmptyVictims =>
       "Bu bölge için kayıt yok.";
+  @override String get homeMapRegionChuy => "Çüy";
+  @override String get homeMapRegionTalas => "Talas";
+  @override String get homeMapRegionNaryn => "Narın";
+  @override String get homeMapRegionBatken => "Batken";
+  @override String get homeMapRegionOsh => "Oş";
+  @override String get homeMapRegionIssykKul => "Issık-Göl";
+  @override String get homeMapRegionJalalAbad => "Celalabad";
   @override String get chatSidebarTitle => "Sohbetler";
   @override String get chatNewChat => "Yeni sohbet";
   @override String get chatUntitled => "Adsız";

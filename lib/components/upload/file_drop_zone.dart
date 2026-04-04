@@ -109,8 +109,9 @@ class _FileDropZoneState extends State<FileDropZone> {
     if (!_restrictsTypes || incoming.isEmpty || acceptedAny || !mounted) {
       return;
     }
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(widget.invalidTypeMessage)),
+    AppSnackMessenger.showMessage(
+      widget.invalidTypeMessage,
+      isError: true,
     );
   }
 

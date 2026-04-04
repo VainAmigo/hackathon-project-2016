@@ -63,13 +63,7 @@ class _AddEntryPageState extends State<AddEntryPage> {
     super.dispose();
   }
 
-  void _showPlaceholderSnack(BuildContext context) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(context.l10n.addEntrySubmitPlaceholder)),
-    );
-  }
-
-  void _resetAll(BuildContext context) {
+  void _resetAll(BuildContext context, {bool showClearedSnack = false}) {
     context.read<AddEntryUploadCubit>().reset();
     context.read<AddEntryConfirmCubit>().reset();
     setState(() {
@@ -92,6 +86,9 @@ class _AddEntryPageState extends State<AddEntryPage> {
       _biography.clear();
     });
     _manualKey.currentState?.reset();
+    if (showClearedSnack) {
+      AppSnackMessenger.showMessage(context.l10n.addEntryFormClearedSnack);
+    }
   }
 
   void _onPrimary(BuildContext context, AppLocalizations l10n) {
@@ -99,8 +96,9 @@ class _AddEntryPageState extends State<AddEntryPage> {
     if (_mode == 0) {
       if (upload.state.isUploading) return;
       if (_selectedPdf == null) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(l10n.addEntryPickPdfFirst)),
+        AppSnackMessenger.showMessage(
+          l10n.addEntryPickPdfFirst,
+          isError: true,
         );
         return;
       }
@@ -110,12 +108,19 @@ class _AddEntryPageState extends State<AddEntryPage> {
     if (_hasUploadDraft) {
       final docId = _draftDocumentId;
       if (docId == null) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(l10n.addEntryConfirmNoDocument)),
+        AppSnackMessenger.showMessage(
+          l10n.addEntryConfirmNoDocument,
+          isError: true,
         );
         return;
       }
-      if (!(_manualKey.currentState?.validate() ?? false)) return;
+      if (!(_manualKey.currentState?.validate() ?? false)) {
+        AppSnackMessenger.showMessage(
+          l10n.addEntryFormValidationFailed,
+          isError: true,
+        );
+        return;
+      }
       final ru = _importedMl?.byLocale['ru'];
       final payload = buildPersonConfirmPayload(
         fullName: _fullName.text,
@@ -138,7 +143,12 @@ class _AddEntryPageState extends State<AddEntryPage> {
       return;
     }
     if (_manualKey.currentState?.validate() ?? false) {
-      _showPlaceholderSnack(context);
+      AppSnackMessenger.showMessage(l10n.addEntrySubmitPlaceholder);
+    } else {
+      AppSnackMessenger.showMessage(
+        l10n.addEntryFormValidationFailed,
+        isError: true,
+      );
     }
   }
 
@@ -165,12 +175,7 @@ class _AddEntryPageState extends State<AddEntryPage> {
             listener: (context, state) {
               final err = state.errorMessage;
               if (err != null) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text(err),
-                    backgroundColor: Theme.of(context).colorScheme.error,
-                  ),
-                );
+                AppSnackMessenger.showMessage(err, isError: true);
                 context.read<AddEntryUploadCubit>().clearError();
               }
               final res = state.result;
@@ -197,12 +202,8 @@ class _AddEntryPageState extends State<AddEntryPage> {
                   _importedMl = res.mlResponse;
                 });
                 context.read<AddEntryUploadCubit>().clearResult();
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text(
-                      AppLocalizations.of(context).addEntryImportSuccessToast,
-                    ),
-                  ),
+                AppSnackMessenger.showMessage(
+                  AppLocalizations.of(context).addEntryImportSuccessToast,
                 );
               }
             },
@@ -215,21 +216,12 @@ class _AddEntryPageState extends State<AddEntryPage> {
             listener: (context, state) {
               final err = state.errorMessage;
               if (err != null) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text(err),
-                    backgroundColor: Theme.of(context).colorScheme.error,
-                  ),
-                );
+                AppSnackMessenger.showMessage(err, isError: true);
                 context.read<AddEntryConfirmCubit>().clearError();
               }
               if (state.success && mounted) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text(
-                      AppLocalizations.of(context).addEntryConfirmSuccess,
-                    ),
-                  ),
+                AppSnackMessenger.showMessage(
+                  AppLocalizations.of(context).addEntryConfirmSuccess,
                 );
                 _resetAll(context);
               }
@@ -320,7 +312,7 @@ class _AddEntryPageState extends State<AddEntryPage> {
                 cancelLabel: l10n.addEntryCancel,
                 primaryLabel: _primaryLabel(l10n),
                 primaryBusy: primaryBusy,
-                onCancel: () => _resetAll(context),
+                onCancel: () => _resetAll(context, showClearedSnack: true),
                 onPrimary: () => _onPrimary(context, l10n),
               ),
             ],

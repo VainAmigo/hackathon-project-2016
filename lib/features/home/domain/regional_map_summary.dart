@@ -13,17 +13,15 @@ class RegionalMapSummary {
   final double averageVictimsPerRegion;
 }
 
-/// Счётчик по одному региону (для легенды).
+/// Счётчик по одному региону (для легенды). Подпись в UI берётся из локализации по [id].
 class RegionVictimCount {
   const RegionVictimCount({
     required this.id,
-    required this.displayName,
     required this.colorArgb,
     required this.count,
   });
 
   final MapRegionId id;
-  final String displayName;
   final int colorArgb;
   final int count;
 }

@@ -3,78 +3,59 @@ import 'package:project_temp/features/home/domain/regional_map_summary.dart'
     show RegionalMapSummary, RegionVictimCount;
 import 'package:project_temp/features/home/domain/victim_record.dart';
 
-/// Статические мок-данные: названия регионов, цвета SVG и списки жертв.
+/// Статические мок-данные: цвета SVG (заливки path) и списки жертв по областям КР.
 abstract final class RegionalVictimsMockData {
-  static const int colorMarmara = 0xFF8481CA;
-  static const int colorAegean = 0xFFCA8181;
-  static const int colorMediterranean = 0xFF81CABE;
-  static const int colorCentral = 0xFFA6CA81;
-  static const int colorBlackSea = 0xFF81ACCA;
-  static const int colorEastern = 0xFF81CA84;
-  static const int colorSoutheast = 0xFFCA81BB;
-
-  static String regionName(MapRegionId id) {
-    switch (id) {
-      case MapRegionId.marmara:
-        return 'Мраморноморский регион';
-      case MapRegionId.aegean:
-        return 'Эгейский регион';
-      case MapRegionId.mediterranean:
-        return 'Средиземноморский регион';
-      case MapRegionId.centralAnatolia:
-        return 'Центральная Анатолия';
-      case MapRegionId.blackSea:
-        return 'Черноморский регион';
-      case MapRegionId.easternAnatolia:
-        return 'Восточная Анатолия';
-      case MapRegionId.southeastAnatolia:
-        return 'Юго-восточная Анатолия';
-    }
-  }
+  static const int colorChuy = 0xFF8481CA;
+  static const int colorTalas = 0xFFCA8181;
+  static const int colorNaryn = 0xFF81CABE;
+  static const int colorBatken = 0xFFA6CA81;
+  static const int colorOsh = 0xFF81ACCA;
+  static const int colorIssykKul = 0xFF81CA84;
+  static const int colorJalalAbad = 0xFFCA81BB;
 
   static int regionColor(MapRegionId id) {
     switch (id) {
-      case MapRegionId.marmara:
-        return colorMarmara;
-      case MapRegionId.aegean:
-        return colorAegean;
-      case MapRegionId.mediterranean:
-        return colorMediterranean;
-      case MapRegionId.centralAnatolia:
-        return colorCentral;
-      case MapRegionId.blackSea:
-        return colorBlackSea;
-      case MapRegionId.easternAnatolia:
-        return colorEastern;
-      case MapRegionId.southeastAnatolia:
-        return colorSoutheast;
+      case MapRegionId.chuy:
+        return colorChuy;
+      case MapRegionId.talas:
+        return colorTalas;
+      case MapRegionId.naryn:
+        return colorNaryn;
+      case MapRegionId.batken:
+        return colorBatken;
+      case MapRegionId.osh:
+        return colorOsh;
+      case MapRegionId.issykKul:
+        return colorIssykKul;
+      case MapRegionId.jalalAbad:
+        return colorJalalAbad;
     }
   }
 
-  /// Hex заливки в SVG → регион (см. [assets/images/map.svg]).
+  /// Hex заливки в SVG → область (см. [assets/images/map.svg]).
   static MapRegionId? regionIdForSvgFill(String hexUpper) {
     switch (hexUpper.toUpperCase()) {
       case '8481CA':
-        return MapRegionId.marmara;
+        return MapRegionId.chuy;
       case 'CA8181':
-        return MapRegionId.aegean;
+        return MapRegionId.talas;
       case '81CABE':
-        return MapRegionId.mediterranean;
+        return MapRegionId.naryn;
       case 'A6CA81':
-        return MapRegionId.centralAnatolia;
+        return MapRegionId.batken;
       case '81ACCA':
-        return MapRegionId.blackSea;
+        return MapRegionId.osh;
       case '81CA84':
-        return MapRegionId.easternAnatolia;
+        return MapRegionId.issykKul;
       case 'CA81BB':
-        return MapRegionId.southeastAnatolia;
+        return MapRegionId.jalalAbad;
       default:
         return null;
     }
   }
 
   static final Map<MapRegionId, List<VictimRecord>> victimsByRegion = {
-    MapRegionId.marmara: [
+    MapRegionId.chuy: [
       VictimRecord(
         fullName: 'Алексей Марков',
         birthDate: DateTime(1912, 3, 14),
@@ -86,7 +67,7 @@ abstract final class RegionalVictimsMockData {
         deathDate: DateTime(1937, 8, 19),
       ),
     ],
-    MapRegionId.aegean: [
+    MapRegionId.talas: [
       VictimRecord(
         fullName: 'Дмитрий Орлов',
         birthDate: DateTime(1899, 1, 5),
@@ -103,14 +84,14 @@ abstract final class RegionalVictimsMockData {
         deathDate: DateTime(1939, 2, 28),
       ),
     ],
-    MapRegionId.mediterranean: [
+    MapRegionId.naryn: [
       VictimRecord(
         fullName: 'Софья Рейн',
         birthDate: DateTime(1908, 5, 9),
         deathDate: DateTime(1937, 6, 14),
       ),
     ],
-    MapRegionId.centralAnatolia: [
+    MapRegionId.batken: [
       VictimRecord(
         fullName: 'Николай Верин',
         birthDate: DateTime(1894, 2, 27),
@@ -122,7 +103,7 @@ abstract final class RegionalVictimsMockData {
         deathDate: DateTime(1937, 10, 20),
       ),
     ],
-    MapRegionId.blackSea: [
+    MapRegionId.osh: [
       VictimRecord(
         fullName: 'Григорий Амиров',
         birthDate: DateTime(1903, 8, 16),
@@ -134,7 +115,7 @@ abstract final class RegionalVictimsMockData {
         deathDate: DateTime(1938, 1, 15),
       ),
     ],
-    MapRegionId.easternAnatolia: [
+    MapRegionId.issykKul: [
       VictimRecord(
         fullName: 'Андрей Соколов',
         birthDate: DateTime(1897, 6, 21),
@@ -151,7 +132,7 @@ abstract final class RegionalVictimsMockData {
         deathDate: DateTime(1938, 8, 22),
       ),
     ],
-    MapRegionId.southeastAnatolia: [
+    MapRegionId.jalalAbad: [
       VictimRecord(
         fullName: 'Лидия Морозова',
         birthDate: DateTime(1913, 2, 17),
@@ -166,7 +147,6 @@ abstract final class RegionalVictimsMockData {
       for (final id in ids)
         RegionVictimCount(
           id: id,
-          displayName: regionName(id),
           colorArgb: regionColor(id),
           count: victimsByRegion[id]?.length ?? 0,
         ),

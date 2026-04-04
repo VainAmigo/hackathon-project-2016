@@ -2,7 +2,7 @@
 abstract final class ApiConfig {
   static const baseUrl = String.fromEnvironment(
     'API_BASE_URL',
-    defaultValue: 'http://54.147.49.220:8081',
+    defaultValue: 'http://54.147.49.220:8080',
   );
 }
 
