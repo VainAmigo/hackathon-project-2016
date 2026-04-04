@@ -47,6 +47,12 @@ Future<void> initDependencies({bool testMode = false}) async {
         preferences: sl(),
       ),
     )
+    ..registerLazySingleton<EntryUploadRepository>(
+      () => EntryUploadRepositoryImpl(dioClient: sl()),
+    )
+    ..registerLazySingleton<EntryConfirmRepository>(
+      () => EntryConfirmRepositoryImpl(dioClient: sl()),
+    )
     ..registerLazySingleton<ArchiveCatalogRepository>(
       ArchiveCatalogRepositoryImpl.new,
     );

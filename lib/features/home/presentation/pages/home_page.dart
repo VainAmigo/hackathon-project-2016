@@ -6,7 +6,11 @@ import 'package:project_temp/features/auth/auth.dart';
 import 'package:project_temp/features/add_entry/add_entry.dart';
 import 'package:project_temp/features/chat/chat.dart';
 import 'package:project_temp/features/home/home.dart';
+import 'package:project_temp/l10n/app_localizations.dart';
 import 'package:project_temp/source/source.dart';
+
+/// Индекс вкладки «Добавить запись» (нужен [AuthSessionCubit] / Bearer, см. [DioClient.authenticatedDio]).
+const int _kAddEntryTabIndex = 2;
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -40,7 +44,14 @@ class _HomePageState extends State<HomePage> {
       ScaffoldMessenger.of(
         context,
       ).showSnackBar(SnackBar(content: Text(f.message)));
-    }, (_) => context.read<AuthSessionCubit>().clearSession());
+    }, (_) {
+      context.read<AuthSessionCubit>().clearSession(
+            notice: AuthSessionNotice.logoutSuccess,
+          );
+      if (mounted && _tabIndex == _kAddEntryTabIndex) {
+        setState(() => _tabIndex = 0);
+      }
+    });
   }
 
   Future<void> _openLogin() async {
@@ -53,6 +64,25 @@ class _HomePageState extends State<HomePage> {
     if (user != null && mounted) {
       context.read<AuthSessionCubit>().setSession(user);
     }
+  }
+
+  Future<void> _selectTab(BuildContext context, int i) async {
+    if (i == _kAddEntryTabIndex) {
+      final session = context.read<AuthSessionCubit>();
+      if (!session.state.isAuthenticated) {
+        final l10n = AppLocalizations.of(context);
+        final goLogin = await showLoginRequiredDialog(
+          context,
+          message: l10n.authLoginRequiredAddEntryBody,
+        );
+        if (goLogin != true || !mounted) return;
+        await _openLogin();
+        if (!mounted || !session.state.isAuthenticated) return;
+      }
+      setState(() => _tabIndex = _kAddEntryTabIndex);
+      return;
+    }
+    setState(() => _tabIndex = i);
   }
 
   @override
@@ -103,13 +133,21 @@ class _HomePageState extends State<HomePage> {
       paddedBody = mainContent;
     }
 
-    return Scaffold(
+    return BlocListener<AuthSessionCubit, AuthSessionState>(
+      listenWhen: (prev, curr) =>
+          prev.isAuthenticated && !curr.isAuthenticated,
+      listener: (context, state) {
+        if (_tabIndex == _kAddEntryTabIndex && mounted) {
+          setState(() => _tabIndex = 0);
+        }
+      },
+      child: Scaffold(
       key: _scaffoldKey,
       backgroundColor: AppThemes.backgroundColor,
       drawer: dense
           ? VoiceArchiveDrawer(
               selectedTab: _tabIndex,
-              onTabSelected: (i) => setState(() => _tabIndex = i),
+              onTabSelected: (i) => _selectTab(context, i),
               searchController: _searchController,
               isAuthenticated: authed,
               loggingOut: _loggingOut,
@@ -120,7 +158,7 @@ class _HomePageState extends State<HomePage> {
       appBar: VoiceArchiveAppBar(
         scaffoldKey: _scaffoldKey,
         selectedTab: _tabIndex,
-        onTabSelected: (i) => setState(() => _tabIndex = i),
+        onTabSelected: (i) => _selectTab(context, i),
         searchController: _searchController,
         isAuthenticated: authed,
         loggingOut: _loggingOut,
@@ -128,6 +166,7 @@ class _HomePageState extends State<HomePage> {
         onLogout: _onLogout,
       ),
       body: paddedBody,
+    ),
     );
   }
 
@@ -135,7 +174,7 @@ class _HomePageState extends State<HomePage> {
     switch (tabIndex) {
       case 1:
         return const ChatAssistantPage();
-      case 2:
+      case _kAddEntryTabIndex:
         return const AddEntryPage();
       case 0:
       default:

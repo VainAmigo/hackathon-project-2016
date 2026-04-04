@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 
+import 'package:project_temp/core/messaging/auth_session_remote_invalidated.dart';
 import 'package:project_temp/core/network/api_endpoints.dart';
 import 'package:project_temp/core/storage/preferences_service.dart';
 
@@ -60,6 +61,7 @@ final class TokenRefreshInterceptor extends QueuedInterceptor {
       handler.resolve(response);
     } on Object catch (_) {
       await _prefs.clearSession();
+      AuthSessionRemoteInvalidated.notify();
       handler.next(err);
     }
   }

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:project_temp/features/auth/cubit/auth_session_cubit.dart';
 import 'package:project_temp/features/auth/presentation/pages/login_page.dart';
+import 'package:project_temp/features/auth/presentation/widgets/login_required_dialog.dart';
+import 'package:project_temp/l10n/app_localizations.dart';
 import 'package:project_temp/source/source.dart';
 
 /// Переход на экран, доступный только после входа. Иначе — диалог и экран входа.
@@ -23,24 +25,10 @@ Future<void> pushIfAuthenticated(
     return;
   }
 
-  final goLogin = await showDialog<bool>(
-    context: context,
-    builder: (ctx) => AlertDialog(
-      title: const Text('Нужен вход'),
-      content: const Text(
-        'Этот раздел доступен только авторизованным пользователям. Войдите в аккаунт.',
-      ),
-      actions: [
-        TextButton(
-          onPressed: () => Navigator.of(ctx).pop(false),
-          child: const Text('Отмена'),
-        ),
-        FilledButton(
-          onPressed: () => Navigator.of(ctx).pop(true),
-          child: const Text('Войти'),
-        ),
-      ],
-    ),
+  final l10n = AppLocalizations.of(context);
+  final goLogin = await showLoginRequiredDialog(
+    context,
+    message: l10n.authLoginRequiredBody,
   );
 
   if (goLogin != true || !context.mounted) return;

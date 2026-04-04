@@ -302,8 +302,10 @@ class VoiceArchiveDrawer extends StatelessWidget {
                 ),
                 selected: selectedTab == i,
                 onTap: () {
-                  onTabSelected(i);
                   Navigator.of(context).pop();
+                  WidgetsBinding.instance.addPostFrameCallback((_) {
+                    onTabSelected(i);
+                  });
                 },
               ),
             const Divider(height: 32),
@@ -454,35 +456,90 @@ class _NavTab extends StatelessWidget {
   }
 }
 
+/// Скругление кнопки языка: у каждого кода своя «форма», переход анимируется [AnimatedContainer].
+BorderRadius _langToggleBorderRadius(AppLanguageCode code) {
+  return switch (code) {
+    AppLanguageCode.en => BorderRadius.circular(2),
+    AppLanguageCode.ky => BorderRadius.circular(25),
+    AppLanguageCode.ru => const BorderRadius.only(
+        topLeft: Radius.circular(16),
+        topRight: Radius.circular(4),
+        bottomRight: Radius.circular(16),
+        bottomLeft: Radius.circular(4),
+      ),
+    AppLanguageCode.tr => BorderRadius.circular(14),
+  };
+}
+
 class _LangToggle extends StatelessWidget {
   const _LangToggle({required this.controller, this.dense = false});
 
   final AppLocaleController controller;
   final bool dense;
 
+  static const _animDuration = Duration(milliseconds: 360);
+
   @override
   Widget build(BuildContext context) {
     return ListenableBuilder(
       listenable: controller,
       builder: (context, _) {
-        final side = dense ? 50.0 : 50.0;
-        return Material(
-          color: Colors.black,
-          borderRadius: BorderRadius.circular(2),
-          child: InkWell(
-            onTap: controller.cycle,
-            borderRadius: BorderRadius.circular(2),
-            child: SizedBox(
+        final code = controller.code;
+        final side = 50.0;
+        final radius = _langToggleBorderRadius(code);
+        final fontSize = dense ? 11.0 : 12.0;
+        return Tooltip(
+          message: context.l10n.drawerLanguage,
+          child: Semantics(
+            button: true,
+            label: context.l10n.drawerLanguage,
+            child: AnimatedContainer(
+              duration: _animDuration,
+              curve: Curves.easeInOutCubic,
               width: side,
               height: side,
-              child: Center(
-                child: Text(
-                  controller.code.uiLabel,
-                  style: TextStyle(
-                    color: AppThemes.backgroundColor,
-                    fontWeight: FontWeight.w600,
-                    fontSize: dense ? 11 : 12,
-                    letterSpacing: 0.5,
+              clipBehavior: Clip.antiAlias,
+              decoration: BoxDecoration(
+                color: Colors.black,
+                borderRadius: radius,
+              ),
+              child: Material(
+                color: Colors.transparent,
+                child: InkWell(
+                  onTap: controller.cycle,
+                  borderRadius: radius,
+                  splashColor: AppThemes.backgroundColor.withValues(alpha: 0.22),
+                  highlightColor: AppThemes.backgroundColor.withValues(alpha: 0.08),
+                  child: Center(
+                    child: AnimatedSwitcher(
+                      duration: const Duration(milliseconds: 280),
+                      switchInCurve: Curves.easeOutCubic,
+                      switchOutCurve: Curves.easeInCubic,
+                      transitionBuilder: (child, animation) {
+                        final curved = CurvedAnimation(
+                          parent: animation,
+                          curve: Curves.easeOutCubic,
+                          reverseCurve: Curves.easeInCubic,
+                        );
+                        return FadeTransition(
+                          opacity: curved,
+                          child: ScaleTransition(
+                            scale: Tween<double>(begin: 0.82, end: 1).animate(curved),
+                            child: child,
+                          ),
+                        );
+                      },
+                      child: Text(
+                        code.uiLabel,
+                        key: ValueKey<String>(code.name),
+                        style: TextStyle(
+                          color: AppThemes.backgroundColor,
+                          fontWeight: FontWeight.w600,
+                          fontSize: fontSize,
+                          letterSpacing: 0.5,
+                        ),
+                      ),
+                    ),
                   ),
                 ),
               ),
@@ -533,13 +590,14 @@ class _AuthChip extends StatelessWidget {
     final onPressed = isAuthenticated ? onLogout : onLogin;
 
     if (compact) {
-      return IconButton(
-        tooltip: label,
+      return PrimaryButton(
+        text: label,
         onPressed: onPressed,
-        icon: Icon(
-          isAuthenticated ? Icons.logout : Icons.login,
-          color: Colors.black87,
-        ),
+        iconOnly: true,
+        icon: isAuthenticated ? Icons.logout : Icons.login,
+        variant: isAuthenticated
+            ? PrimaryButtonVariant.filled
+            : PrimaryButtonVariant.outlined,
       );
     }
 
