@@ -4,6 +4,7 @@ import 'package:project_temp/core/core.dart';
 import 'package:project_temp/features/archive/presentation/widgets/home_archive_section.dart';
 import 'package:project_temp/features/home/domain/home_layout_policy.dart';
 import 'package:project_temp/features/home/presentation/widgets/home_hero_segment.dart';
+import 'package:project_temp/features/home/presentation/widgets/regional_map/home_regional_map_section.dart';
 
 /// Скролл главной вкладки: hero + материалы архива.
 class HomeLandingBody extends StatelessWidget {
@@ -57,6 +58,10 @@ class HomeLandingBody extends StatelessWidget {
                 onOpenAiAssistant: onOpenAiAssistant,
               ),
               HomeArchiveSection(
+                maxContentWidth: maxW,
+                compact: compact,
+              ),
+              HomeRegionalMapSection(
                 maxContentWidth: maxW,
                 compact: compact,
               ),

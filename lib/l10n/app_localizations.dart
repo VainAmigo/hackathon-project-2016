@@ -152,6 +152,15 @@ abstract class AppLocalizations {
   String get addEntryConfirmSave;
   String get addEntryConfirmSuccess;
   String get addEntryConfirmNoDocument;
+  String get homeMapSectionTitle;
+  String get homeMapSectionSubtitle;
+  String get homeMapSummaryTotalLabel;
+  String get homeMapSummaryRegionsLabel;
+  String get homeMapSummaryAvgLabel;
+  String homeMapVictimsSheetTitle(String regionName);
+  String get homeMapBirthShort;
+  String get homeMapDeathShort;
+  String get homeMapEmptyVictims;
   String get chatSidebarTitle;
   String get chatNewChat;
   String get chatUntitled;
@@ -297,6 +306,17 @@ class AppLocalizationsEn extends AppLocalizations {
   @override String get addEntryConfirmSuccess => "Record saved.";
   @override String get addEntryConfirmNoDocument =>
       "No document ID. Upload a file first.";
+  @override String get homeMapSectionTitle => "Regional map";
+  @override String get homeMapSectionSubtitle =>
+      "Tap a region to open the list of names and dates.";
+  @override String get homeMapSummaryTotalLabel => "Total persons";
+  @override String get homeMapSummaryRegionsLabel => "Regions on the map";
+  @override String get homeMapSummaryAvgLabel => "Average per region";
+  @override String homeMapVictimsSheetTitle(String regionName) =>
+      "Records: $regionName";
+  @override String get homeMapBirthShort => "Born";
+  @override String get homeMapDeathShort => "Died";
+  @override String get homeMapEmptyVictims => "No records for this region.";
   @override String get chatSidebarTitle => "Chats";
   @override String get chatNewChat => "New chat";
   @override String get chatUntitled => "Untitled";
@@ -444,6 +464,18 @@ class AppLocalizationsKy extends AppLocalizations {
   @override String get addEntryConfirmSuccess => "Жазуу сакталды.";
   @override String get addEntryConfirmNoDocument =>
       "Документ ID жок. Алгач файл жүктөңүз.";
+  @override String get homeMapSectionTitle => "Региондордук карта";
+  @override String get homeMapSectionSubtitle =>
+      "Регионду таптап, ысымдар жана даталар тизмесин ачыңыз.";
+  @override String get homeMapSummaryTotalLabel => "Жалпы адамдар";
+  @override String get homeMapSummaryRegionsLabel => "Картадагы региондор";
+  @override String get homeMapSummaryAvgLabel => "Регион боюнча орточо";
+  @override String homeMapVictimsSheetTitle(String regionName) =>
+      "Жазуулар: $regionName";
+  @override String get homeMapBirthShort => "Туулган";
+  @override String get homeMapDeathShort => "Кайтышкан";
+  @override String get homeMapEmptyVictims =>
+      "Бул регион боюнча жазуулар жок.";
   @override String get chatSidebarTitle => "Чаттар";
   @override String get chatNewChat => "Жаңы чат";
   @override String get chatUntitled => "Аталышы жок";
@@ -591,6 +623,18 @@ class AppLocalizationsRu extends AppLocalizations {
   @override String get addEntryConfirmSuccess => "Запись сохранена.";
   @override String get addEntryConfirmNoDocument =>
       "Нет ID документа. Сначала загрузите файл.";
+  @override String get homeMapSectionTitle => "Карта по регионам";
+  @override String get homeMapSectionSubtitle =>
+      "Нажмите на регион, чтобы открыть список имён и дат.";
+  @override String get homeMapSummaryTotalLabel => "Всего записей";
+  @override String get homeMapSummaryRegionsLabel => "Регионов на карте";
+  @override String get homeMapSummaryAvgLabel => "В среднем на регион";
+  @override String homeMapVictimsSheetTitle(String regionName) =>
+      "Записи: $regionName";
+  @override String get homeMapBirthShort => "Род.";
+  @override String get homeMapDeathShort => "Смерть";
+  @override String get homeMapEmptyVictims =>
+      "Для этого региона записей нет.";
   @override String get chatSidebarTitle => "Чаты";
   @override String get chatNewChat => "Новый чат";
   @override String get chatUntitled => "Без названия";
@@ -738,6 +782,18 @@ class AppLocalizationsTr extends AppLocalizations {
   @override String get addEntryConfirmSuccess => "Kayıt kaydedildi.";
   @override String get addEntryConfirmNoDocument =>
       "Belge kimliği yok. Önce dosya yükleyin.";
+  @override String get homeMapSectionTitle => "Bölgesel harita";
+  @override String get homeMapSectionSubtitle =>
+      "İsimler ve tarihler listesini açmak için bir bölgeye dokunun.";
+  @override String get homeMapSummaryTotalLabel => "Toplam kişi";
+  @override String get homeMapSummaryRegionsLabel => "Haritadaki bölgeler";
+  @override String get homeMapSummaryAvgLabel => "Bölge başına ortalama";
+  @override String homeMapVictimsSheetTitle(String regionName) =>
+      "Kayıtlar: $regionName";
+  @override String get homeMapBirthShort => "Doğum";
+  @override String get homeMapDeathShort => "Ölüm";
+  @override String get homeMapEmptyVictims =>
+      "Bu bölge için kayıt yok.";
   @override String get chatSidebarTitle => "Sohbetler";
   @override String get chatNewChat => "Yeni sohbet";
   @override String get chatUntitled => "Adsız";
