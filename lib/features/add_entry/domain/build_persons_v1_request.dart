@@ -1,15 +1,5 @@
-import 'package:project_temp/core/locale/app_locale_controller.dart';
 import 'package:project_temp/features/add_entry/domain/build_person_confirm_payload.dart';
 import 'package:project_temp/source/source.dart';
-
-/// Индекс языка контента для API (порядок как у [AppLanguageCode]: en, ky, ru, tr).
-int personsV1LanguageFromContentLocaleKey(String key) {
-  final k = key.toLowerCase().trim();
-  for (final v in AppLanguageCode.values) {
-    if (v.name == k) return v.index;
-  }
-  return AppLanguageCode.en.index;
-}
 
 void _putString(Map<String, dynamic> m, String key, String? value) {
   if (value == null) return;
@@ -90,7 +80,7 @@ Map<String, dynamic> buildPersonsV1Request({
 
   final m = <String, dynamic>{
     'documentId': documentId,
-    'language': personsV1LanguageFromContentLocaleKey(contentLocaleKey),
+    'language': personsV1LanguageIndex(contentLocaleKey),
     'fullName': fn,
   };
 

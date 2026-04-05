@@ -70,6 +70,13 @@ abstract class AppLocalizations {
   String get archiveMetaDeathPlace;
   String get archiveMetaArrestDate;
   String get archiveDetailDocumentsEmpty;
+  String get archiveDetailAudioHeading;
+  String get archiveDetailAudioDownload;
+  String get archiveDetailCardLanguageTitle;
+  String get archiveModeratorVerifyTitle;
+  String get archiveModeratorApprove;
+  String get archiveModeratorReject;
+  String get archiveModeratorSuccess;
   String get tabAiAssistantTitle;
   String get tabAiAssistantSubtitle;
   String get tabAddEntryTitle;
@@ -192,6 +199,9 @@ abstract class AppLocalizations {
   String get chatSourcesHeading;
   String chatDocumentChipLabel(int documentId);
   String get chatRetryLoad;
+  String get chatVoiceInputTooltip;
+  String get chatVoiceStopTooltip;
+  String get chatVoiceUnavailable;
 }
 
 class AppLocalizationsEn extends AppLocalizations {
@@ -278,6 +288,20 @@ class AppLocalizationsEn extends AppLocalizations {
   String get archiveMetaArrestDate => "Arrest date";
   @override
   String get archiveDetailDocumentsEmpty => "No attached files.";
+  @override
+  String get archiveDetailAudioHeading => "Audio narration";
+  @override
+  String get archiveDetailAudioDownload => "Download audio";
+  @override
+  String get archiveDetailCardLanguageTitle => "Card text language";
+  @override
+  String get archiveModeratorVerifyTitle => "Moderation";
+  @override
+  String get archiveModeratorApprove => "Approve";
+  @override
+  String get archiveModeratorReject => "Reject";
+  @override
+  String get archiveModeratorSuccess => "Verification saved.";
   @override
   String get tabAiAssistantTitle => "AI Assistant";
   @override
@@ -543,6 +567,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String chatDocumentChipLabel(int documentId) => "Document $documentId";
   @override
   String get chatRetryLoad => "Try again";
+  @override
+  String get chatVoiceInputTooltip => "Voice input";
+  @override
+  String get chatVoiceStopTooltip => "Stop listening";
+  @override
+  String get chatVoiceUnavailable =>
+      "Speech recognition is not available in this browser or device.";
 }
 
 class AppLocalizationsKy extends AppLocalizations {
@@ -629,6 +660,20 @@ class AppLocalizationsKy extends AppLocalizations {
   String get archiveMetaArrestDate => "Камоого алынган күн";
   @override
   String get archiveDetailDocumentsEmpty => "Тиркемелер жок.";
+  @override
+  String get archiveDetailAudioHeading => "Аудио баян";
+  @override
+  String get archiveDetailAudioDownload => "Аудиону жүктөө";
+  @override
+  String get archiveDetailCardLanguageTitle => "Карточканын тексти (тил)";
+  @override
+  String get archiveModeratorVerifyTitle => "Модерация";
+  @override
+  String get archiveModeratorApprove => "Ырастоо";
+  @override
+  String get archiveModeratorReject => "Четке кагуу";
+  @override
+  String get archiveModeratorSuccess => "Чечим сакталды.";
   @override
   String get tabAiAssistantTitle => "AI жардамчы";
   @override
@@ -894,6 +939,13 @@ class AppLocalizationsKy extends AppLocalizations {
   String chatDocumentChipLabel(int documentId) => "Документ $documentId";
   @override
   String get chatRetryLoad => "Кайра аракет";
+  @override
+  String get chatVoiceInputTooltip => "Үн менен киргизүү";
+  @override
+  String get chatVoiceStopTooltip => "Токтотуу";
+  @override
+  String get chatVoiceUnavailable =>
+      "Бул түзмөктө же браузерде үн таануу жеткиликтүү эмес.";
 }
 
 class AppLocalizationsRu extends AppLocalizations {
@@ -980,6 +1032,20 @@ class AppLocalizationsRu extends AppLocalizations {
   String get archiveMetaArrestDate => "Дата ареста";
   @override
   String get archiveDetailDocumentsEmpty => "Прикреплённых файлов нет.";
+  @override
+  String get archiveDetailAudioHeading => "Аудиопересказ";
+  @override
+  String get archiveDetailAudioDownload => "Скачать аудио";
+  @override
+  String get archiveDetailCardLanguageTitle => "Язык текста карточки";
+  @override
+  String get archiveModeratorVerifyTitle => "Модерация";
+  @override
+  String get archiveModeratorApprove => "Одобрить";
+  @override
+  String get archiveModeratorReject => "Отклонить";
+  @override
+  String get archiveModeratorSuccess => "Решение сохранено.";
   @override
   String get tabAiAssistantTitle => "AI Assistant";
   @override
@@ -1244,6 +1310,13 @@ class AppLocalizationsRu extends AppLocalizations {
   String chatDocumentChipLabel(int documentId) => "Документ $documentId";
   @override
   String get chatRetryLoad => "Повторить";
+  @override
+  String get chatVoiceInputTooltip => "Голосовой ввод";
+  @override
+  String get chatVoiceStopTooltip => "Остановить запись";
+  @override
+  String get chatVoiceUnavailable =>
+      "Распознавание речи недоступно в этом браузере или на устройстве.";
 }
 
 class AppLocalizationsTr extends AppLocalizations {
@@ -1330,6 +1403,20 @@ class AppLocalizationsTr extends AppLocalizations {
   String get archiveMetaArrestDate => "Tutuklama tarihi";
   @override
   String get archiveDetailDocumentsEmpty => "Ekli dosya yok.";
+  @override
+  String get archiveDetailAudioHeading => "Sesli anlatım";
+  @override
+  String get archiveDetailAudioDownload => "Sesi indir";
+  @override
+  String get archiveDetailCardLanguageTitle => "Kart metni dili";
+  @override
+  String get archiveModeratorVerifyTitle => "Moderasyon";
+  @override
+  String get archiveModeratorApprove => "Onayla";
+  @override
+  String get archiveModeratorReject => "Reddet";
+  @override
+  String get archiveModeratorSuccess => "Doğrulama kaydedildi.";
   @override
   String get tabAiAssistantTitle => "Yapay zekâ asistanı";
   @override
@@ -1595,6 +1682,13 @@ class AppLocalizationsTr extends AppLocalizations {
   String chatDocumentChipLabel(int documentId) => "Belge $documentId";
   @override
   String get chatRetryLoad => "Yeniden dene";
+  @override
+  String get chatVoiceInputTooltip => "Sesle giriş";
+  @override
+  String get chatVoiceStopTooltip => "Dinlemeyi durdur";
+  @override
+  String get chatVoiceUnavailable =>
+      "Bu tarayıcıda veya cihazda konuşma tanıma kullanılamıyor.";
 }
 
 class _AppLocalizationsDelegate

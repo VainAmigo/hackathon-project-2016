@@ -19,6 +19,9 @@ class User extends Equatable {
 
   String get displayName => email;
 
+  /// Роль с бэкенда (например `USER`, `MODERATOR`).
+  bool get isModerator => role.trim().toUpperCase() == 'MODERATOR';
+
   @override
   List<Object?> get props => [email, role];
 }

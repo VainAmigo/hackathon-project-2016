@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:dio/dio.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:project_temp/core/core.dart';
@@ -63,12 +65,65 @@ class PersonsRepositoryImpl implements PersonsRepository {
   }
 
   @override
-  Future<Either<Failure, ArchiveEntry>> getPerson(String id) async {
+  Future<Either<Failure, Uint8List>> fetchPersonAudio(
+    String personId,
+    String languageCode,
+  ) async {
+    final id = personId.trim();
+    final lang = languageCode.trim().toLowerCase();
+    if (id.isEmpty) {
+      return const Left(ValidationFailure('Не указан идентификатор записи'));
+    }
+    if (lang.isEmpty) {
+      return const Left(ValidationFailure('Не указан язык'));
+    }
+    try {
+      final path = '${ApiEndpoints.persons}/${Uri.encodeComponent(id)}/audio';
+      final response = await _dio.authenticatedDio.get<dynamic>(
+        path,
+        queryParameters: {'language': lang},
+        options: Options(
+          responseType: ResponseType.bytes,
+        ),
+      );
+      final bytes = _parseResponseBytes(response.data);
+      if (bytes == null || bytes.isEmpty) {
+        return const Left(ServerFailure('Пустой аудиофайл'));
+      }
+      return Right(bytes);
+    } on DioException catch (e) {
+      return Left(_mapDio(e));
+    } on Object catch (e) {
+      return Left(ExceptionToFailure.map(e));
+    }
+  }
+
+  static Uint8List? _parseResponseBytes(Object? raw) {
+    if (raw == null) return null;
+    if (raw is Uint8List) {
+      return raw.isEmpty ? null : raw;
+    }
+    if (raw is List<int>) {
+      return raw.isEmpty ? null : Uint8List.fromList(raw);
+    }
+    return null;
+  }
+
+  @override
+  Future<Either<Failure, ArchiveEntry>> getPerson(
+    String id, {
+    required String languageCode,
+  }) async {
+    final langKey = languageCode.trim().toLowerCase();
+    if (langKey.isEmpty) {
+      return const Left(ValidationFailure('Не указан язык'));
+    }
     try {
       final path =
           '${ApiEndpoints.persons}/${Uri.encodeComponent(id.trim())}';
       final response = await _dio.authenticatedDio.get<Map<String, dynamic>>(
         path,
+        queryParameters: {'language': personsV1LanguageIndex(langKey)},
       );
       final data = response.data;
       if (data == null) {
@@ -79,6 +134,29 @@ class PersonsRepositoryImpl implements PersonsRepository {
       return Left(_mapDio(e));
     } on FormatException catch (e) {
       return Left(ValidationFailure(e.message));
+    } on Object catch (e) {
+      return Left(ExceptionToFailure.map(e));
+    }
+  }
+
+  @override
+  Future<Either<Failure, Unit>> moderatePerson(
+    String personId, {
+    required bool approved,
+  }) async {
+    final id = personId.trim();
+    if (id.isEmpty) {
+      return const Left(ValidationFailure('Не указан идентификатор записи'));
+    }
+    try {
+      final path = ApiEndpoints.moderatorPersonPath(id);
+      await _dio.authenticatedDio.put<void>(
+        path,
+        queryParameters: {'approved': approved},
+      );
+      return const Right(unit);
+    } on DioException catch (e) {
+      return Left(_mapDio(e));
     } on Object catch (e) {
       return Left(ExceptionToFailure.map(e));
     }

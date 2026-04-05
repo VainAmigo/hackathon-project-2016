@@ -3,7 +3,10 @@ import 'package:fpdart/fpdart.dart' hide State;
 
 import 'package:project_temp/core/core.dart';
 import 'package:project_temp/features/archive/presentation/widgets/archive_detail_documents_block.dart';
+import 'package:project_temp/features/archive/presentation/widgets/archive_entry_detail_language_bar.dart';
 import 'package:project_temp/features/archive/presentation/widgets/archive_entry_portrait.dart';
+import 'package:project_temp/features/archive/presentation/widgets/archive_moderator_verify_section.dart';
+import 'package:project_temp/features/archive/presentation/widgets/archive_person_audio_section.dart';
 import 'package:project_temp/l10n/app_localizations.dart';
 import 'package:project_temp/source/source.dart';
 
@@ -42,16 +45,42 @@ class ArchiveEntryDetailPage extends StatefulWidget {
 
 class _ArchiveEntryDetailPageState extends State<ArchiveEntryDetailPage> {
   late Future<Either<Failure, ArchiveEntry>> _future;
+  late AppLanguageCode _recordLanguage;
+  var _bootstrapped = false;
+
+  Future<Either<Failure, ArchiveEntry>> _fetchPerson() {
+    return sl<PersonsRepository>().getPerson(
+      widget.personId,
+      languageCode: _recordLanguage.name,
+    );
+  }
 
   @override
-  void initState() {
-    super.initState();
-    _future = sl<PersonsRepository>().getPerson(widget.personId);
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (_bootstrapped) return;
+    _bootstrapped = true;
+    _recordLanguage = AppLocaleScope.of(context).code;
+    _future = _fetchPerson();
+  }
+
+  void _onRecordLanguage(AppLanguageCode code) {
+    if (_recordLanguage == code) return;
+    setState(() {
+      _recordLanguage = code;
+      _future = _fetchPerson();
+    });
   }
 
   void _retry() {
     setState(() {
-      _future = sl<PersonsRepository>().getPerson(widget.personId);
+      _future = _fetchPerson();
+    });
+  }
+
+  void _reloadPerson() {
+    setState(() {
+      _future = _fetchPerson();
     });
   }
 
@@ -81,9 +110,28 @@ class _ArchiveEntryDetailPageState extends State<ArchiveEntryDetailPage> {
                     constraints: const BoxConstraints(maxWidth: 920),
                     child: SingleChildScrollView(
                       padding: const EdgeInsets.fromLTRB(20, 12, 20, 44),
-                      child: wide
-                          ? _DetailWideLayout(entry: entry, l10n: l10n)
-                          : _DetailNarrowLayout(entry: entry, l10n: l10n),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          ArchiveEntryDetailLanguageBar(
+                            l10n: l10n,
+                            selected: _recordLanguage,
+                            onSelected: _onRecordLanguage,
+                          ),
+                          const SizedBox(height: 20),
+                          wide
+                              ? _DetailWideLayout(
+                                  entry: entry,
+                                  l10n: l10n,
+                                  onModerationComplete: _reloadPerson,
+                                )
+                              : _DetailNarrowLayout(
+                                  entry: entry,
+                                  l10n: l10n,
+                                  onModerationComplete: _reloadPerson,
+                                ),
+                        ],
+                      ),
                     ),
                   ),
                 );
@@ -164,10 +212,12 @@ class _DetailWideLayout extends StatelessWidget {
   const _DetailWideLayout({
     required this.entry,
     required this.l10n,
+    required this.onModerationComplete,
   });
 
   final ArchiveEntry entry;
   final AppLocalizations l10n;
+  final VoidCallback onModerationComplete;
 
   @override
   Widget build(BuildContext context) {
@@ -189,6 +239,14 @@ class _DetailWideLayout extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 28),
+              ArchivePersonAudioSection(personId: entry.id, l10n: l10n),
+              const SizedBox(height: 24),
+              ArchiveModeratorVerifySection(
+                personId: entry.id,
+                l10n: l10n,
+                onSuccess: onModerationComplete,
+              ),
+              const SizedBox(height: 24),
               Text(
                 l10n.archiveSourceHeading,
                 style: TextStyle(
@@ -216,10 +274,12 @@ class _DetailNarrowLayout extends StatelessWidget {
   const _DetailNarrowLayout({
     required this.entry,
     required this.l10n,
+    required this.onModerationComplete,
   });
 
   final ArchiveEntry entry;
   final AppLocalizations l10n;
+  final VoidCallback onModerationComplete;
 
   @override
   Widget build(BuildContext context) {
@@ -243,6 +303,14 @@ class _DetailNarrowLayout extends StatelessWidget {
         const SizedBox(height: 28),
         _DetailMainColumn(entry: entry, l10n: l10n, threeColumnGrid: false),
         const SizedBox(height: 32),
+        ArchivePersonAudioSection(personId: entry.id, l10n: l10n),
+        const SizedBox(height: 24),
+        ArchiveModeratorVerifySection(
+          personId: entry.id,
+          l10n: l10n,
+          onSuccess: onModerationComplete,
+        ),
+        const SizedBox(height: 28),
         Text(
           l10n.archiveSourceHeading,
           style: TextStyle(

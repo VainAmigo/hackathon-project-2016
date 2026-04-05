@@ -17,6 +17,11 @@ abstract final class ApiEndpoints {
 
   static const persons = '/api/v1/persons';
 
+  static const moderatorPersonsPrefix = '/api/v1/moderator/persons';
+
+  static String moderatorPersonPath(String personId) =>
+      '$moderatorPersonsPrefix/${Uri.encodeComponent(personId.trim())}';
+
   static const chats = '/api/v1/chats';
 
   static String chatPath(int chatId) => '/api/v1/chats/$chatId';

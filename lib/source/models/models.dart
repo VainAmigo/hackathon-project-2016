@@ -8,6 +8,7 @@ export 'person_models/archive_entry_source.dart';
 export 'person_models/data_source_format.dart';
 export 'person_models/persons_list_query.dart';
 export 'person_models/persons_page_result.dart';
+export 'person_models/persons_v1_language.dart';
 export 'person_models/person_api_mapper.dart';
 export 'chat_models/chat_summary.dart';
 export 'chat_models/chat_message_response.dart';
